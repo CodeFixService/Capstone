@@ -1,0 +1,8 @@
+
+# Temporales de Office y archivos basura
+~
+~WRL*.tmp
+*.tmp
+*.lock
+Thumbs.db
+.DS_Store
