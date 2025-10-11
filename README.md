@@ -20,7 +20,7 @@ Desarrollar un sistema web que permita gestionar reservas, servicios y usuarios 
 
 ## 🛠️ Tecnologías
 - **Lenguaje Backend**: C# con .NET Core 8  
-- **Frontend**: Angular + Bootstrap  
+- **Frontend**: Raizor
 - **Base de Datos**: SQL Server  
 - **Control de Versiones**: GitHub  
 - **Metodología**: Desarrollo por sprints (Scrum)  
@@ -30,10 +30,9 @@ Desarrollar un sistema web que permita gestionar reservas, servicios y usuarios 
 - **Integrantes**: (Mallely Calfilaf)  
 
 ## 📂 Estructura del Repositorio
-- `/docs` → Documentación del proyecto (Acta, ERS, Casos de Uso, Mockups, Minutas, etc.)  
-- `/src` → Código fuente de la aplicación  
-- `/db` → Scripts y modelos de base de datos  
-- `/tests` → Pruebas unitarias y funcionales  
+- `/fase1` → Documentación del proyecto (Acta, ERS, Casos de Uso, Mockups, Minutas, etc.)  
+- `/fase2` → Código fuente de la aplicación   
+- `/fase3` → -  
 
 ## 🚀 Estado del Proyecto
 - [x] Acta de Constitución  
