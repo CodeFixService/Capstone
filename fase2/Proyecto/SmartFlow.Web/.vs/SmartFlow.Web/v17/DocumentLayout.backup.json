@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\appsettings.json",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\appsettings.json",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\appsettings.json",
+              "RelativeToolTip": "SmartFlow.Web\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-07T04:47:31.392Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

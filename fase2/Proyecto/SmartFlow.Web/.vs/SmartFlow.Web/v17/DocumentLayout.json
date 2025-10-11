@@ -1,0 +1,58 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\smartflow.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\smartflow.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SmartFlow.Web",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\SmartFlow.Web.csproj",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\SmartFlow.Web.csproj",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\SmartFlow.Web.csproj",
+              "RelativeToolTip": "SmartFlow.Web\\SmartFlow.Web.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-09T23:29:31.468Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\appsettings.json",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\appsettings.json",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\appsettings.json",
+              "RelativeToolTip": "SmartFlow.Web\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-07T04:47:31.392Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
