@@ -20,7 +20,7 @@ Desarrollar un sistema web que permita gestionar reservas, servicios y usuarios 
 
 ## 🛠️ Tecnologías
 - **Lenguaje Backend**: C# con .NET Core 8  
-- **Frontend**: Raizor
+- **Frontend**: Razor
 - **Base de Datos**: SQL Server  
 - **Control de Versiones**: GitHub  
 - **Metodología**: Desarrollo por sprints (Scrum)  
