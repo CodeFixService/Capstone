@@ -1,0 +1,30 @@
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Admin.Carreras.EditModel
+@{
+    ViewData["Title"] = "Editar Carrera";
+}
+
+<h2 class="mb-3">Editar Carrera</h2>
+
+<form method="post" class="border rounded p-4 shadow-sm">
+    <input type="hidden" asp-for="Carrera.Id" />
+
+    <div class="mb-3">
+        <label asp-for="Carrera.Nombre" class="form-label">Nombre de la Carrera</label>
+        <input asp-for="Carrera.Nombre" class="form-control" />
+        <span asp-validation-for="Carrera.Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Carrera.Descripcion" class="form-label">Descripción</label>
+        <textarea asp-for="Carrera.Descripcion" class="form-control"></textarea>
+        <span asp-validation-for="Carrera.Descripcion" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+    <a asp-page="Index" class="btn btn-secondary ms-2">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

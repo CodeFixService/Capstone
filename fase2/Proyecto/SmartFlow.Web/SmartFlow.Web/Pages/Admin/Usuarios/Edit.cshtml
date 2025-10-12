@@ -1,0 +1,60 @@
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Admin.Usuarios.EditModel
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<h2 class="mb-3">Editar Usuario</h2>
+
+<form method="post" class="border rounded p-4 shadow-sm">
+    <input type="hidden" asp-for="Usuario.Id" />
+
+    <div class="mb-3">
+        <label asp-for="Usuario.Rut" class="form-label">RUT</label>
+        <input asp-for="Usuario.Rut" class="form-control" />
+        <span asp-validation-for="Usuario.Rut" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Usuario.Nombre" class="form-label">Nombre</label>
+        <input asp-for="Usuario.Nombre" class="form-control" />
+        <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Usuario.Correo" class="form-label">Correo</label>
+        <input asp-for="Usuario.Correo" type="email" class="form-control" />
+        <span asp-validation-for="Usuario.Correo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Usuario.Password" class="form-label">Contraseña</label>
+        <input asp-for="Usuario.Password" type="password" class="form-control" />
+        <span asp-validation-for="Usuario.Password" class="text-danger"></span>
+    </div>
+
+    <!-- 🔹 Campo de Rol dinámico -->
+    <div class="mb-3">
+        <label asp-for="Usuario.Rol" class="form-label">Rol</label>
+        <select asp-for="Usuario.Rol" asp-items="Model.RolesSelectList" class="form-select">
+            <option value="">Seleccione un rol...</option>
+        </select>
+        <span asp-validation-for="Usuario.Rol" class="text-danger"></span>
+    </div>
+
+    <!-- 🔹 Campo de Carrera dinámico -->
+    <div class="mb-3">
+        <label asp-for="Usuario.CarreraId" class="form-label">Carrera</label>
+        <select asp-for="Usuario.CarreraId" asp-items="Model.CarrerasSelectList" class="form-select">
+            <option value="">Seleccione una carrera...</option>
+        </select>
+        <span asp-validation-for="Usuario.CarreraId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+    <a asp-page="Index" class="btn btn-secondary ms-2">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

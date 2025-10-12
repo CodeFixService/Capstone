@@ -1,0 +1,51 @@
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Admin.Servicios.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Servicio";
+}
+
+<h2 class="text-danger mb-3">Confirmar eliminación</h2>
+
+<div class="alert alert-warning">
+    <strong>¿Estás seguro de eliminar este servicio?</strong>
+    <p>Esta acción no se puede deshacer.</p>
+</div>
+
+<div class="border rounded p-4 bg-light shadow-sm mb-3">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">ID</dt>
+        <dd class="col-sm-9">@Model.Servicio.Id</dd>
+
+        <dt class="col-sm-3">Nombre</dt>
+        <dd class="col-sm-9">@Model.Servicio.Nombre</dd>
+
+        <dt class="col-sm-3">Precio</dt>
+        <dd class="col-sm-9">$@string.Format("{0:N0}", Model.Servicio.Precio)</dd>
+
+        <dt class="col-sm-3">Estado</dt>
+        <dd class="col-sm-9">
+            @if (Model.Servicio.Activo)
+            {
+                <span class="badge bg-success">Activo</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary">Inactivo</span>
+            }
+        </dd>
+    </dl>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="Servicio.Id" />
+    <button type="submit" class="btn btn-danger me-2">
+        <i class="bi bi-trash"></i> Eliminar definitivamente
+    </button>
+    <a asp-page="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Cancelar
+    </a>
+</form>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+}

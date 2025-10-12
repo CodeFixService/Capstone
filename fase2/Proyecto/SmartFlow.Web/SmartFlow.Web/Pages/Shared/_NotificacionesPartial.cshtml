@@ -1,0 +1,27 @@
+﻿@inject SmartFlow.Web.Data.SmartFlowContext _context
+@using Microsoft.AspNetCore.Http
+@{
+    var usuarioId = Context.Session.GetInt32("UsuarioId");
+    int cantidad = 0;
+    if (usuarioId != null)
+    {
+        cantidad = _context.Notificaciones
+            .Where(n => n.UsuarioId == usuarioId && !n.Leida)
+            .Count();
+    }
+
+    var rol = Context.Session.GetString("UsuarioRol");
+    var destino = rol == "Admin"
+        ? "/Admin/Notificaciones/Index"
+        : "/Usuario/Notificaciones/Index";
+}
+
+<a class="nav-link position-relative" asp-page="@destino">
+    <i class="bi bi-bell-fill" style="font-size:1.3rem;"></i>
+    @if (cantidad > 0)
+    {
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            @cantidad
+        </span>
+    }
+</a>

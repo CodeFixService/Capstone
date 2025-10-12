@@ -1,0 +1,30 @@
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Admin.Roles.EditModel
+@{
+    ViewData["Title"] = "Editar Rol";
+}
+
+<h2 class="mb-3">Editar Rol</h2>
+
+<form method="post" class="border rounded p-4 shadow-sm">
+    <input type="hidden" asp-for="Rol.Id" />
+
+    <div class="mb-3">
+        <label asp-for="Rol.Nombre" class="form-label">Nombre del Rol</label>
+        <input asp-for="Rol.Nombre" class="form-control" />
+        <span asp-validation-for="Rol.Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Rol.Descripcion" class="form-label">Descripción</label>
+        <textarea asp-for="Rol.Descripcion" class="form-control"></textarea>
+        <span asp-validation-for="Rol.Descripcion" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+    <a asp-page="Index" class="btn btn-secondary ms-2">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

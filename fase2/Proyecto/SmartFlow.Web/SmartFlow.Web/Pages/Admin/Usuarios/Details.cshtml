@@ -1,0 +1,37 @@
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Admin.Usuarios.DetailsModel
+@{
+    ViewData["Title"] = "Detalles del Usuario";
+}
+
+<h2 class="mb-3">Detalles del Usuario</h2>
+
+<div class="border rounded p-4 shadow-sm bg-light">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">ID</dt>
+        <dd class="col-sm-9">@Model.Usuario.Id</dd>
+
+        <dt class="col-sm-3">RUT</dt>
+        <dd class="col-sm-9">@Model.Usuario.Rut</dd>
+
+        <dt class="col-sm-3">Nombre</dt>
+        <dd class="col-sm-9">@Model.Usuario.Nombre</dd>
+
+        <dt class="col-sm-3">Correo</dt>
+        <dd class="col-sm-9">@Model.Usuario.Correo</dd>
+
+        <dt class="col-sm-3">Rol</dt>
+        <dd class="col-sm-9">@Model.Usuario.Rol</dd>
+
+        <dt class="col-sm-3">Creado Por</dt>
+        <dd class="col-sm-9">@Model.Usuario.CreadoPor</dd>
+
+        <dt class="col-sm-3">Fecha Creación</dt>
+        <dd class="col-sm-9">@Model.Usuario.FechaCreacion?.ToString("dd/MM/yyyy HH:mm")</dd>
+    </dl>
+</div>
+
+<div class="mt-3">
+    <a asp-page="Edit" asp-route-id="@Model.Usuario.Id" class="btn btn-warning me-2">Editar</a>
+    <a asp-page="Index" class="btn btn-secondary">Volver al listado</a>
+</div>

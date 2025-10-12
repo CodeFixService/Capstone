@@ -1,0 +1,56 @@
+﻿@page
+@model SmartFlow.Web.Pages.Admin.Carreras.IndexModel
+@{
+    ViewData["Title"] = "Mantenedor de Carreras";
+}
+
+<h2 class="mb-3">Carreras Registradas</h2>
+
+<a asp-page="Create" class="btn btn-primary mb-3">
+    <i class="bi bi-mortarboard"></i> Nueva Carrera
+</a>
+
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th class="text-center">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ListaCarreras != null && Model.ListaCarreras.Count > 0)
+        {
+            foreach (var carrera in Model.ListaCarreras)
+            {
+                <tr>
+                    <td>@carrera.Id</td>
+                    <td>@carrera.Nombre</td>
+                    <td>@carrera.Descripcion</td>
+                    <td class="text-center">
+                        <a asp-page="Details" asp-route-id="@carrera.Id" class="btn btn-sm btn-outline-info me-1" title="Detalles">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a asp-page="Edit" asp-route-id="@carrera.Id" class="btn btn-sm btn-outline-warning me-1" title="Editar">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@carrera.Id" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center text-muted">No hay carreras registradas.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+}

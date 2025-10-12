@@ -1,0 +1,49 @@
+﻿@page
+@model SmartFlow.Web.Pages.Admin.Solicitudes.CreateModel
+@{
+    ViewData["Title"] = "Crear Solicitud";
+}
+
+<h2 class="mb-3">Nueva Solicitud</h2>
+
+<form method="post" class="border rounded p-4 shadow-sm">
+    <div class="mb-3">
+        <label asp-for="Solicitud.Asunto" class="form-label">Asunto</label>
+        <input asp-for="Solicitud.Asunto" class="form-control" />
+        <span asp-validation-for="Solicitud.Asunto" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Solicitud.Descripcion" class="form-label">Descripción</label>
+        <textarea asp-for="Solicitud.Descripcion" class="form-control"></textarea>
+        <span asp-validation-for="Solicitud.Descripcion" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Solicitud.UsuarioId" class="form-label">Usuario</label>
+        <select asp-for="Solicitud.UsuarioId" asp-items="Model.UsuariosSelectList" class="form-select">
+            <option value="">Seleccione un usuario...</option>
+        </select>
+        <span asp-validation-for="Solicitud.UsuarioId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Solicitud.ServicioId" class="form-label">Servicio</label>
+        <select asp-for="Solicitud.ServicioId" asp-items="Model.ServiciosSelectList" class="form-select">
+            <option value="">Seleccione un servicio...</option>
+        </select>
+        <span asp-validation-for="Solicitud.ServicioId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-save"></i> Guardar
+    </button>
+    <a asp-page="Index" class="btn btn-secondary ms-2">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+}

@@ -1,0 +1,31 @@
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Admin.Roles.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Rol";
+}
+
+<h2 class="text-danger mb-3">Confirmar eliminación</h2>
+
+<div class="alert alert-warning">
+    <strong>¿Estás seguro de eliminar este rol?</strong>
+    <p>Esta acción no se puede deshacer.</p>
+</div>
+
+<div class="border rounded p-4 bg-light mb-3">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">ID</dt>
+        <dd class="col-sm-9">@Model.Rol.Id</dd>
+
+        <dt class="col-sm-3">Nombre</dt>
+        <dd class="col-sm-9">@Model.Rol.Nombre</dd>
+
+        <dt class="col-sm-3">Descripción</dt>
+        <dd class="col-sm-9">@Model.Rol.Descripcion</dd>
+    </dl>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="Rol.Id" />
+    <button type="submit" class="btn btn-danger me-2">Eliminar definitivamente</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>

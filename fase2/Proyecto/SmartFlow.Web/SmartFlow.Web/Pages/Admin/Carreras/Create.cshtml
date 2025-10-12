@@ -1,0 +1,28 @@
+﻿@page
+@model SmartFlow.Web.Pages.Admin.Carreras.CreateModel
+@{
+    ViewData["Title"] = "Crear Carrera";
+}
+
+<h2 class="mb-3">Nueva Carrera</h2>
+
+<form method="post" class="border rounded p-4 shadow-sm">
+    <div class="mb-3">
+        <label asp-for="Carrera.Nombre" class="form-label">Nombre de la Carrera</label>
+        <input asp-for="Carrera.Nombre" class="form-control" />
+        <span asp-validation-for="Carrera.Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Carrera.Descripcion" class="form-label">Descripción</label>
+        <textarea asp-for="Carrera.Descripcion" class="form-control"></textarea>
+        <span asp-validation-for="Carrera.Descripcion" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary ms-2">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

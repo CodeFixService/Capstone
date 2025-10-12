@@ -1,0 +1,48 @@
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Admin.Servicios.DetailsModel
+@{
+    ViewData["Title"] = "Detalles del Servicio";
+}
+
+<h2 class="mb-3">Detalles del Servicio</h2>
+
+<div class="border rounded p-4 bg-light shadow-sm">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">ID</dt>
+        <dd class="col-sm-9">@Model.Servicio.Id</dd>
+
+        <dt class="col-sm-3">Nombre</dt>
+        <dd class="col-sm-9">@Model.Servicio.Nombre</dd>
+
+        <dt class="col-sm-3">Descripción</dt>
+        <dd class="col-sm-9">@Model.Servicio.Descripcion</dd>
+
+        <dt class="col-sm-3">Precio</dt>
+        <dd class="col-sm-9">$@string.Format("{0:N0}", Model.Servicio.Precio)</dd>
+
+        <dt class="col-sm-3">Estado</dt>
+        <dd class="col-sm-9">
+            @if (Model.Servicio.Activo)
+            {
+                <span class="badge bg-success">Activo</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary">Inactivo</span>
+            }
+        </dd>
+    </dl>
+</div>
+
+<div class="mt-3">
+    <a asp-page="Edit" asp-route-id="@Model.Servicio.Id" class="btn btn-warning me-2">
+        <i class="bi bi-pencil-square"></i> Editar
+    </a>
+    <a asp-page="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Volver al listado
+    </a>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+}

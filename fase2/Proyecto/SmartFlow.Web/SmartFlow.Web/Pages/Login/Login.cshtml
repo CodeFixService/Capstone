@@ -1,0 +1,25 @@
+﻿@page
+@model SmartFlow.Web.Pages.Login.LoginModel
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<h2>Iniciar Sesión</h2>
+
+<form method="post">
+    <div>
+        <label for="Correo">Correo:</label>
+        <input type="text" id="Correo" name="Correo" required />
+    </div>
+    <div>
+        <label for="Password">Contraseña:</label>
+        <input type="password" id="Password" name="Password" required />
+    </div>
+    <button type="submit">Ingresar</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <p style="color:red">@Model.Mensaje</p>
+}
+    
