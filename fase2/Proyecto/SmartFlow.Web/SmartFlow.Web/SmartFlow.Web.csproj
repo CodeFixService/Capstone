@@ -15,11 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Admin\Calendario\" />
-    <Folder Include="Pages\Admin\Notificaciones\" />
     <Folder Include="Pages\Admin\Reservas\" />
-    <Folder Include="Pages\Usuario\Calendario\" />
-    <Folder Include="Pages\Usuario\Perfil\" />
     <Folder Include="Pages\Usuario\Reservas\" />
   </ItemGroup>
 

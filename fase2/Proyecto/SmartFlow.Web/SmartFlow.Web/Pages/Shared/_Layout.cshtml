@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/SmartFlow.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body>
     @{
         var sesion = HttpContextAccessor?.HttpContext?.Session;
@@ -51,12 +52,15 @@
                                         <li><a class="dropdown-item" asp-page="/Admin/Roles/Index">Roles</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Carreras/Index">Carreras</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Servicios/Index">Servicios</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Reservas/Index">Reservas</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>                                        
                                         <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Calendario Global</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Enviar notificación</a></li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Ayuda/Index">Ayuda (Chat)</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Reportes/Index">Reportes</a></li>
+
                                     </ul>
                                 </li>
                             }
@@ -70,12 +74,13 @@
                                         Mi Cuenta
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="usuarioDropdown">
-                                        <li><a class="dropdown-item" asp-page="/Usuario/Index">Mi Panel</a></li>
+                                        
                                         <li><a class="dropdown-item" asp-page="/Usuario/Calendario/Index">Calendario</a></li>
                                         <li><a class="dropdown-item" asp-page="/Usuario/Solicitudes/Index">Mis Solicitudes</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Usuario/Perfil/Editar">Editar Perfil</a></li>
+                                        
                                         <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item" asp-page="/Usuario/Ayuda">Ayuda</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Usuario/Perfil/Editar">Editar Perfil</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Usuario/Ayuda/Index">Ayuda</a></li>
                                     </ul>
                                 </li>
                             }
@@ -92,16 +97,15 @@
                     <!-- ===== MENÚ DERECHO ===== -->
                     <ul class="navbar-nav align-items-center">
 
-                        @* Icono de notificaciones (visible si hay sesión) *@
+                        @* 🔔 Icono de notificaciones (solo si hay sesión) *@
                         @if (isLogged)
                         {
                             <li class="nav-item me-3">
-                                <partial name="_NotificacionesPartial" />
+                                @await Html.PartialAsync("_NotificacionesPartial")
                             </li>
                         }
 
-
-                        @* Saludo + Logout *@
+                        @* 👋 Saludo + Logout *@
                         @if (isLogged)
                         {
                             <li class="nav-item">

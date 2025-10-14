@@ -73,6 +73,39 @@ namespace SmartFlow.Web.Migrations
                     b.ToTable("Carreras");
                 });
 
+            modelBuilder.Entity("SmartFlow.Web.Models.ChatMensaje", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmisorRol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("LeidoPorAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LeidoPorUsuario")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatMensajes");
+                });
+
             modelBuilder.Entity("SmartFlow.Web.Models.Notificacion", b =>
                 {
                     b.Property<int>("Id")
@@ -110,6 +143,36 @@ namespace SmartFlow.Web.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Notificaciones");
+                });
+
+            modelBuilder.Entity("SmartFlow.Web.Models.Reserva", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaFin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Servicio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reservas");
                 });
 
             modelBuilder.Entity("SmartFlow.Web.Models.Rol", b =>

@@ -1,0 +1,137 @@
+﻿@page
+@model SmartFlow.Web.Pages.Admin.Calendario.IndexModel
+@{
+    ViewData["Title"] = "Calendario Global";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+
+<h2 class="mb-4">📅 Calendario Global de Reservas</h2>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <label class="form-label fw-bold">Filtrar por servicio</label>
+        <select id="filtroServicio" class="form-select">
+            <option value="">Todos</option>
+            @foreach (var servicio in Model.Servicios)
+            {
+                <option value="@servicio">@servicio</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div id="calendar"></div>
+
+<!-- 🔹 Modal para aprobar / rechazar -->
+<div class="modal fade" id="modalReservaAdmin" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Gestión de reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Estudiante:</strong> <span id="detalleUsuario"></span></p>
+                <p><strong>Servicio:</strong> <span id="detalleServicio"></span></p>
+                <p><strong>Inicio:</strong> <span id="detalleInicio"></span></p>
+                <p><strong>Fin:</strong> <span id="detalleFin"></span></p>
+                <p><strong>Estado actual:</strong> <span id="detalleEstado" class="fw-bold"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAprobar" class="btn btn-success">Aprobar</button>
+                <button type="button" id="btnRechazar" class="btn btn-danger">Rechazar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const modalEl = document.getElementById('modalReservaAdmin');
+            const modal = new bootstrap.Modal(modalEl);
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                themeSystem: 'bootstrap5',
+                locale: 'es',
+                height: 'auto',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: function(fetchInfo, successCallback) {
+                    const servicio = document.getElementById("filtroServicio").value;
+                    fetch(`/Admin/Calendario?handler=Eventos&servicio=${encodeURIComponent(servicio)}`)
+                        .then(res => res.json())
+                        .then(data => successCallback(data))
+                        .catch(err => console.error("Error cargando eventos:", err));
+                },
+                eventColor: '#0d6efd',
+                eventTextColor: '#fff',
+                timeZone: 'local',
+                displayEventTime: true,
+
+                // 🔹 Al hacer clic en una reserva (abre modal)
+                eventClick: function(info) {
+                    const data = info.event.extendedProps;
+
+                    document.getElementById("detalleUsuario").innerText = data.usuario || "(sin datos)";
+                    document.getElementById("detalleServicio").innerText = data.servicio;
+                    document.getElementById("detalleInicio").innerText = info.event.start.toLocaleString();
+                    document.getElementById("detalleFin").innerText = info.event.end ? info.event.end.toLocaleString() : "";
+                    document.getElementById("detalleEstado").innerText = data.estado;
+
+                    modal.show();
+
+                    const id = data.id;
+
+                    document.getElementById("btnAprobar").onclick = () => actualizarEstado(id, "Aprobada", modal);
+                    document.getElementById("btnRechazar").onclick = () => actualizarEstado(id, "Rechazada", modal);
+                },
+
+                // Tooltip con detalles
+                eventDidMount: function(info) {
+                    new bootstrap.Tooltip(info.el, {
+                        title: info.event.extendedProps.detalle,
+                        placement: 'top',
+                        trigger: 'hover',
+                        container: 'body'
+                    });
+                }
+            });
+
+            // 🔹 Filtrar eventos por servicio
+            document.getElementById("filtroServicio").addEventListener("change", function () {
+                calendar.refetchEvents();
+            });
+
+            // 🔹 Función para actualizar estado
+                    function actualizarEstado(id, nuevoEstado, modal) {
+            fetch('/Admin/Calendario?handler=ActualizarEstado', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `id=${id}&estado=${nuevoEstado}`
+            })
+            .then(r => r.json())
+            .then(({ success }) => {
+                if (success) {
+                    modal.hide();
+                    alert(`✅ Reserva ${nuevoEstado.toLowerCase()} correctamente.`);
+                    calendar.refetchEvents();
+                } else {
+                    alert("❌ Error al actualizar la reserva.");
+                }
+            })
+            .catch(err => console.error("Error al actualizar estado:", err));
+        }
+
+
+            calendar.render();
+        });
+    </script>
+}

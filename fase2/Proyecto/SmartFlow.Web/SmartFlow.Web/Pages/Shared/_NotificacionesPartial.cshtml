@@ -1,27 +1,126 @@
 ﻿@inject SmartFlow.Web.Data.SmartFlowContext _context
 @using Microsoft.AspNetCore.Http
+@using SmartFlow.Web.Models
+
 @{
     var usuarioId = Context.Session.GetInt32("UsuarioId");
-    int cantidad = 0;
+    var notificaciones = new List<Notificacion>();
+    var pendientes = 0;
+
     if (usuarioId != null)
     {
-        cantidad = _context.Notificaciones
-            .Where(n => n.UsuarioId == usuarioId && !n.Leida)
-            .Count();
-    }
+        notificaciones = _context.Notificaciones
+            .Where(n => n.UsuarioId == usuarioId)
+            .OrderByDescending(n => n.FechaCreacion)
+            .ToList();
 
-    var rol = Context.Session.GetString("UsuarioRol");
-    var destino = rol == "Admin"
-        ? "/Admin/Notificaciones/Index"
-        : "/Usuario/Notificaciones/Index";
+        pendientes = notificaciones.Count(n => !n.Leida);
+    }
 }
 
-<a class="nav-link position-relative" asp-page="@destino">
-    <i class="bi bi-bell-fill" style="font-size:1.3rem;"></i>
-    @if (cantidad > 0)
-    {
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            @cantidad
-        </span>
-    }
-</a>
+<div class="dropdown">
+    <button id="btnCampanita"
+            type="button"
+            class="btn btn-link nav-link position-relative"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="outside"
+            aria-expanded="false">
+
+        <i class="bi bi-bell-fill" style="font-size:1.3rem;"></i>
+
+        @if (pendientes > 0)
+        {
+            <span id="contadorNotificaciones"
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @pendientes
+            </span>
+        }
+        else
+        {
+            <span id="contadorNotificaciones" class="visually-hidden">0</span>
+        }
+    </button>
+
+    <ul id="listaNotificaciones" class="dropdown-menu dropdown-menu-end" aria-labelledby="btnCampanita" style="min-width: 320px;">
+        @if (notificaciones.Any())
+        {
+            @foreach (var n in notificaciones)
+            {
+                <li class="dropdown-item @(n.Leida ? "text-muted" : "fw-bold")">
+                    <div>@n.Titulo</div>
+                    <small>@n.Mensaje</small>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="dropdown-item text-muted">No hay notificaciones</li>
+        }
+    </ul>
+</div>
+
+<input type="hidden" id="UsuarioIdOculto" value="@(usuarioId ?? 0)" />
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdownEl = document.getElementById("btnCampanita");
+        const usuarioId = document.getElementById("UsuarioIdOculto")?.value;
+
+        if (!dropdownEl || !usuarioId) return;
+
+        // Cuando se ABRE el dropdown, marcamos como leídas
+        dropdownEl.addEventListener('show.bs.dropdown', function () {
+            fetch('/Notificaciones?handler=MarcarLeidas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `usuarioId=${usuarioId}`
+            })
+            .then(r => r.json())
+            .then(({ success }) => {
+                if (success) {
+                    const badge = document.getElementById('contadorNotificaciones');
+                    if (badge) {
+                        // oculta el badge si era > 0
+                        badge.classList.add('visually-hidden');
+                    }
+                    // pasa visualmente a "leídas"
+                    document.querySelectorAll('#listaNotificaciones li').forEach(li => {
+                        li.classList.remove('fw-bold');
+                        li.classList.add('text-muted');
+                    });
+                }
+            });
+        });
+    });
+</script>
+<script>
+    /* 🔁 REFRESCO AUTOMÁTICO DEL CONTADOR CADA 10s (sin tocar nada más) */
+    (function () {
+        const usuarioId = document.getElementById('UsuarioIdOculto')?.value;
+        const badge = document.getElementById('contadorNotificaciones');
+        if (!usuarioId || !badge) return;
+
+        function refreshCount() {
+            fetch(`/Notificaciones?handler=Count&usuarioId=${usuarioId}`)
+                .then(r => r.json())
+                .then(({ count }) => {
+                    if (typeof count !== 'number') return;
+
+                    if (count > 0) {
+                        badge.classList.remove('visually-hidden');
+                        badge.textContent = count;
+                    } else {
+                        badge.textContent = '0';
+                        badge.classList.add('visually-hidden');
+                    }
+                })
+                .catch(() => { /* silencio para no romper UI */ });
+        }
+
+        // Actualiza de inmediato y luego cada 10 segundos
+        refreshCount();
+        window.__sfNotifInterval && clearInterval(window.__sfNotifInterval);
+        window.__sfNotifInterval = setInterval(refreshCount, 10000);
+    })();
+</script>
+

@@ -40,6 +40,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQXJhbmNlbGVzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Admin/Ayuda/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQXl1ZGFcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Admin/Ayuda/Ver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQXl1ZGFcVmVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Admin/Calendario/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ2FsZW5kYXJpb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Admin/Carreras/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ2FycmVyYXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -62,6 +74,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Admin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Admin/Notificaciones/Nueva.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTm90aWZpY2FjaW9uZXNcTnVldmEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Admin/Roles/Create.cshtml]
@@ -152,6 +168,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cTG9nb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Notificaciones.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90aWZpY2FjaW9uZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -164,12 +184,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Usuario/Ayuda/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xBeXVkYVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Usuario/Calendario/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xDYWxlbmRhcmlvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Usuario/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Usuario/Notificaciones/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xOb3RpZmljYWNpb25lc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Usuario/Perfil/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xQZXJmaWxcRWRpdGFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Admin/Desktop/git/Capstone/fase2/Proyecto/SmartFlow.Web/SmartFlow.Web/Pages/Usuario/Solicitudes/Create.cshtml]

@@ -1,0 +1,48 @@
+﻿@page "{usuarioId:int}"
+@model SmartFlow.Web.Pages.Admin.Ayuda.VerModel
+@{
+    ViewData["Title"] = "Chat con Usuario";
+}
+<h2 class="mb-3">💬 Chat con @Model.NombreUsuario</h2>
+
+<div id="chatMensajesAdmin" class="border rounded p-3 mb-3" style="height: 420px; overflow-y:auto; background:#f8f9fa">
+    @foreach (var m in Model.Mensajes)
+    {
+        <div class="mb-2">
+            <small class="text-muted">@m.Fecha:g</small><br />
+            <span class="badge @(m.EmisorRol == "Usuario" ? "bg-primary" : "bg-dark")">@m.EmisorRol</span>
+            <span class="ms-2">@m.Texto</span>
+        </div>
+    }
+</div>
+
+<form method="post" class="d-flex gap-2">
+    <input type="hidden" name="usuarioId" value="@Model.UsuarioId" />
+    <input type="text" name="texto" class="form-control" placeholder="Escribe tu respuesta…" required />
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.MensajeSistema))
+{
+    <div class="alert alert-info mt-3">@Model.MensajeSistema</div>
+}
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const chatDiv = document.getElementById("chatMensajesAdmin");
+            const usuarioId = "@Model.UsuarioId";
+
+            function refrescarChatAdmin() {
+                fetch(`/Admin/Ayuda/Ver?handler=MensajesParciales&usuarioId=${usuarioId}`)
+                    .then(r => r.text())
+                    .then(html => {
+                        chatDiv.innerHTML = html;
+                        chatDiv.scrollTop = chatDiv.scrollHeight;
+                    });
+            }
+
+            // refresco cada 5 s
+            setInterval(refrescarChatAdmin, 5000);
+        });
+    </script>
+}

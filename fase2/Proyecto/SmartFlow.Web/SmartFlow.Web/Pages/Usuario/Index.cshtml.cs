@@ -1,19 +1,41 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http;
+using SmartFlow.Web.Data;
+using SmartFlow.Web.Models;
+using SmartFlow.Web.Data;
+using System.Linq;
 
 namespace SmartFlow.Web.Pages.Usuario
 {
     public class IndexModel : PageModel
     {
-        public IActionResult OnGet()
+        private readonly SmartFlowContext _context;
+
+        public IndexModel(SmartFlowContext context)
         {
-            var rol = HttpContext.Session.GetString("UsuarioRol");
+            _context = context;
+        }
 
-            if (string.IsNullOrEmpty(rol) || rol != "Usuario")
-                return RedirectToPage("/Login/Login");
+        public void OnGet()
+        {
+            // Tu lógica de carga actual
+        }
 
-            return Page();
+        public JsonResult OnPostMarcarLeidas(int usuarioId)
+        {
+            var pendientes = _context.Notificaciones
+                .Where(n => n.UsuarioId == usuarioId && !n.Leida)
+                .ToList();
+
+            if (pendientes.Any())
+            {
+                foreach (var n in pendientes)
+                    n.Leida = true;
+
+                _context.SaveChanges();
+            }
+
+            return new JsonResult(new { success = true });
         }
     }
 }

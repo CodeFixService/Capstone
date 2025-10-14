@@ -1,0 +1,53 @@
+﻿@page
+@model SmartFlow.Web.Pages.Usuario.Perfil.EditarModel
+@{
+    ViewData["Title"] = "Editar Perfil";
+}
+
+<h2 class="mb-3">✏️ Editar Perfil</h2>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-info">@Model.Mensaje</div>
+}
+
+<form method="post" class="row g-3">
+    <div class="col-md-6">
+        <label class="form-label">Nombre</label>
+        <input class="form-control" asp-for="Input.Nombre" required />
+        <span class="text-danger" asp-validation-for="Input.Nombre"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Correo</label>
+        <input type="email" class="form-control" asp-for="Input.Correo" required />
+        <span class="text-danger" asp-validation-for="Input.Correo"></span>
+    </div>
+
+    <div class="col-12">
+        <hr />
+        <h5 class="mb-2">Cambiar contraseña (opcional)</h5>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Contraseña actual</label>
+        <input type="password" class="form-control" asp-for="Input.PassActual" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Nueva contraseña</label>
+        <input type="password" class="form-control" asp-for="Input.PassNueva" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Confirmar nueva</label>
+        <input type="password" class="form-control" asp-for="Input.PassConfirm" />
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a asp-page="/Usuario/Calendario/Index" class="btn btn-outline-secondary ms-2">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

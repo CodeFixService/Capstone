@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartFlow.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+006f105a1220960d2aad5e6bdc4a264b28e5d32f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+618074c343b5fbe0b78798b288964f1c712d5e7c")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartFlow.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartFlow.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

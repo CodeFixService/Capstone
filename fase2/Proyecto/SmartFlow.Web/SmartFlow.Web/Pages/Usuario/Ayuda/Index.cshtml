@@ -1,0 +1,57 @@
+﻿@page
+@model SmartFlow.Web.Pages.Usuario.Ayuda.IndexModel
+@{
+    ViewData["Title"] = "Ayuda - Chat con Admin";
+}
+<h2 class="mb-3">💬 Soporte / Ayuda</h2>
+
+<div class="border rounded p-3 mb-3" style="height: 420px; overflow-y:auto; background:#f8f9fa">
+    <div id="chatMensajes" class="border rounded p-3 mb-3" style="height: 420px; overflow-y:auto; background:#f8f9fa">
+
+    @if (Model.Mensajes.Any())
+    {
+        foreach (var m in Model.Mensajes)
+        {
+            <div class="mb-2">
+                <small class="text-muted">@m.Fecha:g</small><br />
+                <span class="badge @(m.EmisorRol == "Usuario" ? "bg-primary" : "bg-dark")">@m.EmisorRol</span>
+                <span class="ms-2">@m.Texto</span>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="text-muted">Sin mensajes aún. Escribe el primero 👇</div>
+    }
+</div>
+
+<form method="post" class="d-flex gap-2">
+    <input type="text" name="texto" class="form-control" placeholder="Escribe tu mensaje…" required />
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.MensajeSistema))
+{
+    <div class="alert alert-info mt-3">@Model.MensajeSistema</div>
+}
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const chatDiv = document.getElementById("chatMensajes");
+
+                // Función para recargar los mensajes
+                function refrescarChat() {
+                    fetch('/Usuario/Ayuda/Index?handler=MensajesParciales')
+                        .then(r => r.text())
+                        .then(html => {
+                            chatDiv.innerHTML = html;
+                            chatDiv.scrollTop = chatDiv.scrollHeight; // auto-scroll
+                        });
+                }
+
+                // Recarga cada 5 segundos
+                setInterval(refrescarChat, 5000);
+            });
+        </script>
+}

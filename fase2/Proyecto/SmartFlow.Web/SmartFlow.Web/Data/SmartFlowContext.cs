@@ -17,6 +17,10 @@ namespace SmartFlow.Web.Data
         public DbSet<Servicio> Servicios { get; set; }
         public DbSet<Solicitud> Solicitudes { get; set; }
         public DbSet<Notificacion> Notificaciones { get; set; }
+        public DbSet<Reserva> Reservas { get; set; }
+        public DbSet<ChatMensaje> ChatMensajes { get; set; }
+
+
 
 
 

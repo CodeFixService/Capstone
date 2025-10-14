@@ -1,0 +1,134 @@
+﻿@page
+@model SmartFlow.Web.Pages.Usuario.Calendario.IndexModel
+@{
+    ViewData["Title"] = "Calendario de Reservas";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+
+<h2 class="mb-4">📅 Calendario de Reservas</h2>
+
+<div id="calendar"></div>
+
+<!-- 🔹 Modal para crear reserva -->
+<div class="modal fade" id="modalReserva" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Nueva reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formReserva">
+                    <div class="mb-3">
+                        <label class="form-label">Servicio</label>
+                        <input type="text" class="form-control" id="servicio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha y hora inicio</label>
+                        <input type="datetime-local" class="form-control" id="fechaInicio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha y hora fin</label>
+                        <input type="datetime-local" class="form-control" id="fechaFin" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                themeSystem: 'bootstrap5',
+                locale: 'es',
+                height: 'auto',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: '/Usuario/Calendario?handler=Eventos',
+                eventColor: '#198754',
+                eventTextColor: '#fff',
+                displayEventTime: true,
+                timeZone: 'local',
+                editable: false
+            });
+
+            calendar.render();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalEl = document.getElementById('modalReserva');
+            const modal = new bootstrap.Modal(modalEl);
+            const btnGuardar = document.getElementById('btnGuardar');
+            const form = document.getElementById('formReserva');
+            const calendarEl = document.getElementById('calendar');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                themeSystem: 'bootstrap5',
+                locale: 'es',
+                height: 'auto',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: '/Usuario/Calendario?handler=Eventos',
+                eventColor: '#198754',
+                eventTextColor: '#fff',
+                dateClick: function (info) {
+                    // Abre el modal con la fecha seleccionada
+                    form.reset();
+                    document.getElementById('fechaInicio').value = info.dateStr + "T09:00";
+                    document.getElementById('fechaFin').value = info.dateStr + "T10:00";
+                    modal.show();
+                }
+            });
+
+            btnGuardar.addEventListener('click', function () {
+                const servicio = document.getElementById('servicio').value;
+                const fechaInicio = document.getElementById('fechaInicio').value;
+                const fechaFin = document.getElementById('fechaFin').value;
+
+                if (!servicio || !fechaInicio || !fechaFin) {
+                    alert("Completa todos los campos.");
+                    return;
+                }
+
+                fetch('/Usuario/Calendario?handler=Crear', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `servicio=${encodeURIComponent(servicio)}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        modal.hide();
+                        calendar.refetchEvents();
+                        alert("✅ Reserva creada correctamente.");
+                    } else {
+                        alert("❌ Error al crear la reserva.");
+                    }
+                });
+            });
+
+            calendar.render();
+        });
+    </script>
+
+}

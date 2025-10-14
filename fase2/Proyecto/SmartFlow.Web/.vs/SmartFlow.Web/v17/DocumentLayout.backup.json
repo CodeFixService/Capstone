@@ -3,96 +3,52 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\shared\\_notificacionespartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\shared\\_notificacionespartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\ayuda\\ver.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\ayuda\\ver.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\ayuda\\ver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\ayuda\\ver.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\ayuda\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\ayuda\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\ayuda\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\ayuda\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\solicitudes\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\solicitudes\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\ayuda\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\ayuda\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\notificaciones\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\notificaciones\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\ayuda\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\ayuda\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\notificaciones\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\notificaciones\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251014005815_ChatBasico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartFlow.Web\\Migrations\\20251014005815_ChatBasico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\solicitudes\\edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\solicitudes\\edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\perfil\\editar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\perfil\\editar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251012071507_AddNotificaciones.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartFlow.Web\\Migrations\\20251012071507_AddNotificaciones.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\perfil\\editar.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\perfil\\editar.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\models\\chatmensaje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\models\\chatmensaje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\data\\smartflowcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\data\\smartflowcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\models\\notificacion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\models\\notificacion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\solicitudes\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\solicitudes\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251012070050_AddMotivoToSolicitud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartFlow.Web\\Migrations\\20251012070050_AddMotivoToSolicitud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\models\\solicitud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\models\\solicitud.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\solicitudes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\solicitudes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\solicitudes\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\solicitudes\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\solicitudes\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\solicitudes\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\usuario\\solicitudes\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\usuario\\solicitudes\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\login\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\login\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\solicitudes\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\solicitudes\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\solicitudes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\solicitudes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\solicitudes\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\solicitudes\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251012063521_AddSolicitudes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartFlow.Web\\Migrations\\20251012063521_AddSolicitudes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\servicios\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\servicios\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|c:\\users\\admin\\desktop\\git\\capstone\\fase2\\proyecto\\smartflow.web\\smartflow.web\\pages\\admin\\servicios\\delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A37210B4-9578-4E88-8114-DEBD25B5F3A1}|SmartFlow.Web\\SmartFlow.Web.csproj|solutionrelative:smartflow.web\\pages\\admin\\servicios\\delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -102,7 +58,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -114,301 +70,158 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAFYAAAAAAAAAAAAcwGUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T07:32:24.462Z",
+              "DocumentIndex": 0,
+              "Title": "Ver.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Ayuda\\Ver.cshtml.cs",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Ayuda\\Ver.cshtml.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Ayuda\\Ver.cshtml.cs",
+              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Ayuda\\Ver.cshtml.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAYwGYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T01:02:52.242Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "_NotificacionesPartial.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Shared\\_NotificacionesPartial.cshtml",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Shared\\_NotificacionesPartial.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Shared\\_NotificacionesPartial.cshtml",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Shared\\_NotificacionesPartial.cshtml",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAswBsAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Ayuda\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Ayuda\\Index.cshtml.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Ayuda\\Index.cshtml.cs",
+              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Ayuda\\Index.cshtml.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAA1wC0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T01:02:27.139Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Ver.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Ayuda\\Ver.cshtml",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Ayuda\\Ver.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Ayuda\\Ver.cshtml",
+              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Ayuda\\Ver.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAAAQwDAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T07:31:37.688Z",
+              "WhenOpened": "2025-10-14T01:01:16.47Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Ayuda\\Index.cshtml",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Ayuda\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Ayuda\\Index.cshtml",
+              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Ayuda\\Index.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwCgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-14T01:00:48.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Ayuda\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Ayuda\\Index.cshtml.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Ayuda\\Index.cshtml.cs",
+              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Ayuda\\Index.cshtml.cs",
+              "ViewState": "AgIAAEcAAAAAAAAAAAAYwFgAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T00:59:50.177Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Notificaciones\\Index.cshtml",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Notificaciones\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Notificaciones\\Index.cshtml",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Notificaciones\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAcwAIAAAAAAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Ayuda\\Index.cshtml",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Ayuda\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Ayuda\\Index.cshtml",
+              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Ayuda\\Index.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwDkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T07:17:16.435Z",
+              "WhenOpened": "2025-10-14T00:59:27.621Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Index.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Notificaciones\\Index.cshtml.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Notificaciones\\Index.cshtml.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Notificaciones\\Index.cshtml.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Notificaciones\\Index.cshtml.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAcwCYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T07:17:24.402Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "20251012071507_AddNotificaciones.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251012071507_AddNotificaciones.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Migrations\\20251012071507_AddNotificaciones.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251012071507_AddNotificaciones.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Migrations\\20251012071507_AddNotificaciones.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T07:15:07.607Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Edit.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Edit.cshtml.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Edit.cshtml.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Edit.cshtml.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Edit.cshtml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:51:35.612Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Create.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Create.cshtml.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Create.cshtml.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Create.cshtml.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Create.cshtml.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAcwEwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:43:06.72Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Notificacion.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Models\\Notificacion.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Models\\Notificacion.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Models\\Notificacion.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Models\\Notificacion.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAxwCAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T07:14:12.871Z",
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "SmartFlow.Web\\Pages\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAADwAAAAAAAAAAAAAAFIAAABjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-14T00:44:26.846Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "SmartFlowContext.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Data\\SmartFlowContext.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Data\\SmartFlowContext.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Data\\SmartFlowContext.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Data\\SmartFlowContext.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAQwAwAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:32:18.454Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "20251012070050_AddMotivoToSolicitud.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251012070050_AddMotivoToSolicitud.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Migrations\\20251012070050_AddMotivoToSolicitud.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251012070050_AddMotivoToSolicitud.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Migrations\\20251012070050_AddMotivoToSolicitud.cs",
+              "Title": "20251014005815_ChatBasico.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251014005815_ChatBasico.cs",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Migrations\\20251014005815_ChatBasico.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251014005815_ChatBasico.cs",
+              "RelativeToolTip": "SmartFlow.Web\\Migrations\\20251014005815_ChatBasico.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T07:00:50.615Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Edit.cshtml",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Edit.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Edit.cshtml",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Edit.cshtml",
-              "ViewState": "AgIAADgAAAAAAAAAAAAAwEsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T06:51:31.487Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Index.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Index.cshtml.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Index.cshtml.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Index.cshtml.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Index.cshtml.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAAwCoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:46:42.348Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Index.cshtml",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Index.cshtml",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Index.cshtml",
-              "ViewState": "AgIAACoAAAAAAAAAAAAAwD0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T06:46:39.123Z",
+              "WhenOpened": "2025-10-14T00:58:15.275Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 11,
-              "Title": "Solicitud.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Models\\Solicitud.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Models\\Solicitud.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Models\\Solicitud.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Models\\Solicitud.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAgwB4AAAAuAAAAAAAAAA==",
+              "Title": "SmartFlowContext.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Data\\SmartFlowContext.cs",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Data\\SmartFlowContext.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Data\\SmartFlowContext.cs",
+              "RelativeToolTip": "SmartFlow.Web\\Data\\SmartFlowContext.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAzwBUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:31:28.211Z",
+              "WhenOpened": "2025-10-14T00:57:33.523Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "Login.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Login\\Login.cshtml.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Login\\Login.cshtml.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Login\\Login.cshtml.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Login\\Login.cshtml.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAkwCkAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 10,
+              "Title": "ChatMensaje.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Models\\ChatMensaje.cs",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Models\\ChatMensaje.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Models\\ChatMensaje.cs",
+              "RelativeToolTip": "SmartFlow.Web\\Models\\ChatMensaje.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:45:28.312Z",
+              "WhenOpened": "2025-10-14T00:57:12.143Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Create.cshtml",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Create.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Create.cshtml",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Solicitudes\\Create.cshtml",
-              "ViewState": "AgIAABYAAAAAAAAAAAAAwCkAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 9,
+              "Title": "Editar.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Perfil\\Editar.cshtml.cs",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Perfil\\Editar.cshtml.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Perfil\\Editar.cshtml.cs",
+              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Perfil\\Editar.cshtml.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAYwGkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T00:47:30.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Editar.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Perfil\\Editar.cshtml",
+              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Usuario\\Perfil\\Editar.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Usuario\\Perfil\\Editar.cshtml",
+              "RelativeToolTip": "SmartFlow.Web\\Pages\\Usuario\\Perfil\\Editar.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T06:41:55.04Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Create.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Create.cshtml.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Create.cshtml.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Create.cshtml.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Create.cshtml.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAxwDIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:38:25.685Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Create.cshtml",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Create.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Create.cshtml",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Create.cshtml",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAwCwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T06:38:18.903Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "Index.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Index.cshtml.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Index.cshtml.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Index.cshtml.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Index.cshtml.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwB4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:36:01.913Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Index.cshtml",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Index.cshtml",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Solicitudes\\Index.cshtml",
-              "ViewState": "AgIAADQAAAAAAAAAAAAAwEcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T06:35:55.059Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "20251012063521_AddSolicitudes.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251012063521_AddSolicitudes.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Migrations\\20251012063521_AddSolicitudes.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Migrations\\20251012063521_AddSolicitudes.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Migrations\\20251012063521_AddSolicitudes.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:35:21.805Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "Delete.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Servicios\\Delete.cshtml",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Servicios\\Delete.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Servicios\\Delete.cshtml",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Servicios\\Delete.cshtml",
-              "ViewState": "AgIAACAAAAAAAAAAAAAAwDMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T06:27:44.525Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "Delete.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Servicios\\Delete.cshtml.cs",
-              "RelativeDocumentMoniker": "SmartFlow.Web\\Pages\\Admin\\Servicios\\Delete.cshtml.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\git\\Capstone\\fase2\\Proyecto\\SmartFlow.Web\\SmartFlow.Web\\Pages\\Admin\\Servicios\\Delete.cshtml.cs",
-              "RelativeToolTip": "SmartFlow.Web\\Pages\\Admin\\Servicios\\Delete.cshtml.cs",
-              "ViewState": "AgIAACMAAAAAAAAAAADwvzYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T06:27:38.242Z",
+              "WhenOpened": "2025-10-14T00:46:42.222Z",
               "EditorCaption": ""
             }
           ]
