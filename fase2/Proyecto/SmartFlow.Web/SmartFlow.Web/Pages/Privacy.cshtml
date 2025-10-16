@@ -1,8 +1,47 @@
 ﻿@page
 @model PrivacyModel
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Política de Privacidad";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container-fluid py-4" style="max-width: 90%; margin: auto;">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header text-center text-white fw-semibold"
+             style="background: linear-gradient(90deg, #007bff, #00b4d8); font-size: 1.4rem;">
+            @ViewData["Title"]
+        </div>
+
+        <div class="card-body bg-white" style="min-height: 50vh; padding: 2%;">
+            <div class="text-secondary" style="font-size: 1.05rem; line-height: 1.7;">
+                <p>
+                    Esta página detalla la <strong>Política de Privacidad</strong> y el uso responsable de los datos
+                    dentro del sistema <span class="text-primary fw-semibold">SmartFlow</span>.
+                </p>
+
+                <p>
+                    Nos comprometemos a proteger la información de todos los usuarios, administradores,
+                    coordinadores y directores de carrera, asegurando que los datos personales
+                    y académicos sean tratados de manera segura y confidencial.
+                </p>
+
+                <p>
+                    Para más información o consultas, puede comunicarse con el administrador del sistema
+                    a través del módulo de <a href="/Usuario/Ayuda/Index" class="text-primary fw-semibold">Soporte Técnico</a>.
+                </p>
+            </div>
+        </div>
+
+        <div class="card-footer bg-light text-center small text-muted py-3">
+            © 2025 SmartFlow - Todos los derechos reservados
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // 🔹 Script genérico para inicializaciones globales
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("✅ Página cargada correctamente:", "@ViewData["Title"]");
+        });
+    </script>
+}

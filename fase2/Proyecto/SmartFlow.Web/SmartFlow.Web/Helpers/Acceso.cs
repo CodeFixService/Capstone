@@ -46,6 +46,7 @@ namespace SmartFlow.Web.Helpers
                 return;
             }
 
+
             // ✅ Si pasa todos los filtros, continuar
             await _next(context);
         }

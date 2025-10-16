@@ -4,65 +4,86 @@
     ViewData["Title"] = "Inicio";
 }
 
-<h2 class="mb-4 text-center">🎓 Carreras y Servicios Disponibles</h2>
+<div class="container-fluid py-4" style="max-width: 90%; margin: auto;">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header text-center text-white fw-semibold"
+             style="background: linear-gradient(90deg, #007bff, #00b4d8); font-size: 1.4rem;">
+            🎓 Carreras y Servicios Disponibles
+        </div>
 
-<div class="row">
-    <!-- 🔹 CARRERAS -->
-    <div class="col-md-6">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-primary text-white fw-bold">
-                Carreras Disponibles
-            </div>
-            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                @if (Model.Carreras != null && Model.Carreras.Any())
+        <div class="card-body bg-white" style="padding: 2%; min-height: 60vh;">
+            <div class="row gy-4">
+                <!-- 🔹 CARRERAS -->
+                <div class="col-12 col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-primary text-white fw-bold text-center">
+                            Carreras Disponibles
+                        </div>
+                        <div class="card-body bg-light rounded-3" style="max-height: 300px; overflow-y: auto;">
+                            @if (Model.Carreras != null && Model.Carreras.Any())
+                            {
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var carrera in Model.Carreras)
+                                    {
+                                        <li class="list-group-item">
+                                            <strong>@carrera.Nombre</strong><br />
+                                            <small class="text-muted">@carrera.Descripcion</small>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p class="text-muted text-center my-3">No hay carreras registradas actualmente.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
 
-                {
-                    <ul class="list-group">
-                        @foreach (var carrera in Model.Carreras)
-                        {
-                            <li class="list-group-item">
-                                <strong>@carrera.Nombre</strong><br />
-                                <small>@carrera.Descripcion</small>
-                            </li>
-                        }
-                    </ul>
-                }
-                else
-                {
-                    <p class="text-muted">No hay carreras registradas actualmente.</p>
-                }
+                <!-- 🔹 SERVICIOS -->
+                <div class="col-12 col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-success text-white fw-bold text-center">
+                            Servicios Disponibles
+                        </div>
+                        <div class="card-body bg-light rounded-3" style="max-height: 300px; overflow-y: auto;">
+                            @if (Model.Servicios != null && Model.Servicios.Any())
+                            {
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var servicio in Model.Servicios)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong>@servicio.Nombre</strong><br />
+                                                <small class="text-muted">@servicio.Descripcion</small>
+                                            </div>
+                                            <span class="badge bg-secondary">
+                                                $@servicio.Precio.ToString("N0")
+                                            </span>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p class="text-muted text-center my-3">No hay servicios disponibles por el momento.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 🔹 SERVICIOS -->
-    <div class="col-md-6">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-success text-white fw-bold">
-                Servicios Disponibles
-            </div>
-            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                @if (Model.Servicios != null && Model.Servicios.Any())
-
-                {
-                    <ul class="list-group">
-                        @foreach (var servicio in Model.Servicios)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>@servicio.Nombre</strong><br />
-                                    <small>@servicio.Descripcion</small>
-                                </div>
-                                <span class="badge bg-secondary">$@servicio.Precio.ToString("N0")</span>
-                            </li>
-                        }
-                    </ul>
-                }
-                else
-                {
-                    <p class="text-muted">No hay servicios disponibles por el momento.</p>
-                }
-            </div>
+        <div class="card-footer bg-light text-center small text-muted py-3">
+            © 2025 SmartFlow - Todos los derechos reservados
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("✅ Página de inicio cargada correctamente");
+        });
+    </script>
+}
