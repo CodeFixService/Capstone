@@ -1,0 +1,110 @@
+﻿@page
+@using Newtonsoft.Json
+@model SmartFlow.Web.Pages.Admin.Reportes.IndexModel
+@{
+    ViewData["Title"] = "Reportes del Sistema";
+}
+
+<h2 class="mb-4">📊 Panel de Reportes</h2>
+
+<!-- 🔹 Tarjetas resumen -->
+<div class="row text-center mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white shadow-sm">
+            <div class="card-body">
+                <h6>Usuarios</h6>
+                <h3>@Model.TotalUsuarios</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white shadow-sm">
+            <div class="card-body">
+                <h6>Reservas</h6>
+                <h3>@Model.TotalReservas</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark shadow-sm">
+            <div class="card-body">
+                <h6>Pendientes</h6>
+                <h3>@Model.ReservasPendientes</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-dark shadow-sm">
+            <div class="card-body">
+                <h6>Solicitudes</h6>
+                <h3>@Model.TotalSolicitudes</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<!-- 🔹 Gráficos -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <canvas id="chartReservas"></canvas>
+    </div>
+    <div class="col-md-6 mb-4">
+        <canvas id="chartUsuarios"></canvas>
+    </div>
+</div>
+
+<!-- 🔹 Botones de exportación -->
+<div class="text-end mt-4">
+    <a asp-page-handler="ExportarPdf" class="btn btn-outline-primary me-2">
+        <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
+    </a>
+
+    <a asp-page-handler="ExportarExcel" class="btn btn-outline-success">
+        <i class="bi bi-file-earmark-excel"></i> Exportar Excel
+    </a>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // ✅ Datos JSON seguros desde el backend
+        const reservasData = @Html.Raw(JsonConvert.SerializeObject(Model.ReservasPorEstado));
+        const usuariosData = @Html.Raw(JsonConvert.SerializeObject(Model.UsuariosPorCarrera));
+
+        // 📊 Gráfico de Reservas
+        new Chart(document.getElementById('chartReservas'), {
+            type: 'pie',
+            data: {
+                labels: reservasData.map(r => r.Estado),
+                datasets: [{
+                    label: 'Reservas',
+                    data: reservasData.map(r => r.Cantidad),
+                    backgroundColor: ['#0d6efd', '#198754', '#dc3545']
+                }]
+            },
+            options: {
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+
+        // 📈 Gráfico de Usuarios
+        new Chart(document.getElementById('chartUsuarios'), {
+            type: 'bar',
+            data: {
+                labels: usuariosData.map(u => u.Carrera),
+                datasets: [{
+                    label: 'Usuarios por carrera',
+                    data: usuariosData.map(u => u.Cantidad),
+                    backgroundColor: '#0dcaf0'
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
+}

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+ï»¿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SmartFlow.Web.Data;
 using Microsoft.AspNetCore.Http;
@@ -44,13 +44,17 @@ namespace SmartFlow.Web.Pages.Login
                 HttpContext.Session.SetString("Rol", usuario.Rol);
 
 
-                if (usuario.Rol == "Admin")
-                    return RedirectToPage("/Admin/Index"); // lo crearemos después
-                else
-                    return RedirectToPage("/Usuario/Index"); // lo crearemos después
+                return usuario.Rol switch
+                {
+                    "Admin" => RedirectToPage("/Admin/Index"),
+                    "Director" => RedirectToPage("/Director/Index"),
+                    "Coordinador" => RedirectToPage("/Coordinador/Index"),
+                    _ => RedirectToPage("/Usuario/Index")
+                };
+
             }
 
-            Mensaje = "Correo o contraseña incorrectos.";
+            Mensaje = "Correo o contraseÃ±a incorrectos.";
             return Page();
         }
     }

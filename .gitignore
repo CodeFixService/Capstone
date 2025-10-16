@@ -6,3 +6,16 @@
 *.lock
 Thumbs.db
 .DS_Store
+
+# Archivos y carpetas que no deben versionarse
+.vs/
+bin/
+obj/
+Debug/
+*.user
+*.suo
+*.db
+*.cache
+*.log
+*.vscode/
+

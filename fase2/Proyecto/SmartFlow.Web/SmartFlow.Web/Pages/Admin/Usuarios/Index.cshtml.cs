@@ -4,6 +4,8 @@ using SmartFlow.Web.Data;
 using SmartFlow.Web.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartFlow.Web.Helpers; // arriba del archivo
+
 
 namespace SmartFlow.Web.Pages.Admin.Usuarios
 {

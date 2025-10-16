@@ -1,10 +1,68 @@
 ﻿@page
-@model IndexModel
+@model SmartFlow.Web.Pages.IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2 class="mb-4 text-center">🎓 Carreras y Servicios Disponibles</h2>
+
+<div class="row">
+    <!-- 🔹 CARRERAS -->
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white fw-bold">
+                Carreras Disponibles
+            </div>
+            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                @if (Model.Carreras != null && Model.Carreras.Any())
+
+                {
+                    <ul class="list-group">
+                        @foreach (var carrera in Model.Carreras)
+                        {
+                            <li class="list-group-item">
+                                <strong>@carrera.Nombre</strong><br />
+                                <small>@carrera.Descripcion</small>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No hay carreras registradas actualmente.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔹 SERVICIOS -->
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-success text-white fw-bold">
+                Servicios Disponibles
+            </div>
+            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                @if (Model.Servicios != null && Model.Servicios.Any())
+
+                {
+                    <ul class="list-group">
+                        @foreach (var servicio in Model.Servicios)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>@servicio.Nombre</strong><br />
+                                    <small>@servicio.Descripcion</small>
+                                </div>
+                                <span class="badge bg-secondary">$@servicio.Precio.ToString("N0")</span>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No hay servicios disponibles por el momento.</p>
+                }
+            </div>
+        </div>
+    </div>
 </div>

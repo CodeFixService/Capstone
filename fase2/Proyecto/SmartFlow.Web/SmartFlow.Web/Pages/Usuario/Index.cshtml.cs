@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SmartFlow.Web.Data;
+using SmartFlow.Web.Helpers;
 using SmartFlow.Web.Models;
-using SmartFlow.Web.Data;
 using System.Linq;
 
 namespace SmartFlow.Web.Pages.Usuario
@@ -18,9 +18,26 @@ namespace SmartFlow.Web.Pages.Usuario
 
         public void OnGet()
         {
-            // Tu l�gica de carga actual
+            var sesion = HttpContext.Session;
+
+            if (!AccesoHelper.TieneSesion(sesion))
+            {
+                Response.Redirect("/Login/Login");
+                return;
+            }
+
+            if (!AccesoHelper.EsUsuario(sesion))
+            {
+                Response.Redirect("/Admin/Index");
+                return;
+            }
+
+
         }
 
+
+        // 🔔 ACCIÓN: Marcar notificaciones como leídas (se mantiene igual)
+     
         public JsonResult OnPostMarcarLeidas(int usuarioId)
         {
             var pendientes = _context.Notificaciones

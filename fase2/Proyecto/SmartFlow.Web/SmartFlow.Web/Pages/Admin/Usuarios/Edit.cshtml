@@ -1,60 +1,106 @@
-﻿@page "{id:int}"
-@model SmartFlow.Web.Pages.Admin.Usuarios.EditModel
-@{
-    ViewData["Title"] = "Editar Usuario";
-}
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using SmartFlow.Web.Data;
+using SmartFlow.Web.Models;
+using SmartFlow.Web.Helpers; // ✅ Importar para usar PasswordHelper
+using System.Threading.Tasks;
 
-<h2 class="mb-3">Editar Usuario</h2>
+namespace SmartFlow.Web.Pages.Admin.Usuarios
+{
+    public class EditModel : PageModel
+    {
+        private readonly SmartFlowContext _context;
 
-<form method="post" class="border rounded p-4 shadow-sm">
-    <input type="hidden" asp-for="Usuario.Id" />
+        public EditModel(SmartFlowContext context)
+        {
+            _context = context;
+        }
 
-    <div class="mb-3">
-        <label asp-for="Usuario.Rut" class="form-label">RUT</label>
-        <input asp-for="Usuario.Rut" class="form-control" />
-        <span asp-validation-for="Usuario.Rut" class="text-danger"></span>
-    </div>
+        [BindProperty]
+        public Usuario Usuario { get; set; } = new Usuario();
 
-    <div class="mb-3">
-        <label asp-for="Usuario.Nombre" class="form-label">Nombre</label>
-        <input asp-for="Usuario.Nombre" class="form-control" />
-        <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
-    </div>
+        public SelectList RolesSelectList { get; set; }
+        public SelectList CarrerasSelectList { get; set; }
 
-    <div class="mb-3">
-        <label asp-for="Usuario.Correo" class="form-label">Correo</label>
-        <input asp-for="Usuario.Correo" type="email" class="form-control" />
-        <span asp-validation-for="Usuario.Correo" class="text-danger"></span>
-    </div>
+        public async Task<IActionResult>
+    OnGetAsync(int id)
+    {
+    Usuario = await _context.Usuarios.FindAsync(id);
 
-    <div class="mb-3">
-        <label asp-for="Usuario.Password" class="form-label">Contraseña</label>
-        <input asp-for="Usuario.Password" type="password" class="form-control" />
-        <span asp-validation-for="Usuario.Password" class="text-danger"></span>
-    </div>
+    if (Usuario == null)
+    {
+    return NotFound();
+    }
 
-    <!-- 🔹 Campo de Rol dinámico -->
-    <div class="mb-3">
-        <label asp-for="Usuario.Rol" class="form-label">Rol</label>
-        <select asp-for="Usuario.Rol" asp-items="Model.RolesSelectList" class="form-select">
-            <option value="">Seleccione un rol...</option>
-        </select>
-        <span asp-validation-for="Usuario.Rol" class="text-danger"></span>
-    </div>
+    RolesSelectList = new SelectList(new[]
+    {
+    new { Value = "Admin", Text = "Administrador" },
+    new { Value = "Usuario", Text = "Usuario" }
+    }, "Value", "Text", Usuario.Rol);
 
-    <!-- 🔹 Campo de Carrera dinámico -->
-    <div class="mb-3">
-        <label asp-for="Usuario.CarreraId" class="form-label">Carrera</label>
-        <select asp-for="Usuario.CarreraId" asp-items="Model.CarrerasSelectList" class="form-select">
-            <option value="">Seleccione una carrera...</option>
-        </select>
-        <span asp-validation-for="Usuario.CarreraId" class="text-danger"></span>
-    </div>
+    CarrerasSelectList = new SelectList(_context.Set<Carrera>
+        (), "Id", "Nombre", Usuario.CarreraId);
 
-    <button type="submit" class="btn btn-success">Guardar Cambios</button>
-    <a asp-page="Index" class="btn btn-secondary ms-2">Cancelar</a>
-</form>
+        return Page();
+        }
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+        public async Task<IActionResult>
+            OnPostAsync()
+            {
+            if (!ModelState.IsValid)
+            {
+            RolesSelectList = new SelectList(new[]
+            {
+            new { Value = "Admin", Text = "Administrador" },
+            new { Value = "Usuario", Text = "Usuario" }
+            }, "Value", "Text", Usuario.Rol);
+
+            CarrerasSelectList = new SelectList(_context.Set<Carrera>
+                (), "Id", "Nombre", Usuario.CarreraId);
+
+                return Page();
+                }
+
+                // 🧩 Obtener el usuario actual de la BD
+                var usuarioExistente = await _context.Usuarios.AsNoTracking().FirstOrDefaultAsync(u => u.Id == Usuario.Id);
+
+                if (usuarioExistente == null)
+                {
+                return NotFound();
+                }
+
+                // 🔒 Si el campo Password fue modificado y no está vacío → cifrarlo
+                if (!string.IsNullOrEmpty(Usuario.Password))
+                {
+                Usuario.Password = PasswordHelper.HashPassword(Usuario.Password);
+                }
+                else
+                {
+                // Mantener el hash anterior si no se cambió la contraseña
+                Usuario.Password = usuarioExistente.Password;
+                }
+
+                _context.Attach(Usuario).State = EntityState.Modified;
+
+                try
+                {
+                await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                if (!_context.Usuarios.Any(e => e.Id == Usuario.Id))
+                {
+                return NotFound();
+                }
+                else
+                {
+                throw;
+                }
+                }
+
+                return RedirectToPage("./Index");
+                }
+                }
+                }

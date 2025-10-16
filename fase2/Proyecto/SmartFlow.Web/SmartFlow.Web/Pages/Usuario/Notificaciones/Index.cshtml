@@ -1,2 +1,32 @@
 ﻿@page
 @model SmartFlow.Web.Pages.Usuario.Notificaciones.IndexModel
+@{
+    ViewData["Title"] = "Mis notificaciones";
+}
+
+<h2 class="mb-3">🔔 Mis notificaciones</h2>
+<div id="contenedorNotificaciones"
+     data-dynamic="true"
+    @if (Model.ListaNotificaciones != null && Model.ListaNotificaciones.Any())
+    {
+        
+         <div class="list-group shadow-sm border rounded" style="max-width: 700px;">
+             <div data-dynamic="true" data-url="/Usuario/Notificaciones?handler=Partial">
+                @foreach (var n in Model.ListaNotificaciones)
+                {
+                    <div class="list-group-item @(n.Leida ? "text-muted" : "fw-bold")">
+                        <div class="d-flex justify-content-between">
+                            <strong>@n.Titulo</strong>
+                            <small class="text-muted">@n.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</small>
+                        </div>
+                        <div>@n.Mensaje</div>
+                    </div>
+                }
+            </div>
+         </div>
+    }
+    else
+    {
+        <div class="alert alert-info">No tienes notificaciones por ahora.</div>
+    }
+</div>

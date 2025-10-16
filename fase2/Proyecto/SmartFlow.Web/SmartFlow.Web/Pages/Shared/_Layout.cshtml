@@ -16,7 +16,8 @@
 <body>
     @{
         var sesion = HttpContextAccessor?.HttpContext?.Session;
-        var rol = sesion?.GetString("Rol");
+        var rol = sesion?.GetString("UsuarioRol");
+
         var nombre = sesion?.GetString("UsuarioNombre");
         var isLogged = !string.IsNullOrEmpty(rol);
     }
@@ -52,7 +53,7 @@
                                         <li><a class="dropdown-item" asp-page="/Admin/Roles/Index">Roles</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Carreras/Index">Carreras</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Servicios/Index">Servicios</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>                                        
+                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>
                                         <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Calendario Global</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>
@@ -74,13 +75,57 @@
                                         Mi Cuenta
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="usuarioDropdown">
-                                        
+
                                         <li><a class="dropdown-item" asp-page="/Usuario/Calendario/Index">Calendario</a></li>
                                         <li><a class="dropdown-item" asp-page="/Usuario/Solicitudes/Index">Mis Solicitudes</a></li>
-                                        
+
                                         <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item" asp-page="/Usuario/Perfil/Editar">Editar Perfil</a></li>
                                         <li><a class="dropdown-item" asp-page="/Usuario/Ayuda/Index">Ayuda</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            <!-- ==== Director ==== -->
+                            @if (rol == "Director")
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="DirectorDropdown" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        Mi Cuenta
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="DirectorDropdown">
+
+                                        
+                                        <li><a class="dropdown-item" asp-page="/Admin/Servicios/Index">Servicios</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>                                           
+                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Enviar notificación</a></li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Reportes/Index">Reportes Generales</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Ayuda/Index">Ayuda (Chat)</a></li>
+                                        
+                                    </ul>
+                                </li>
+                            }
+                            <!-- ==== Coordinador ==== -->
+                            @if (rol == "Coordinador")
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="CoordinadorDropdown" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        Gestión Académica
+                                    </a>
+
+                                    <ul class="dropdown-menu" aria-labelledby="CoordinadorDropdown">
+
+                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Servicios/Index">Servicios</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Calendario Global</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Enviar notificación</a></li>                                       
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Ayuda/Index">Ayuda (Chat)</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Reportes/Index">Reportes</a></li>
                                     </ul>
                                 </li>
                             }
@@ -118,6 +163,13 @@
                                     <i class="bi bi-box-arrow-right"></i> Cerrar sesión
                                 </a>
                             </li>
+                            <li class="nav-item ms-3">
+                                <button id="btnActualizar" class="btn btn-outline-primary btn-sm fw-bold">
+                                    <i class="bi bi-arrow-clockwise"></i> Actualizar
+                                </button>
+                            </li>
+
+
                         }
                     </ul>
                 </div>
@@ -140,6 +192,29 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        function actualizarSecciones() {
+            const secciones = document.querySelectorAll("[data-dynamic='true']");
+            if (secciones.length === 0) return; // Evita errores si no hay secciones
+            secciones.forEach(sec => {
+                const url = sec.getAttribute("data-url");
+                if (url) {
+                    fetch(url)
+                        .then(resp => resp.text())
+                        .then(html => sec.innerHTML = html)
+                        .catch(err => console.error("Error al actualizar sección:", err));
+                }
+            });
+        }
+
+        document.getElementById("btnActualizar")?.addEventListener("click", actualizarSecciones);
+        setInterval(actualizarSecciones, 10000);
+    </script>
+
+
+
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

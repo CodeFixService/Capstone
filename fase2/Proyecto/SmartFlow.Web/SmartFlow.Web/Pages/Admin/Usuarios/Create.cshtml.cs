@@ -1,7 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SmartFlow.Web.Data;
+using UsuarioModel = SmartFlow.Web.Models.Usuario;
+
 using SmartFlow.Web.Models;
 using System;
 using System.Linq;
@@ -19,32 +21,31 @@ namespace SmartFlow.Web.Pages.Admin.Usuarios
         }
 
         [BindProperty]
-        public SmartFlow.Web.Models.Usuario Usuario { get; set; } = new SmartFlow.Web.Models.Usuario();
-
-        // ?? Lista desplegable de roles
+        public UsuarioModel Usuario { get; set; } = new UsuarioModel();
         public SelectList RolesSelectList { get; set; }
         public SelectList CarrerasSelectList { get; set; }
 
         public void OnGet()
         {
-            // Cargar roles desde la tabla Roles
+            // ✅ Cargar roles desde la tabla Roles
             RolesSelectList = new SelectList(_context.Roles.ToList(), "Nombre", "Nombre");
+
+            // ✅ Cargar carreras desde la tabla Carreras
+            CarrerasSelectList = new SelectList(_context.Carreras.ToList(), "Id", "Nombre");
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                // Si falla la validaci�n, recarga los roles para que el select no se pierda
+                // 🔁 Si falla validación, recargar selects
                 RolesSelectList = new SelectList(_context.Roles.ToList(), "Nombre", "Nombre");
+                CarrerasSelectList = new SelectList(_context.Carreras.ToList(), "Id", "Nombre");
                 return Page();
             }
-
-            // Guardar auditor�a
             Usuario.CreadoPor = HttpContext.Session.GetString("UsuarioNombre");
             Usuario.FechaCreacion = DateTime.Now;
 
-            // Guardar usuario
             _context.Usuarios.Add(Usuario);
             await _context.SaveChangesAsync();
 

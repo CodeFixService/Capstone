@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using SmartFlow.Web.Helpers;
+
 
 namespace SmartFlow.Web.Pages.Usuario.Solicitudes
 {

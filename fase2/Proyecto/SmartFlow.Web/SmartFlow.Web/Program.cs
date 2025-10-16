@@ -26,9 +26,13 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
+//  Middleware global de acceso
+app.UseMiddleware<SmartFlow.Web.Helpers.Acceso>();
 
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.MapRazorPages(); 
+
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 app.Run();

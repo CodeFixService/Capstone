@@ -6,16 +6,25 @@
     var usuarioId = Context.Session.GetInt32("UsuarioId");
     var notificaciones = new List<Notificacion>();
     var pendientes = 0;
+    var rol = Context.Session.GetString("UsuarioRol");
 
-    if (usuarioId != null)
+
+    if (rol == "Admin")
     {
+        // 🔹 El administrador ve todas las notificaciones
+        notificaciones = _context.Notificaciones
+            .OrderByDescending(n => n.FechaCreacion)
+            .ToList();
+    }
+    else if (usuarioId != null)
+    {
+        // 🔹 El usuario solo ve las suyas
         notificaciones = _context.Notificaciones
             .Where(n => n.UsuarioId == usuarioId)
             .OrderByDescending(n => n.FechaCreacion)
             .ToList();
-
-        pendientes = notificaciones.Count(n => !n.Leida);
     }
+
 }
 
 <div class="dropdown">
@@ -41,16 +50,31 @@
         }
     </button>
 
-    <ul id="listaNotificaciones" class="dropdown-menu dropdown-menu-end" aria-labelledby="btnCampanita" style="min-width: 320px;">
+    <ul id="listaNotificaciones"
+        class="dropdown-menu dropdown-menu-end p-2"
+        aria-labelledby="btnCampanita"
+        style="min-width: 320px; max-height: 300px; overflow-y: auto; overflow-x: hidden; white-space: normal;">
         @if (notificaciones.Any())
         {
             @foreach (var n in notificaciones)
             {
-                <li class="dropdown-item @(n.Leida ? "text-muted" : "fw-bold")">
+                <li class="dropdown-item @(n.Leida ? "text-muted" : "fw-bold") noti-item"
+                    data-url="/Usuario/Notificaciones"
+                    style="cursor: pointer;">
                     <div>@n.Titulo</div>
                     <small>@n.Mensaje</small>
                 </li>
             }
+
+            <!-- 🔹 Línea separadora -->
+            <li><hr class="dropdown-divider" /></li>
+
+            <!-- 🔹 Enlace para ver todas -->
+            <li>
+                <a class="dropdown-item text-center text-primary fw-bold" href="/Usuario/Notificaciones">
+                    Ver todas las notificaciones →
+                </a>
+            </li>
         }
         else
         {
@@ -122,5 +146,17 @@
         window.__sfNotifInterval && clearInterval(window.__sfNotifInterval);
         window.__sfNotifInterval = setInterval(refreshCount, 10000);
     })();
+</script>
+<script>
+    // 👇 Redirige a la página completa al hacer clic en cualquier notificación
+    document.addEventListener("DOMContentLoaded", function () {
+        const notiItems = document.querySelectorAll(".noti-item");
+        notiItems.forEach(item => {
+            item.addEventListener("click", () => {
+                const url = item.getAttribute("data-url");
+                if (url) window.location.href = url;
+            });
+        });
+    });
 </script>
 
