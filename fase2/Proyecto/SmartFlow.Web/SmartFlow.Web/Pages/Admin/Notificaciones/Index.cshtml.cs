@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SmartFlow.Web.Pages.Usuario.Notificaciones
+namespace SmartFlow.Web.Pages.Admin.Notificaciones
 {
     public class IndexModel : PageModel
     {
@@ -35,6 +35,8 @@ namespace SmartFlow.Web.Pages.Usuario.Notificaciones
                 .OrderByDescending(n => n.FechaCreacion)
                 .ToListAsync();
         }
+
+        // 🔹 Versión parcial para el menú (igual que en Usuario)
         public IActionResult OnGetPartial()
         {
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
@@ -53,7 +55,7 @@ namespace SmartFlow.Web.Pages.Usuario.Notificaciones
             {
                 html += $@"
     <div class='list-group-item {(n.Leida ? "text-muted" : "fw-bold")}'
-         onclick=""marcarLeidaYRedirigir({n.Id}, '/Usuario/Notificaciones')"">
+         onclick=""marcarLeidaYRedirigir({n.Id}, '/Admin/Notificaciones')"">
         <div class='d-flex justify-content-between'>
             <strong>{n.Titulo}</strong>
             <small class='text-muted'>{n.FechaCreacion:dd-MM-yyyy HH:mm}</small>
@@ -86,25 +88,6 @@ namespace SmartFlow.Web.Pages.Usuario.Notificaciones
             var count = _context.Notificaciones.Count(n => n.UsuarioId == usuarioId && !n.Leida);
             return new JsonResult(new { count });
         }
-        public JsonResult OnGetReset()
-        {
-            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
-            if (usuarioId != null)
-            {
-                var notis = _context.Notificaciones
-                    .Where(n => n.UsuarioId == usuarioId && !n.Leida)
-                    .ToList();
-
-                foreach (var n in notis)
-                    n.Leida = true;
-
-                _context.SaveChanges();
-            }
-
-            return new JsonResult(new { ok = true });
-        }
-
-
 
 
     }

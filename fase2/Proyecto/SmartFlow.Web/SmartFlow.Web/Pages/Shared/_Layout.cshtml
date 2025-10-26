@@ -143,12 +143,15 @@
                     <ul class="navbar-nav align-items-center">
 
                         @* 🔔 Icono de notificaciones (solo si hay sesión) *@
-                        @if (isLogged)
+                        @if (rol == "Admin")
                         {
-                            <li class="nav-item me-3">
-                                @await Html.PartialAsync("_NotificacionesPartial")
-                            </li>
+                            <partial name="_NotificacionesPartial" />
                         }
+                        else if (rol == "Usuario")
+                        {
+                            <partial name="_NotificacionesPartial" />
+                        }
+
 
                         @* 👋 Saludo + Logout *@
                         @if (isLogged)
@@ -217,5 +220,18 @@
 
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        async function cargarNotificacionesAdmin() {
+            try {
+                const response = await fetch('/Admin/Notificaciones?handler=Partial');
+                const html = await response.text();
+                document.getElementById('listaNotificacionesAdmin').innerHTML = html;
+            } catch (error) {
+                console.error('Error al cargar notificaciones del admin:', error);
+            }
+        }
+    </script>
+
 </body>
 </html>

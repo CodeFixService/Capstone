@@ -1,0 +1,38 @@
+﻿@page
+@model SmartFlow.Web.Pages.Admin.Notificaciones.IndexModel
+@{
+    ViewData["Title"] = "Notificaciones del Administrador";
+}
+
+<div class="container-fluid py-4" style="max-width:90%;margin:auto;">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header text-center text-white fw-semibold"
+             style="background:linear-gradient(90deg,#007bff,#00b4d8);font-size:1.4rem;">
+            @ViewData["Title"]
+        </div>
+
+        <div class="card-body bg-white" style="padding:2%;min-height:60vh;max-height:70vh;overflow-y:auto;">
+            @if (Model.ListaNotificaciones != null && Model.ListaNotificaciones.Any())
+            {
+                <div class="list-group">
+                    @foreach (var n in Model.ListaNotificaciones)
+                    {
+                        <div class="list-group-item @(n.Leida ? "text-muted" : "fw-bold")">
+                            <div class="d-flex justify-content-between">
+                                <strong>@n.Titulo</strong>
+                                <small class="text-muted">@n.FechaCreacion.ToString("dd-MM-yyyy HH:mm")</small>
+                            </div>
+                            <div>@n.Mensaje</div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-center text-muted mt-3">No hay notificaciones disponibles.</p>
+            }
+        </div>
+
+      
+    </div>
+</div>
