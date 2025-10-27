@@ -232,6 +232,29 @@
             }
         }
     </script>
+    @{
+        var rolS = Context.Session.GetString("Rol");
+        var esUsuario = rolS == "Usuario";
+    }
+
+    @if (esUsuario)
+    {
+        <!-- 🔹 BOTÓN FLOTANTE DE CHAT DE SOPORTE -->
+        <a href="/Usuario/Ayuda/Index"
+           class="btn btn-primary rounded-circle shadow-lg d-flex justify-content-center align-items-center"
+           title="Chat con soporte"
+           style="position: fixed;
+                  bottom: 25px;
+                  right: 25px;
+                  width: 60px;
+                  height: 60px;
+                  background: linear-gradient(135deg, #007bff, #00b4d8);
+                  color: white;
+                  font-size: 28px;
+                  z-index: 9999;">
+            <i class="bi bi-chat-dots-fill"></i>
+        </a>
+    }
 
 </body>
 </html>

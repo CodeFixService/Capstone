@@ -1,0 +1,105 @@
+﻿@page
+@model SmartFlow.Web.Pages.Usuario.Notificaciones.VerTodasModel
+@{
+    ViewData["Title"] = "Ver todas las notificaciones";
+}
+
+<div class="container-fluid py-4" style="max-width: 90%; margin: auto;">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header text-center text-white fw-semibold"
+             style="background: linear-gradient(90deg, #007bff, #00b4d8); font-size: 1.4rem;">
+            Todas mis Notificaciones
+        </div>
+
+        <div class="card-body bg-white" style="padding: 2%; min-height: 60vh;">
+            @if (Model.Notificaciones != null && Model.Notificaciones.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Título</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var n in Model.Notificaciones)
+                            {
+                                <tr class="@(n.Leida ? "" : "table-info")">
+                                    <td>@n.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@n.Titulo</td>
+                                    <td>@n.Tipo</td>
+                                    <td>
+                                        @if (n.Leida)
+                                        {
+                                            <span class="badge bg-secondary">Leída</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-primary">No leída</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-info"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detalleModal"
+                                                data-titulo="@n.Titulo"
+                                                data-mensaje="@n.Mensaje"
+                                                data-tipo="@n.Tipo">
+                                            Ver detalle
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    No tienes notificaciones por el momento.
+                </div>
+            }
+        </div>
+
+        <div class="card-footer bg-light text-center small text-muted py-3">
+            © 2025 SmartFlow - Todos los derechos reservados
+        </div>
+    </div>
+</div>
+
+<!-- 🔹 Modal Detalle -->
+<div class="modal fade" id="detalleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-header text-white"
+                 style="background: linear-gradient(90deg, #007bff, #00b4d8);">
+                <h5 class="modal-title fw-semibold" id="detalleTitulo">Detalle de Notificación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p id="detalleMensaje" class="text-secondary mb-3"></p>
+                <small class="text-muted" id="detalleTipo"></small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var modal = document.getElementById('detalleModal');
+        modal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            document.getElementById('detalleTitulo').textContent = button.getAttribute('data-titulo');
+            document.getElementById('detalleMensaje').textContent = button.getAttribute('data-mensaje');
+            document.getElementById('detalleTipo').textContent = "Tipo: " + button.getAttribute('data-tipo');
+        });
+    </script>
+}

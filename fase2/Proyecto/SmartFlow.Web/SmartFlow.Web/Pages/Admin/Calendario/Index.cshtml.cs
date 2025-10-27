@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SmartFlow.Web.Data;
+using SmartFlow.Web.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SmartFlow.Web.Pages.Admin.Calendario
@@ -9,6 +13,7 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
     public class IndexModel : PageModel
     {
         private readonly SmartFlowContext _context;
+
         public List<string> Servicios { get; set; } = new();
 
         public IndexModel(SmartFlowContext context) => _context = context;
@@ -20,55 +25,66 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
             return Page();
         }
 
-        // Handler que el calendario usa para cargar eventos
-        public JsonResult OnGetEventos(string? servicio)
+        // 🔹 Cargar eventos del calendario global (Admin)
+        public JsonResult OnGetEventos(int? servicioId)
         {
-            var query = _context.Reservas.AsQueryable();
+            var query = _context.Reservas
+                .Include(r => r.Servicio)
+                .Include(r => r.Usuario)
+                .AsQueryable();
 
-            if (!string.IsNullOrEmpty(servicio))
-                query = query.Where(r => r.Servicio == servicio);
+            if (servicioId.HasValue)
+                query = query.Where(r => r.ServicioId == servicioId.Value);
 
             var eventos = query
-                .Join(_context.Usuarios,
-                      r => r.UsuarioId,
-                      u => u.Id,
-                      (r, u) => new
-                      {
-                          id = r.Id,
-                          title = $"{u.Nombre} - {r.Servicio} ({r.Estado})",
-                          start = r.FechaInicio.ToString("yyyy-MM-ddTHH:mm:ss"),
-                          end = r.FechaFin.ToString("yyyy-MM-ddTHH:mm:ss"),
-                          color = r.Estado == "Aprobada" ? "#198754"
-                                : r.Estado == "Rechazada" ? "#dc3545"
-                                : "#ffc107",
-                          usuario = u.Nombre,
-                          servicio = r.Servicio,
-                          estado = r.Estado,
-                          detalle = $"Estudiante: {u.Nombre}\nServicio: {r.Servicio}\nInicio: {r.FechaInicio:g}\nFin: {r.FechaFin:g}\nEstado: {r.Estado}"
-                      })
+                .Select(r => new
+                {
+                    id = r.Id,
+                    title = $"{r.Usuario.Nombre} - {r.Servicio.Nombre} ({r.Estado})",
+                    start = r.FechaInicio.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    end = r.FechaFin.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    color = r.Estado == "Aprobada" ? "#198754"
+                            : r.Estado == "Rechazada" ? "#dc3545"
+                            : "#ffc107",
+                    usuario = r.Usuario.Nombre,
+                    servicio = r.Servicio.Nombre,
+                    estado = r.Estado,
+                    detalle = $"Estudiante: {r.Usuario.Nombre}\nServicio: {r.Servicio.Nombre}\nInicio: {r.FechaInicio:g}\nFin: {r.FechaFin:g}\nEstado: {r.Estado}"
+                })
                 .ToList();
 
             return new JsonResult(eventos);
         }
 
+        // 🔹 Actualizar estado de una reserva
         [IgnoreAntiforgeryToken]
-        public JsonResult OnPostActualizarEstado([FromForm] int id, [FromForm] string estado)
+        public JsonResult OnPostActualizarEstado([FromForm] int id, [FromForm] string estado, [FromForm] string? comentarioAdmin)
         {
             try
             {
-                var reserva = _context.Reservas.FirstOrDefault(r => r.Id == id);
+                var reserva = _context.Reservas
+                    .Include(r => r.Usuario)
+                    .Include(r => r.Servicio)
+                    .FirstOrDefault(r => r.Id == id);
+
                 if (reserva == null)
                     return new JsonResult(new { success = false, message = "Reserva no encontrada" });
 
+                // 🔸 Actualizar estado y comentario
                 reserva.Estado = estado;
+                reserva.ComentarioAdmin = string.IsNullOrWhiteSpace(comentarioAdmin) ? null : comentarioAdmin;
                 _context.SaveChanges();
 
-                // 🔔 Notificación al estudiante
-                _context.Notificaciones.Add(new Models.Notificacion
+                // 🔔 Crear notificación al usuario
+                string mensaje = $"La reserva para {reserva.Servicio.Nombre} el {reserva.FechaInicio:g} fue {estado.ToLower()}.";
+                if (!string.IsNullOrWhiteSpace(comentarioAdmin))
+                    mensaje += $"\nComentario del administrador: {comentarioAdmin}";
+
+                _context.Notificaciones.Add(new Notificacion
                 {
                     UsuarioId = reserva.UsuarioId,
                     Titulo = $"Tu reserva fue {estado.ToLower()}",
-                    Mensaje = $"La reserva para {reserva.Servicio} el {reserva.FechaInicio:g} fue {estado.ToLower()}.",
+                    Mensaje = mensaje,
                     Tipo = estado == "Aprobada" ? "Info" : "Alerta",
                     Leida = false,
                     FechaCreacion = DateTime.Now
@@ -82,15 +98,11 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                     nuevoEstado = reserva.Estado,
                     id = reserva.Id
                 });
-
             }
             catch (Exception ex)
             {
                 return new JsonResult(new { success = false, message = ex.Message });
             }
         }
-
-
-
     }
 }
