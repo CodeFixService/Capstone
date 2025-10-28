@@ -5,28 +5,121 @@
 }
 
 <h2 class="mb-3">🔔 Mis notificaciones</h2>
-<div id="contenedorNotificaciones"
-     data-dynamic="true"
+
+<div id="contenedorNotificaciones" data-dynamic="true">
+
     @if (Model.ListaNotificaciones != null && Model.ListaNotificaciones.Any())
     {
-        
-         <div class="list-group shadow-sm border rounded" style="max-width: 700px;">
-             <div data-dynamic="true" data-url="/Usuario/Notificaciones?handler=Partial">
-                @foreach (var n in Model.ListaNotificaciones)
-                {
-                    <div class="list-group-item @(n.Leida ? "text-muted" : "fw-bold")">
-                        <div class="d-flex justify-content-between">
-                            <strong>@n.Titulo</strong>
-                            <small class="text-muted">@n.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</small>
-                        </div>
-                        <div>@n.Mensaje</div>
+        foreach (var n in Model.ListaNotificaciones)
+        {
+            <div class="list-group-item mb-2 rounded-3 shadow-sm border-0 p-3 @(n.Leida ? "bg-light" : "bg-white")">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>@n.Titulo</strong><br />
+                        <small class="text-muted">@n.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</small>
                     </div>
-                }
+                    <div>
+                        <button class="btn btn-sm btn-outline-info fw-semibold"
+                                data-bs-toggle="modal"
+                                data-bs-target="#detalleModal"
+                                data-titulo="@n.Titulo"
+                                data-mensaje="@n.Mensaje"
+                                data-tipo="@n.Tipo"
+                                data-fecha="@n.FechaCreacion.ToString("dd/MM/yyyy HH:mm")"
+                                data-estado="@(n.Leida ? "Leída" : "No leída")">
+                            Ver detalle
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="mt-2 text-secondary">
+                    @if (!string.IsNullOrEmpty(n.Mensaje) && n.Mensaje.Length > 80)
+                    {
+                        @($"{n.Mensaje.Substring(0, 80)}...")
+                    }
+                    else
+                    {
+                        @n.Mensaje
+                    }
+                </div>
             </div>
-         </div>
+        }
     }
     else
     {
-        <div class="alert alert-info">No tienes notificaciones por ahora.</div>
+        <div class="alert alert-info text-center mt-3">
+            No tienes notificaciones por ahora.
+        </div>
     }
 </div>
+
+<!-- Modal Detalle ampliado -->
+<div class="modal fade" id="detalleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg border-0">
+            <div class="modal-header text-white"
+                 style="background: linear-gradient(90deg, #007bff, #00b4d8);">
+                <h5 class="modal-title fw-semibold" id="detalleTitulo">Detalle de Notificación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body bg-light">
+                <div class="card border-0 shadow-sm rounded-4 mb-3">
+                    <div class="card-body">
+                        <h5 class="fw-semibold text-primary mb-3" id="detalleTituloCard"></h5>
+                        <p id="detalleMensaje" class="text-secondary mb-3" style="white-space: pre-line;"></p>
+
+                        <div class="row small text-muted">
+                            <div class="col-md-4 mb-2">
+                                <strong>Tipo:</strong> <span id="detalleTipo"></span>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Fecha:</strong> <span id="detalleFecha"></span>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <strong>Estado:</strong> <span id="detalleEstado"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info small rounded-4 shadow-sm">
+                    💡 Si necesitas más información o respuesta, contacta con soporte o revisa el historial de mensajes.
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary fw-semibold" data-bs-dismiss="modal">
+                    Volver
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const modal = document.getElementById('detalleModal');
+        modal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+
+            // Datos del botón
+            const titulo = button.getAttribute('data-titulo');
+            const mensaje = button.getAttribute('data-mensaje');
+            const tipo = button.getAttribute('data-tipo');
+            const fecha = button.getAttribute('data-fecha') || '';
+            const estado = button.getAttribute('data-estado') || '';
+
+            // Asignar datos al modal
+            document.getElementById('detalleTitulo').textContent = "Detalle de Notificación";
+            document.getElementById('detalleTituloCard').textContent = titulo;
+            document.getElementById('detalleMensaje').textContent = mensaje;
+            document.getElementById('detalleTipo').textContent = tipo;
+            document.getElementById('detalleFecha').textContent = fecha;
+            document.getElementById('detalleEstado').textContent = estado;
+        });
+    </script>
+}
+
+
