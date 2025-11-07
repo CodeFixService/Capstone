@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SmartFlow.Web.Data;
+using SmartFlow.Web.Helpers;
+
 using UsuarioModel = SmartFlow.Web.Models.Usuario;
 
 using SmartFlow.Web.Models;
@@ -27,10 +29,10 @@ namespace SmartFlow.Web.Pages.Admin.Usuarios
 
         public void OnGet()
         {
-            // ✅ Cargar roles desde la tabla Roles
+            //  Cargar roles desde la tabla Roles
             RolesSelectList = new SelectList(_context.Roles.ToList(), "Nombre", "Nombre");
 
-            // ✅ Cargar carreras desde la tabla Carreras
+            //  Cargar carreras desde la tabla Carreras
             CarrerasSelectList = new SelectList(_context.Carreras.ToList(), "Id", "Nombre");
         }
 
@@ -38,13 +40,15 @@ namespace SmartFlow.Web.Pages.Admin.Usuarios
         {
             if (!ModelState.IsValid)
             {
-                // 🔁 Si falla validación, recargar selects
+                //  Si falla validación, recargar selects
                 RolesSelectList = new SelectList(_context.Roles.ToList(), "Nombre", "Nombre");
                 CarrerasSelectList = new SelectList(_context.Carreras.ToList(), "Id", "Nombre");
                 return Page();
             }
             Usuario.CreadoPor = HttpContext.Session.GetString("UsuarioNombre");
             Usuario.FechaCreacion = DateTime.Now;
+
+            Usuario.Password = PasswordHelper.HashPassword(Usuario.Password);
 
             _context.Usuarios.Add(Usuario);
             await _context.SaveChangesAsync();

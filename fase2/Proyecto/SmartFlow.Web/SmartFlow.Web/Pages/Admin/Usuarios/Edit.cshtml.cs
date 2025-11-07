@@ -1,11 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SmartFlow.Web.Data;
+using SmartFlow.Web.Helpers;
 using SmartFlow.Web.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+
 
 namespace SmartFlow.Web.Pages.Admin.Usuarios
 {
@@ -21,7 +24,7 @@ namespace SmartFlow.Web.Pages.Admin.Usuarios
         [BindProperty]
         public SmartFlow.Web.Models.Usuario Usuario { get; set; } = new SmartFlow.Web.Models.Usuario();
 
-        // ?? Listas desplegables din�micas
+        // ?? Listas desplegables dinámicas
         public SelectList RolesSelectList { get; set; }
         public SelectList CarrerasSelectList { get; set; }
 
@@ -48,13 +51,13 @@ namespace SmartFlow.Web.Pages.Admin.Usuarios
         {
             if (!ModelState.IsValid)
             {
-                // ?? Si falla validaci�n, recargar listas para no perder selects
+                // ?? Si falla validación, recargar listas para no perder selects
                 RolesSelectList = new SelectList(_context.Roles.ToList(), "Nombre", "Nombre", Usuario.Rol);
                 CarrerasSelectList = new SelectList(_context.Carreras.ToList(), "Id", "Nombre", Usuario.CarreraId);
                 return Page();
             }
 
-            // Mantener los campos de auditor�a
+            // Mantener los campos de auditoría
             var original = await _context.Usuarios.AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == Usuario.Id);
 
@@ -65,10 +68,30 @@ namespace SmartFlow.Web.Pages.Admin.Usuarios
             Usuario.FechaCreacion = original?.FechaCreacion;
 
             _context.Attach(Usuario).State = EntityState.Modified;
+            // 🔒 Cifrar nueva contraseña si el admin la modifica
+            if (!string.IsNullOrWhiteSpace(Usuario.Password))
+            {
+                Usuario.Password = PasswordHelper.HashPassword(Usuario.Password);
+            }
+            else
+            {
+                // Mantener la contraseña anterior si el campo está vacío
+                Usuario.Password = (await _context.Usuarios
+                    .AsNoTracking()
+                    .Where(u => u.Id == Usuario.Id)
+                    .Select(u => u.Password)
+                    .FirstOrDefaultAsync())!;
+            }
 
             try
             {
+
                 await _context.SaveChangesAsync();
+                var usuarioActivo = HttpContext.Session.GetString("UsuarioNombre") ?? "Sin nombre";
+                await BitacoraHelper.RegistrarAsync(_context, usuarioActivo,
+                "Usuarios", "Edición", $"Se editó el usuario con ID {Usuario.Id}");
+
+
             }
             catch (DbUpdateConcurrencyException)
             {

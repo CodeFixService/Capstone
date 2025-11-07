@@ -4,91 +4,259 @@
     ViewData["Title"] = "Calendario de Reservas";
 }
 
-<div class="container-fluid py-4" style="max-width: 95%; margin: auto;">
-    <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-header text-center text-white fw-semibold"
-             style="background: linear-gradient(90deg, #007bff, #00b4d8); font-size: 1.4rem;">
-            @ViewData["Title"]
-        </div>
+<h2 class="text-center mb-4 fw-semibold">📅 Mi Calendario de Reservas</h2>
 
-        <div class="card-body bg-white" style="padding: 2%; min-height: 75vh;">
-            <div id="calendar"></div>
-        </div>
+<div id="calendar" class="rounded-4 shadow-lg bg-white p-3"></div>
 
-        <div class="card-footer bg-light text-center small text-muted py-3">
-            © 2025 SmartFlow - Todos los derechos reservados
-        </div>
-    </div>
-</div>
-
-<!-- 🔹 Modal de Detalle de Reserva -->
-<div class="modal fade" id="detalleReserva" tabindex="-1" aria-labelledby="detalleReservaLabel" aria-hidden="true">
+<!-- 🔹 Modal de Reserva RMX -->
+<div class="modal fade" id="modalReserva" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 shadow-lg border-0">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-semibold" id="detalleReservaLabel">Detalle de la Reserva</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            <div class="modal-header text-white"
+                 style="background: linear-gradient(90deg, #007bff, #00b4d8);">
+                <h5 class="modal-title fw-semibold">Nueva Reserva</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-
-            <div class="modal-body" id="detalleReservaBody">
-                <!-- Aquí se insertan los detalles desde JS -->
+            <div class="modal-body">
+                <form id="formReserva">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Fecha seleccionada</label>
+                        <input id="fechaSeleccionada" class="form-control" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Hora de inicio</label>
+                        <input type="time" id="horaInicio" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Hora de término</label>
+                        <input type="time" id="horaFin" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Servicio</label>
+                        <select id="servicio" class="form-select" required></select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Comentario</label>
+                        <textarea id="comentario" class="form-control" rows="2"
+                                  placeholder="Escribe un comentario opcional..."></textarea>
+                    </div>
+                    <input type="hidden" id="fechaInicioHidden" />
+                    <input type="hidden" id="fechaFinHidden" />
+                </form>
             </div>
-
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardarReserva">Guardar</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- 🔹 Modal de Mensajes RMX -->
+<div class="modal fade" id="modalMensaje" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg border-0">
+            <div id="mensajeHeader" class="modal-header text-white"
+                 style="background: linear-gradient(90deg, #007bff, #00b4d8);">
+                <h5 class="modal-title fw-semibold" id="mensajeTitulo">Mensaje</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center" id="mensajeCuerpo"></div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', async function () {
-            const calendarEl = document.getElementById('calendar');
+        document.addEventListener('DOMContentLoaded', function () {
 
+            const calendarEl = document.getElementById('calendar');
+            const modal = new bootstrap.Modal(document.getElementById('modalReserva'));
+            const btnGuardar = document.getElementById('btnGuardarReserva');
+
+            // 🔹 Sumar 30 minutos automáticamente al cambiar hora de inicio
+            document.getElementById('horaInicio').addEventListener('change', function () {
+                const horaInicio = this.value;
+                if (!horaInicio) return;
+
+                const [h, m] = horaInicio.split(':').map(Number);
+                const fecha = new Date();
+                fecha.setHours(h, m + 30, 0);
+                const finH = String(fecha.getHours()).padStart(2, '0');
+                const finM = String(fecha.getMinutes()).padStart(2, '0');
+                document.getElementById('horaFin').value = `${finH}:${finM}`;
+            });
+
+            let fechaInicioSeleccionada = null;
+            let fechaFinSeleccionada = null;
+
+            // 🔹 Función para mostrar mensajes RMX bonitos
+            function mostrarMensaje(titulo, cuerpo, tipo = "info") {
+                const header = document.getElementById('mensajeHeader');
+                const tituloElem = document.getElementById('mensajeTitulo');
+                const cuerpoElem = document.getElementById('mensajeCuerpo');
+                const modalMsg = new bootstrap.Modal(document.getElementById('modalMensaje'));
+
+                let color = "#007bff";
+                if (tipo === "success") color = "#198754";
+                if (tipo === "error") color = "#dc3545";
+                if (tipo === "warning") color = "#ffc107";
+
+                header.style.background = `linear-gradient(90deg, ${color}, #00b4d8)`;
+                tituloElem.textContent = titulo;
+                cuerpoElem.innerHTML = `<p>${cuerpo}</p>`;
+                modalMsg.show();
+            }
+
+            // 🔹 Función auxiliar para formatear fecha local (sin UTC)
+            function formatLocalDate(d) {
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                const h = String(d.getHours()).padStart(2, '0');
+                const min = String(d.getMinutes()).padStart(2, '0');
+                const s = String(d.getSeconds()).padStart(2, '0');
+                return `${y}-${m}-${day}T${h}:${min}:${s}`;
+            }
+
+            // 🔹 Inicializar FullCalendar
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: 'es',
+                selectable: true,
+                allDaySlot: false,
                 height: 'auto',
+                expandRows: true,
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: '/Usuario/Calendario?handler=Eventos',
+                events: '/Usuario/Calendario/Index?handler=Eventos',
 
-                // 🔹 CLICK en un evento
-                eventClick: function (info) {
-                    const esPropio = !info.event.title.includes("Ocupado");
-
-                    // 🚫 Si es “Ocupado”, no muestra modal ni detalle
-                    if (!esPropio) {
-                        alert("Este horario ya está reservado por otro usuario.");
-                        return;
-                    }
-
-                    const evento = info.event.extendedProps;
-                    const fechaInicio = new Date(info.event.start).toLocaleString();
-                    const fechaFin = new Date(info.event.end).toLocaleString();
-
-                    document.getElementById('detalleReservaBody').innerHTML = `
-                        <p><strong>Servicio:</strong> ${evento.servicio ?? info.event.title}</p>
-                        <p><strong>Inicio:</strong> ${fechaInicio}</p>
-                        <p><strong>Fin:</strong> ${fechaFin}</p>
-                        <p><strong>Estado:</strong> <span class="badge bg-${
-                            info.event.title.includes("Aprobada") ? "success" :
-                            info.event.title.includes("Rechazada") ? "danger" : "warning text-dark"
-                        }">${info.event.title.match(/\((.*?)\)/)?.[1] ?? "Pendiente"}</span></p>
-                        ${evento.comentarioAdmin ? `<p><strong>Comentario del administrador:</strong> ${evento.comentarioAdmin}</p>` : ""}
-                    `;
-                    new bootstrap.Modal(document.getElementById('detalleReserva')).show();
+                // 🔹 Bloquear sábados, domingos y fechas pasadas
+                validRange: {
+                    start: new Date().toISOString().split('T')[0]
+                },
+                businessHours: {
+                    daysOfWeek: [1, 2, 3, 4, 5], // lunes a viernes
+                    startTime: '09:00',
+                    endTime: '18:00'
                 },
 
-                eventColor: '#6c757d'
+                // 🔹 Selección de nueva reserva
+                select: function (info) {
+                    fechaInicioSeleccionada = info.startStr;
+                    fechaFinSeleccionada = info.endStr;
+
+                    const fecha = new Date(info.start);
+                    document.getElementById('fechaSeleccionada').value = fecha.toLocaleDateString('es-CL');
+                    document.getElementById('horaInicio').value = info.start.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+                    document.getElementById('horaFin').value = info.end.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+
+                    // Cargar servicios desde backend
+                    fetch('/Usuario/Calendario/Index?handler=Servicios')
+                        .then(res => res.json())
+                        .then(data => {
+                            const select = document.getElementById('servicio');
+                            select.innerHTML = "";
+                            data.forEach(s => {
+                                const opt = document.createElement('option');
+                                opt.value = s.id;
+                                opt.textContent = s.nombre;
+                                select.appendChild(opt);
+                            });
+                            select.selectedIndex = 0;
+                            modal.show();
+                        })
+                        .catch(() => mostrarMensaje("Error", "No se pudieron cargar los servicios.", "error"));
+                },
+
+                // 🔹 Click en evento existente
+                eventClick: function (info) {
+                    const ev = info.event;
+                    if (ev.title === 'Ocupado') {
+                        mostrarMensaje("Ocupado", "⛔ Este horario ya está reservado por otro usuario.", "warning");
+                    } else {
+                        mostrarMensaje("Detalle de Reserva",
+                            `Servicio: ${ev.title}<br>
+                             Inicio: ${ev.start.toLocaleString()}<br>
+                             Fin: ${ev.end.toLocaleString()}<br>
+                             Estado: ${ev.extendedProps.estado || 'Pendiente'}`, "info");
+                    }
+                }
             });
 
             calendar.render();
+
+            // 🔹 Guardar reserva con validación de horario ocupado
+            btnGuardar.addEventListener('click', function () {
+                const servicioId = parseInt(document.getElementById('servicio').value);
+                const comentario = document.getElementById('comentario').value;
+                const horaInicio = document.getElementById('horaInicio').value;
+                const horaFin = document.getElementById('horaFin').value;
+
+                if (!servicioId || !horaInicio || !horaFin) {
+                    mostrarMensaje("⚠️ Atención", "Debes seleccionar servicio y horas válidas.", "warning");
+                    return;
+                }
+
+                const baseDate = new Date(fechaInicioSeleccionada);
+                const fechaBaseISO = baseDate.toISOString().split("T")[0];
+
+                const fechaInicio = new Date(`${fechaBaseISO}T${horaInicio}:00`);
+                const fechaFin = new Date(`${fechaBaseISO}T${horaFin}:00`);
+
+                if (isNaN(fechaInicio.getTime()) || isNaN(fechaFin.getTime())) {
+                    mostrarMensaje("Error", "Formato de hora inválido. Revisa los campos de hora.", "error");
+                    return;
+                }
+
+                // ✅ PRIMERO: verificar disponibilidad antes de crear
+                fetch('/Usuario/Calendario/Index?handler=VerificarDisponibilidad', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fechaInicio: formatLocalDate(fechaInicio),
+                        fechaFin: formatLocalDate(fechaFin)
+                    })
+                })
+                .then(res => res.json())
+                .then(verificacion => {
+                    if (!verificacion.disponible) {
+                        mostrarMensaje("⛔ Horario ocupado", "Este horario ya está reservado por otro usuario. Elige otro horario.", "warning");
+                        return;
+                    }
+
+                    // ✅ Si está disponible, crear la reserva
+                    fetch('/Usuario/Calendario/Index?handler=Crear', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            servicioId: servicioId,
+                            fechaInicio: formatLocalDate(fechaInicio),
+                            fechaFin: formatLocalDate(fechaFin),
+                            comentario: comentario
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            modal.hide();
+                            mostrarMensaje("✅ Reserva creada", "Tu reserva se ha registrado correctamente.", "success");
+                            calendar.refetchEvents();
+                        } else {
+                            mostrarMensaje("⚠️ Atención", data.message, "warning");
+                        }
+                    })
+                    .catch(err => mostrarMensaje("Error", "Error al crear reserva: " + err, "error"));
+                })
+                .catch(err => mostrarMensaje("Error", "Error al verificar disponibilidad: " + err, "error"));
+            });
         });
     </script>
 }
+

@@ -9,6 +9,44 @@
 <a asp-page="Create" class="btn btn-primary mb-3">
     <i class="bi bi-person-plus"></i> Nuevo Usuario
 </a>
+<form method="get" class="d-flex flex-wrap align-items-center mb-3 gap-2">
+    <!-- Filtro por Rol -->
+    <select name="RolFiltro" class="form-select w-auto">
+        <option value="">-- Filtrar por Rol --</option>
+        @foreach (var rol in Model.ListaUsuarios
+                .Select(u => u.Rol)
+                .Where(r => !string.IsNullOrEmpty(r))
+                .Distinct())
+        {
+            <option value="@rol" selected="@(Model.RolFiltro == rol)">
+                @rol
+            </option>
+        }
+    </select>
+
+    <!-- Filtro por Carrera -->
+    <select name="CarreraFiltro" class="form-select w-auto">
+        <option value="">-- Filtrar por Carrera --</option>
+        @foreach (var carrera in Model.ListaUsuarios
+                .Select(u => u.Carrera?.Nombre)
+                .Where(n => !string.IsNullOrEmpty(n))
+                .Distinct())
+        {
+            <option value="@carrera" selected="@(Model.CarreraFiltro == carrera)">
+                @carrera
+            </option>
+        }
+    </select>
+
+    <!-- Botones -->
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-funnel"></i> Aplicar
+    </button>
+
+    <a asp-page="./Index" class="btn btn-outline-secondary">
+        <i class="bi bi-x-circle"></i> Limpiar
+    </a>
+</form>
 
 <table class="table table-bordered table-hover align-middle">
     <thead class="table-light">

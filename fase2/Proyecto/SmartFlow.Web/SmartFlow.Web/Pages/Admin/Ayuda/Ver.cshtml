@@ -32,17 +32,34 @@
             const chatDiv = document.getElementById("chatMensajesAdmin");
             const usuarioId = "@Model.UsuarioId";
 
-            function refrescarChatAdmin() {
-                fetch(`/Admin/Ayuda/Ver?handler=MensajesParciales&usuarioId=${usuarioId}`)
-                    .then(r => r.text())
-                    .then(html => {
-                        chatDiv.innerHTML = html;
-                        chatDiv.scrollTop = chatDiv.scrollHeight;
-                    });
+            // 🔹 Función para refrescar los mensajes del chat admin
+            async function refrescarChatAdmin() {
+                try {
+        const response = await fetch(`/Admin/Ayuda/Ver/${usuarioId}?handler=MensajesParciales`);
+                            if (!response.ok) return;
+
+                    const html = await response.text();
+                    chatDiv.innerHTML = html;
+                    chatDiv.scrollTop = chatDiv.scrollHeight; // mantener scroll abajo
+                } catch (error) {
+                    console.error("Error al refrescar el chat del admin:", error);
+                }
             }
 
-            // refresco cada 5 s
-           
+            // 🔹 Primera carga
+            refrescarChatAdmin();
+
+            // 🔁 Refrescar cada 5 segundos
+            setInterval(refrescarChatAdmin, 5000);
+
+            // 🔹 Auto scroll cuando se envía un nuevo mensaje
+            const form = document.querySelector("form");
+            form.addEventListener("submit", function () {
+                setTimeout(() => {
+                    refrescarChatAdmin();
+                    chatDiv.scrollTop = chatDiv.scrollHeight;
+                }, 1000);
+            });
         });
     </script>
 }

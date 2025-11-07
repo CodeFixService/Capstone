@@ -1,5 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SmartFlow.Web.Data;
+using SmartFlow.Web.Helpers; // asegúrate de tener este using arriba
+
+Console.WriteLine("🔒 Hash de admin123:");
+Console.WriteLine(PasswordHelper.HashPassword("admin123"));
 
 var builder = WebApplication.CreateBuilder(args);
 

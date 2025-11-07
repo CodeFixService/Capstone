@@ -4,6 +4,8 @@ using SmartFlow.Web.Data;
 using SmartFlow.Web.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using SmartFlow.Web.Helpers;
+
 
 namespace SmartFlow.Web.Pages.Usuario.Perfil
 {
@@ -82,15 +84,16 @@ namespace SmartFlow.Web.Pages.Usuario.Perfil
                     return Page();
                 }
 
-                // POR AHORA: comparación directa.
-                // (en la etapa final ciframos y comparamos hash)
-                if (u.Password != Input.PassActual)
+                //  Verificar contraseña actual usando hash
+                if (!PasswordHelper.VerifyPassword(Input.PassActual, u.Password))
                 {
                     ModelState.AddModelError(string.Empty, "La contraseña actual no es correcta.");
                     return Page();
                 }
 
-                u.Password = Input.PassNueva; // luego se reemplaza por hash
+                //  Cifrar la nueva contraseña antes de guardarla
+                u.Password = PasswordHelper.HashPassword(Input.PassNueva);
+
             }
 
             _context.SaveChanges();
@@ -98,7 +101,7 @@ namespace SmartFlow.Web.Pages.Usuario.Perfil
             // Actualiza nombre en sesión para el saludo/campanita
             HttpContext.Session.SetString("UsuarioNombre", u.Nombre);
 
-            Mensaje = "✅ Cambios guardados correctamente.";
+            Mensaje = " Cambios guardados correctamente.";
             return Page();
         }
     }

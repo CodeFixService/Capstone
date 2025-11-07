@@ -5,7 +5,7 @@ namespace SmartFlow.Web.Helpers
 {
     public static class PasswordHelper
     {
-        // 🔒 Genera un hash SHA256 a partir de una contraseña en texto plano
+        // Genera un hash SHA256 a partir de una contraseña en texto plano
         public static string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -16,7 +16,7 @@ namespace SmartFlow.Web.Helpers
             }
         }
 
-        // ✅ Compara una contraseña en texto plano con su hash guardado
+        // Compara una contraseña en texto plano con su hash guardado
         public static bool VerifyPassword(string password, string hashedPassword)
         {
             string hashOfInput = HashPassword(password);

@@ -119,7 +119,29 @@
             document.getElementById('detalleFecha').textContent = fecha;
             document.getElementById('detalleEstado').textContent = estado;
         });
+
+        // 🔁 ACTUALIZACIÓN AUTOMÁTICA CADA 10 SEGUNDOS
+        async function actualizarNotificaciones() {
+            try {
+                const response = await fetch('/Usuario/Notificaciones?handler=ListaParcial');
+                if (!response.ok) return;
+
+                const html = await response.text();
+                const contenedor = document.getElementById('contenedorNotificaciones');
+
+                // Reemplaza el contenido dinámicamente
+                if (contenedor) {
+                    contenedor.innerHTML = html;
+                }
+            } catch (error) {
+                console.error("Error al actualizar notificaciones:", error);
+            }
+        }
+
+        // Primera carga + cada 10 segundos
+        setInterval(actualizarNotificaciones, 10000);
     </script>
 }
+
 
 

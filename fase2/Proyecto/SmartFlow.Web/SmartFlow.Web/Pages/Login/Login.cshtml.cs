@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SmartFlow.Web.Data;
+using SmartFlow.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using SmartFlow.Web.Models;
 using System.Linq;
@@ -30,8 +31,13 @@ namespace SmartFlow.Web.Pages.Login
 
         public IActionResult OnPost()
         {
-            var usuario = _context.Usuarios
-                .FirstOrDefault(u => u.Correo == Correo && u.Password == Password);
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Correo == Correo);
+
+            if (usuario == null || !PasswordHelper.VerifyPassword(Password, usuario.Password))
+            {
+                ViewData["Error"] = "Usuario o contraseña inválida.";
+                return Page();
+            }
 
             if (usuario != null)
             {

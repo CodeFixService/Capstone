@@ -103,6 +103,47 @@ namespace SmartFlow.Web.Pages.Usuario.Notificaciones
 
             return new JsonResult(new { ok = true });
         }
+        public IActionResult OnGetListaParcial()
+        {
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            if (usuarioId == null)
+            {
+                return Content("<div class='alert alert-danger'>Sesión expirada. Inicia sesión nuevamente.</div>", "text/html");
+            }
+
+            var notificaciones = _context.Notificaciones
+                .Where(n => n.UsuarioId == usuarioId)
+                .OrderByDescending(n => n.FechaCreacion)
+                .Take(10)
+                .ToList();
+
+            var html = "";
+
+            foreach (var n in notificaciones)
+            {
+                html += $@"
+        <div class='list-group-item mb-2 rounded-3 shadow-sm border-0 p-3 {(n.Leida ? "bg-light" : "bg-white")}'
+             onclick=""marcarLeidaYRedirigir({n.Id})"">
+            <div class='d-flex justify-content-between align-items-center'>
+                <div>
+                    <strong>{n.Titulo}</strong><br />
+                    <small class='text-muted'>{n.FechaCreacion:dd/MM/yyyy HH:mm}</small>
+                </div>
+            </div>
+            <div class='mt-2 text-secondary'>
+                {(string.IsNullOrEmpty(n.Mensaje) ? "" : n.Mensaje.Length > 80 ? n.Mensaje.Substring(0, 80) + "..." : n.Mensaje)}
+            </div>
+        </div>";
+            }
+
+            if (!notificaciones.Any())
+            {
+                html = "<div class='alert alert-info text-center mt-3'>No tienes notificaciones por ahora.</div>";
+            }
+
+            return Content(html, "text/html");
+        }
+
 
 
 

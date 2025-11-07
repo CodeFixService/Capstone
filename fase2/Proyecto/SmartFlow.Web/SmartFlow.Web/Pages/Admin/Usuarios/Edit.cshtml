@@ -1,106 +1,84 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using SmartFlow.Web.Data;
-using SmartFlow.Web.Models;
-using SmartFlow.Web.Helpers; // ✅ Importar para usar PasswordHelper
-using System.Threading.Tasks;
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Admin.Usuarios.EditModel
+@{
+    ViewData["Title"] = "Modificar Usuario";
+}
 
-namespace SmartFlow.Web.Pages.Admin.Usuarios
-{
-    public class EditModel : PageModel
-    {
-        private readonly SmartFlowContext _context;
+<h2 class="text-center mb-4 fw-semibold">✏️ Modificar Usuario</h2>
 
-        public EditModel(SmartFlowContext context)
-        {
-            _context = context;
-        }
+<div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header text-white fw-semibold"
+         style="background: linear-gradient(90deg, #007bff, #00b4d8); font-size: 1.2rem;">
+        Editar información del usuario
+    </div>
 
-        [BindProperty]
-        public Usuario Usuario { get; set; } = new Usuario();
+    <div class="card-body bg-white">
+        <form method="post">
+            <input type="hidden" asp-for="Usuario.Id" />
 
-        public SelectList RolesSelectList { get; set; }
-        public SelectList CarrerasSelectList { get; set; }
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="Usuario.Nombre" class="form-label fw-semibold"></label>
+                    <input asp-for="Usuario.Nombre" class="form-control" />
+                    <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Usuario.Correo" class="form-label fw-semibold"></label>
+                    <input asp-for="Usuario.Correo" class="form-control" />
+                    <span asp-validation-for="Usuario.Correo" class="text-danger"></span>
+                </div>
+            </div>
 
-        public async Task<IActionResult>
-    OnGetAsync(int id)
-    {
-    Usuario = await _context.Usuarios.FindAsync(id);
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="Usuario.Rol" class="form-label fw-semibold"></label>
+                    <select asp-for="Usuario.Rol" class="form-select">
+                        <option value="Admin">Admin</option>
+                        <option value="Director">Director</option>
+                        <option value="Coordinador">Coordinador</option>
+                        <option value="Usuario">Usuario</option>
+                    </select>
+                    <span asp-validation-for="Usuario.Rol" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Usuario.CarreraId" class="form-label fw-semibold">Carrera</label>
+                    <select asp-for="Usuario.CarreraId" class="form-select"
+                            asp-items="Model.CarrerasSelectList">
+                        <option value="">Seleccione una carrera</option>
+                    </select>
+                    <span asp-validation-for="Usuario.CarreraId" class="text-danger"></span>
+                </div>
+            </div>
 
-    if (Usuario == null)
-    {
-    return NotFound();
-    }
+            <div class="mb-3">
+                <label asp-for="Usuario.Rut" class="form-label fw-semibold"></label>
+                <input asp-for="Usuario.Rut" class="form-control" />
+                <span asp-validation-for="Usuario.Rut" class="text-danger"></span>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Nueva Contraseña</label>
+                    <input asp-for="Usuario.Password" type="password" class="form-control" id="password" placeholder="Deja en blanco si no deseas cambiarla" />
+                    <span asp-validation-for="Usuario.Password" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Confirmar Contraseña</label>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Repite la nueva contraseña" />
+                    <span class="text-danger" id="passwordError"></span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <a asp-page="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
-    RolesSelectList = new SelectList(new[]
-    {
-    new { Value = "Admin", Text = "Administrador" },
-    new { Value = "Usuario", Text = "Usuario" }
-    }, "Value", "Text", Usuario.Rol);
-
-    CarrerasSelectList = new SelectList(_context.Set<Carrera>
-        (), "Id", "Nombre", Usuario.CarreraId);
-
-        return Page();
-        }
-
-        public async Task<IActionResult>
-            OnPostAsync()
-            {
-            if (!ModelState.IsValid)
-            {
-            RolesSelectList = new SelectList(new[]
-            {
-            new { Value = "Admin", Text = "Administrador" },
-            new { Value = "Usuario", Text = "Usuario" }
-            }, "Value", "Text", Usuario.Rol);
-
-            CarrerasSelectList = new SelectList(_context.Set<Carrera>
-                (), "Id", "Nombre", Usuario.CarreraId);
-
-                return Page();
-                }
-
-                // 🧩 Obtener el usuario actual de la BD
-                var usuarioExistente = await _context.Usuarios.AsNoTracking().FirstOrDefaultAsync(u => u.Id == Usuario.Id);
-
-                if (usuarioExistente == null)
-                {
-                return NotFound();
-                }
-
-                // 🔒 Si el campo Password fue modificado y no está vacío → cifrarlo
-                if (!string.IsNullOrEmpty(Usuario.Password))
-                {
-                Usuario.Password = PasswordHelper.HashPassword(Usuario.Password);
-                }
-                else
-                {
-                // Mantener el hash anterior si no se cambió la contraseña
-                Usuario.Password = usuarioExistente.Password;
-                }
-
-                _context.Attach(Usuario).State = EntityState.Modified;
-
-                try
-                {
-                await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                if (!_context.Usuarios.Any(e => e.Id == Usuario.Id))
-                {
-                return NotFound();
-                }
-                else
-                {
-                throw;
-                }
-                }
-
-                return RedirectToPage("./Index");
-                }
-                }
-                }
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
