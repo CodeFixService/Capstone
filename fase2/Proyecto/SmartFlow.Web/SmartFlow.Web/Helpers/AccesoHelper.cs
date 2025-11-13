@@ -33,16 +33,14 @@ namespace SmartFlow.Web.Helpers
         /// </summary>
         public static bool EsDirector(ISession session)
         {
-            return session.GetString("UsuarioRol") == "Admin";
+            return session.GetString("UsuarioRol") == "Director";
         }
 
-        /// <summary>
-        /// Devuelve true si el usuario actual tiene el rol Coordinador.
-        /// </summary>
         public static bool EsCoordinador(ISession session)
         {
-            return session.GetString("UsuarioRol") == "Admin";
+            return session.GetString("UsuarioRol") == "Coordinador";
         }
+
 
         /// <summary>
         /// Verifica si el rol actual del usuario está dentro de los roles permitidos.

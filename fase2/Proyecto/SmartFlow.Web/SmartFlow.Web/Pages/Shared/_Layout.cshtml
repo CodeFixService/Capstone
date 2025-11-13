@@ -55,12 +55,15 @@
                                         <li><a class="dropdown-item" asp-page="/Admin/Servicios/Index">Servicios</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>
                                         <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Calendario Global</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Reservas</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Enviar notificación</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">notificación</a></li>
                                         <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Ayuda/Index">Ayuda (Chat)</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Bitacora/Index">Registro</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Ayuda/Index">Chat</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Reportes/Index">Reportes</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Index">Dashboard</a></li>
+
 
                                     </ul>
                                 </li>
@@ -76,7 +79,7 @@
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="usuarioDropdown">
 
-                                        <li><a class="dropdown-item" asp-page="/Usuario/Calendario/Index">Calendario</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Usuario/Calendario/Index">Mis Reservas</a></li>
                                         <li><a class="dropdown-item" asp-page="/Usuario/Solicitudes/Index">Mis Solicitudes</a></li>
 
                                         <li><hr class="dropdown-divider" /></li>
@@ -84,29 +87,7 @@
                                         <li><a class="dropdown-item" asp-page="/Usuario/Ayuda/Index">Ayuda</a></li>
                                     </ul>
                                 </li>
-                            }
-                            <!-- ==== Director ==== -->
-                            @if (rol == "Director")
-                            {
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="DirectorDropdown" role="button"
-                                       data-bs-toggle="dropdown" aria-expanded="false">
-                                        Mi Cuenta
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="DirectorDropdown">
-
-                                        
-                                        <li><a class="dropdown-item" asp-page="/Admin/Servicios/Index">Servicios</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>                                           
-                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Enviar notificación</a></li>
-                                        <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Reportes/Index">Reportes Generales</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Ayuda/Index">Ayuda (Chat)</a></li>
-                                        
-                                    </ul>
-                                </li>
-                            }
+                            }                            
                             <!-- ==== Coordinador ==== -->
                             @if (rol == "Coordinador")
                             {
@@ -117,14 +98,10 @@
                                     </a>
 
                                     <ul class="dropdown-menu" aria-labelledby="CoordinadorDropdown">
-
-                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Servicios/Index">Servicios</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Calendario Global</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Reservas</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Enviar notificación</a></li>                                       
                                         <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Ayuda/Index">Ayuda (Chat)</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Notificación</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Reportes/Index">Reportes</a></li>
                                     </ul>
                                 </li>
@@ -142,7 +119,7 @@
                     <!-- ===== MENÚ DERECHO ===== -->
                     <ul class="navbar-nav align-items-center">
 
-                        @* 🔔 Icono de notificaciones (solo si hay sesión) *@
+                        @*  Icono de notificaciones (solo si hay sesión) *@
                         @if (rol == "Admin")
                         {
                             <partial name="_NotificacionesPartial" />
@@ -151,9 +128,13 @@
                         {
                             <partial name="_NotificacionesPartial" />
                         }
+                        else if (rol == "Coordinador")
+                        {
+                            <partial name="_NotificacionesPartial" />
+                        }
 
 
-                        @* 👋 Saludo + Logout *@
+                        @*  Saludo + Logout *@
                         @if (isLogged)
                         {
                             <li class="nav-item">
@@ -188,7 +169,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - SmartFlow.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2025 - SmartFlow.Web - <a asp-area="" asp-page="/Privacy">Pribacidad</a>
         </div>
     </footer>
 
@@ -252,7 +233,7 @@
                   color: white;
                   font-size: 28px;
                   z-index: 9999;">
-            <i class="bi bi-chat-dots-fill"></i>
+            <i class="bi bi-headset"></i>
         </a>
     }
 

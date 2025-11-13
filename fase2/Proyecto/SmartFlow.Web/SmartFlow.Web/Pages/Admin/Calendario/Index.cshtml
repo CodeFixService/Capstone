@@ -15,9 +15,7 @@
             <div id="calendar"></div>
         </div>
 
-        <div class="card-footer bg-light text-center small text-muted py-3">
-            © 2025 SmartFlow - Todos los derechos reservados
-        </div>
+        
     </div>
 </div>
 
@@ -68,8 +66,20 @@
 
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'es',
+                    initialView: 'dayGridMonth',
+                locale: 'es', // idioma español
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    list: 'Lista'
+                },
+                allDayText: 'Todo el día',
+                noEventsText: 'No hay eventos para mostrar',
+                weekText: 'Sem',
+                eventLimitText: 'más',
+                dayHeaderFormat: { weekday: 'long' },
                 height: 'auto',
                 headerToolbar: {
                     left: 'prev,next today',
@@ -98,7 +108,7 @@
 
             calendar.render();
 
-            // 🔹 Actualizar estado con comentario
+            // Actualizar estado con comentario
             async function actualizarEstado(id, estado) {
                 const comentario = document.getElementById('comentarioAdmin').value;
                 const formData = new FormData();
@@ -112,11 +122,21 @@
                 });
 
                 const data = await resp.json();
-                if (data.success) {
-                    alert('Reserva ' + estado.toLowerCase() + ' correctamente.');
-                    bootstrap.Modal.getInstance(document.getElementById('detalleReserva')).hide();
-                    calendar.refetchEvents();
-                } else {
+                        if (data.success) {
+            // 🔹 Crear alerta Bootstrap visual
+            const alerta = document.createElement('div');
+            alerta.className = `alert alert-success text-center fw-semibold shadow-sm rounded-4 position-fixed top-0 start-50 translate-middle-x mt-3`;
+            alerta.style.zIndex = '9999';
+            alerta.innerHTML = `✅ Reserva ${estado.toLowerCase()} correctamente.`;
+            document.body.appendChild(alerta);
+
+            setTimeout(() => alerta.remove(), 3000); // desaparece en 3s
+
+            // 🔹 Cerrar modal y refrescar eventos
+            bootstrap.Modal.getInstance(document.getElementById('detalleReserva')).hide();
+            calendar.refetchEvents();
+        }
+         else {
                     alert(data.message || 'Error al actualizar la reserva.');
                 }
             }

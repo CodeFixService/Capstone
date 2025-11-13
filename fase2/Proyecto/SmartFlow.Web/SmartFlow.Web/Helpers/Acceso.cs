@@ -25,21 +25,23 @@ namespace SmartFlow.Web.Helpers
                 return;
             }
 
-            // 🔒 Bloquear si no hay sesión
+            //  Bloquear si no hay sesión
             if (string.IsNullOrEmpty(rol))
             {
                 context.Response.Redirect("/Login/Login");
                 return;
             }
 
-            // 👨‍💼 Si el rol es "Admin" pero entra a "/Usuario", redirigir
-            if (rol == "Admin" && path.StartsWith("/usuario"))
+            // Evitar bucle si ya está en /Admin
+            if ((rol == "Admin" || rol == "Director" || rol == "Coordinador") && path.StartsWith("/admin"))
             {
-                context.Response.Redirect("/Admin/Index");
+                await _next(context);
                 return;
             }
 
-            // 👩‍🎓 Si el rol es "Usuario" pero entra a "/Admin", redirigir
+
+
+            //  Si el rol es "Usuario" pero entra a "/Admin", redirigir
             if (rol == "Usuario" && path.StartsWith("/admin"))
             {
                 context.Response.Redirect("/Usuario/Index");
@@ -47,7 +49,7 @@ namespace SmartFlow.Web.Helpers
             }
 
 
-            // ✅ Si pasa todos los filtros, continuar
+            //  Si pasa todos los filtros, continuar
             await _next(context);
         }
     }

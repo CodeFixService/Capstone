@@ -4,22 +4,41 @@
     ViewData["Title"] = "Iniciar Sesión";
 }
 
-<h2>Iniciar Sesión</h2>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card shadow-lg border-0 rounded-4" style="width: 100%; max-width: 420px;">
+        <div class="card-header text-white text-center fw-semibold"
+             style="background: linear-gradient(90deg, #007bff, #00b4d8); font-size: 1.3rem;">
+            🔐 Iniciar Sesión
+        </div>
 
-<form method="post">
-    <div>
-        <label for="Correo">Correo:</label>
-        <input type="text" id="Correo" name="Correo" required />
-    </div>
-    <div>
-        <label for="Password">Contraseña:</label>
-        <input type="password" id="Password" name="Password" required />
-    </div>
-    <button type="submit">Ingresar</button>
-</form>
+        <div class="card-body p-4">
+            @if (!string.IsNullOrEmpty(Model.Mensaje))
+            {
+                <div class="alert alert-danger text-center fw-semibold rounded-3 shadow-sm">
+                    @Model.Mensaje
+                </div>
+            }
 
-@if (!string.IsNullOrEmpty(Model.Mensaje))
-{
-    <p style="color:red">@Model.Mensaje</p>
-}
-    
+            <form method="post">
+                <div class="mb-3">
+                    <label for="Correo" class="form-label fw-semibold">Correo electrónico</label>
+                    <input type="email" id="Correo" name="Correo" class="form-control rounded-3" placeholder="ejemplo@correo.cl" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="Password" class="form-label fw-semibold">Contraseña</label>
+                    <input type="password" id="Password" name="Password" class="form-control rounded-3" placeholder="••••••••" required />
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary rounded-3 fw-semibold"
+                            style="background: linear-gradient(90deg, #007bff, #00b4d8); border: none;">
+                        Ingresar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        
+    </div>
+</div>

@@ -13,44 +13,92 @@
 <p>Has iniciado sesión correctamente como <strong>Administrador</strong>.</p>
 
 <hr class="my-4" />
+<h3 class="mb-3 mt-4">📊 Resumen del Sistema</h3>
 
-<h3 class="mb-3">📊 Resumen del Sistema</h3>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 text-center">
 
-<div class="row g-4">
-    <div class="col-md-3">
-        <div class="card text-white bg-primary shadow-sm text-center">
-            <div class="card-body">
-                <i class="bi bi-people" style="font-size:2rem;"></i>
-                <h5 class="mt-2">Usuarios</h5>
-                <h3>@Model.TotalUsuarios</h3>
+    <div class="col">
+        <a asp-page="/Admin/Usuarios/Index" class="text-decoration-none">
+            <div class="card text-white bg-primary shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-people" style="font-size:2rem;"></i>
+                    <h5 class="mt-2">Usuarios</h5>
+                    <h3>@Model.TotalUsuarios</h3>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
-    <div class="col-md-3">
-        <div class="card text-white bg-success shadow-sm text-center">
-            <div class="card-body">
-                <i class="bi bi-calendar-check" style="font-size:2rem;"></i>
-                <h5 class="mt-2">Reservas</h5>
-                <h3>@Model.TotalReservas</h3>
+
+    <div class="col">
+        <a asp-page="/Admin/Calendario/Index" class="text-decoration-none">
+            <div class="card text-white bg-success shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-calendar-check" style="font-size:2rem;"></i>
+                    <h5 class="mt-2">Reservas</h5>
+                    <h3>@Model.TotalReservas</h3>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
-    <div class="col-md-3">
-        <div class="card text-dark bg-warning shadow-sm text-center">
-            <div class="card-body">
-                <i class="bi bi-hourglass-split" style="font-size:2rem;"></i>
-                <h5 class="mt-2">Pendientes</h5>
-                <h3>@Model.Pendientes</h3>
+
+    <div class="col">
+        <a asp-page="/Admin/Reservas/Index" class="text-decoration-none">
+            <div class="card text-dark bg-warning shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-hourglass-split" style="font-size:2rem;"></i>
+                    <h5 class="mt-2">Pendientes</h5>
+                    <h3>@Model.Pendientes</h3>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
-    <div class="col-md-3">
-        <div class="card text-white bg-danger shadow-sm text-center">
-            <div class="card-body">
-                <i class="bi bi-bell-fill" style="font-size:2rem;"></i>
-                <h5 class="mt-2">Notificaciones</h5>
-                <h3>@Model.NotificacionesSinLeer</h3>
+
+    <div class="col">
+        <a asp-page="/Admin/Solicitudes/Index" class="text-decoration-none">
+            <div class="card text-white bg-primary shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-file-earmark-text" style="font-size:2rem;"></i>
+                    <h5 class="mt-2">Solicitudes Totales</h5>
+                    <h3>@Model.TotalSolicitudes</h3>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
+
+    <div class="col">
+        <a asp-page="/Admin/Solicitudes/Index" class="text-decoration-none">
+            <div class="card text-white bg-warning shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-hourglass-split" style="font-size:2rem;"></i>
+                    <h5 class="mt-2">Solicitudes Pendientes</h5>
+                    <h3>@Model.PendientesSolicitudes</h3>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a asp-page="/Admin/Ayuda/Index" class="text-decoration-none">
+            <div class="card text-white bg-info shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-chat-dots-fill" style="font-size:2rem;"></i>
+                    <h5 class="mt-2">Chats sin leer</h5>
+                    <h3>@Model.ChatsSinLeer</h3>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a asp-page="/Admin/Ayuda/Index" class="text-decoration-none">
+            <div class="card text-white bg-success shadow-sm h-100">
+                <div class="card-body">
+                    <i class="bi bi-people-fill" style="font-size:2rem;"></i>
+                    <h5 class="mt-2">Usuarios con Ayuda</h5>
+                    <h3>@Model.AyudasTotales</h3>
+                </div>
+            </div>
+        </a>
+    </div>
+
 </div>

@@ -124,8 +124,19 @@
 
             // 🔹 Inicializar FullCalendar
             const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'es',
+                locale: 'es', // idioma español
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    list: 'Lista'
+                },
+                allDayText: 'Todo el día',
+                noEventsText: 'No hay eventos para mostrar',
+                weekText: 'Sem',
+                eventLimitText: 'más',
+                dayHeaderFormat: { weekday: 'long' },
                 selectable: true,
                 allDaySlot: false,
                 height: 'auto',

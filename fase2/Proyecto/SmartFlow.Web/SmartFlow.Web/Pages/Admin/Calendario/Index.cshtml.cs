@@ -21,7 +21,7 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
         public IActionResult OnGet()
         {
             var rol = HttpContext.Session.GetString("Rol");
-            if (rol != "Admin") return RedirectToPage("/Login/Login");
+            if (rol != "Admin" && rol != "Director" && rol != "Coordinador") return RedirectToPage("/Login/Login");
             return Page();
         }
 
@@ -70,12 +70,12 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                 if (reserva == null)
                     return new JsonResult(new { success = false, message = "Reserva no encontrada" });
 
-                // 🔸 Actualizar estado y comentario
+                //  Actualizar estado y comentario
                 reserva.Estado = estado;
                 reserva.ComentarioAdmin = string.IsNullOrWhiteSpace(comentarioAdmin) ? null : comentarioAdmin;
                 _context.SaveChanges();
 
-                // 🔔 Crear notificación al usuario
+                //  Crear notificación al usuario
                 string mensaje = $"La reserva para {reserva.Servicio.Nombre} el {reserva.FechaInicio:g} fue {estado.ToLower()}.";
                 if (!string.IsNullOrWhiteSpace(comentarioAdmin))
                     mensaje += $"\nComentario del administrador: {comentarioAdmin}";

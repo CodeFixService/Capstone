@@ -35,7 +35,7 @@ namespace SmartFlow.Web.Pages.Login
 
             if (usuario == null || !PasswordHelper.VerifyPassword(Password, usuario.Password))
             {
-                ViewData["Error"] = "Usuario o contraseña inválida.";
+                Mensaje = "⚠️ Usuario o contraseña incorrectos.";
                 return Page();
             }
 

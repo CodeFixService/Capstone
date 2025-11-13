@@ -16,7 +16,12 @@ using SmartFlow.Web.Helpers;
             public int TotalUsuarios { get; private set; }
             public int TotalReservas { get; private set; }
             public int Pendientes { get; private set; }
-            public int NotificacionesSinLeer { get; private set; }
+        public int TotalSolicitudes { get; set; }
+        public int PendientesSolicitudes { get; set; }
+        public int ChatsSinLeer { get; set; }
+        public int AyudasTotales { get; set; }
+
+        public int NotificacionesSinLeer { get; private set; }
 
             public IndexModel(SmartFlowContext context)
             {
@@ -72,6 +77,15 @@ using SmartFlow.Web.Helpers;
                 TotalUsuarios = _context.Usuarios.Count();
                 TotalReservas = _context.Reservas.Count();
                 Pendientes = _context.Reservas.Count(r => r.Estado == "Pendiente");
-            }
+           
+            TotalSolicitudes = _context.Solicitudes.Count();
+            PendientesSolicitudes = _context.Solicitudes.Count(s => s.Estado == "Pendiente");
+            ChatsSinLeer = _context.ChatMensajes.Count(c => !c.LeidoPorAdmin);
+            AyudasTotales = _context.ChatMensajes
+                .Select(c => c.UsuarioId)
+                .Distinct()
+                .Count(); // cantidad de usuarios con chat
+
         }
+    }
     }

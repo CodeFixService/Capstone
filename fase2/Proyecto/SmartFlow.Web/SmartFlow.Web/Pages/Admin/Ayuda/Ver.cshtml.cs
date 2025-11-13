@@ -20,8 +20,10 @@ namespace SmartFlow.Web.Pages.Admin.Ayuda
 
         public IActionResult OnGet(int usuarioId)
         {
-            if (HttpContext.Session.GetString("Rol") != "Admin")
+            var rol = HttpContext.Session.GetString("Rol");
+            if (rol != "Admin" && rol != "Director" && rol != "Coordinador")
                 return RedirectToPage("/Login/Login");
+
 
             UsuarioId = usuarioId;
             var u = _context.Usuarios.FirstOrDefault(x => x.Id == usuarioId);

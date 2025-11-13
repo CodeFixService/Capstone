@@ -25,7 +25,7 @@ namespace SmartFlow.Web.Pages.Admin.Ayuda
         public void OnGet()
         {
             var rol = HttpContext.Session.GetString("Rol");
-            if (rol != "Admin") { Response.Redirect("/Login/Login"); return; }
+            if (rol != "Admin" && rol != "Director" && rol != "Coordinador") { Response.Redirect("/Login/Login"); return; }
 
             Conversaciones = _context.Usuarios
                 .Select(u => new Item
