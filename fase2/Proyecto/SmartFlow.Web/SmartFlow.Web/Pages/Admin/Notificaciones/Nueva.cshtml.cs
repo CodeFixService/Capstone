@@ -18,7 +18,7 @@ namespace SmartFlow.Web.Pages.Admin.Notificaciones
         public NuevaModel(SmartFlowContext context, IConfiguration config)
         {
             _context = context;
-            _emailHelper = new EmailHelper(config); // 👈 inyectamos el helper de correo
+            _emailHelper = new EmailHelper(config); //  inyectamos el helper de correo
         }
 
         // 🔹 Campos del formulario
@@ -37,7 +37,7 @@ namespace SmartFlow.Web.Pages.Admin.Notificaciones
         public IActionResult OnGet()
         {
             var rol = HttpContext.Session.GetString("Rol");
-            if (rol != "Admin") return RedirectToPage("/Login/Login");
+            if (rol != "Admin" && rol != "Director" && rol != "Coordinador") return RedirectToPage("/Login/Login");
 
             Usuarios = _context.Usuarios.OrderBy(u => u.Nombre).ToList();
             return Page();
@@ -46,11 +46,11 @@ namespace SmartFlow.Web.Pages.Admin.Notificaciones
         public IActionResult OnPost()
         {
             var rol = HttpContext.Session.GetString("Rol");
-            if (rol != "Admin") return RedirectToPage("/Login/Login");
+            if (rol != "Admin" && rol != "Director" && rol != "Coordinador") return RedirectToPage("/Login/Login");
 
             if (string.IsNullOrWhiteSpace(Titulo) || string.IsNullOrWhiteSpace(Mensaje))
             {
-                MensajeSistema = "⚠️ Debe ingresar título y mensaje.";
+                MensajeSistema = " Debe ingresar título y mensaje.";
                 OnGet();
                 return Page();
             }
@@ -90,7 +90,7 @@ namespace SmartFlow.Web.Pages.Admin.Notificaciones
             {
                 if (UsuarioId is null || UsuarioId <= 0)
                 {
-                    MensajeSistema = "⚠️ Seleccione un usuario o marque 'Enviar a todos'.";
+                    MensajeSistema = " Seleccione un usuario o marque 'Enviar a todos'.";
                     OnGet();
                     return Page();
                 }
