@@ -1,40 +1,55 @@
 ﻿@page
 @model SmartFlow.Web.Pages.Admin.Ayuda.IndexModel
 @{
-    ViewData["Title"] = "Ayuda - Conversaciones";
+    ViewData["Title"] = "Ayuda - Conversaciones por Carrera";
 }
-<h2 class="mb-3">💬 Conversaciones</h2>
 
-<table class="table table-hover align-middle">
-    <thead class="table-light">
-        <tr>
-            <th>Usuario</th>
-            <th>Último mensaje</th>
-            <th>Fecha</th>
-            <th>Sin leer</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var c in Model.Conversaciones)
-        {
-            <tr>
-                <td>@c.Nombre</td>
-                <td>@c.UltimoTexto</td>
-                <td>@c.FechaUltimo:g</td>
-                <td>
-                    @if (c.NoLeidos > 0)
-                    {
-                        <span class="badge bg-danger">@c.NoLeidos</span>
-                    }
-                    else
-                    {
+<h2 class="mb-3 text-center fw-semibold">💬 Conversaciones de tu Carrera</h2>
 
-                        <span class="text-muted">0</span>
-                    }
-                </td>
-                <td><a class="btn btn-sm btn-primary" asp-page="/Admin/Ayuda/Ver" asp-route-usuarioId="@c.UsuarioId">Abrir</a></td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if (!Model.Conversaciones.Any())
+{
+    <div class="alert alert-info text-center mt-4">
+        No hay conversaciones disponibles para tu carrera.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle shadow-sm border rounded-3">
+            <thead class="table-primary">
+                <tr>
+                    <th>Usuario</th>
+                    <th>Último mensaje</th>
+                    <th>Fecha</th>
+                    <th>Sin leer</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Conversaciones)
+                {
+                    <tr>
+                        <td>@c.Nombre</td>
+                        <td class="text-truncate" style="max-width: 250px;">@c.UltimoTexto</td>
+                        <td>@c.FechaUltimo:g</td>
+                        <td>
+                            @if (c.NoLeidos > 0)
+                            {
+                                <span class="badge bg-danger">@c.NoLeidos</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">0</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-outline-primary" asp-page="/Admin/Ayuda/Ver" asp-route-usuarioId="@c.UsuarioId">
+                                <i class="bi bi-chat-dots"></i> Abrir Chat
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

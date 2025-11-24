@@ -1,0 +1,62 @@
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Coordinador.Solicitudes.EditModel
+@{
+    ViewData["Title"] = "Editar Solicitud";
+}
+
+<h2 class="mb-3">Actualizar Estado de Solicitud</h2>
+
+@if (Model.Solicitud == null)
+{
+    <div class="alert alert-warning">No se encontró la solicitud solicitada.</div>
+}
+else
+{
+    <form method="post" class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-primary text-white fw-semibold">
+            Solicitud #@Model.Solicitud.Id
+        </div>
+
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Asunto</label>
+                <input class="form-control" value="@Model.Solicitud.Asunto" readonly />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Usuario</label>
+                <input class="form-control" value="@Model.Solicitud.Usuario?.Nombre" readonly />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Estado</label>
+                <select asp-for="Solicitud.Estado" class="form-select" required>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Aprobada">Aprobada</option>
+                    <option value="Rechazada">Rechazada</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Motivo / Comentario del Coordinador</label>
+                <textarea asp-for="Solicitud.Motivo" class="form-control" rows="4"
+                          placeholder="Escribe una nota o comentario sobre esta solicitud..."></textarea>
+                <span asp-validation-for="Solicitud.Motivo" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="card-footer text-end">
+            <a asp-page="./Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-save"></i> Guardar Cambios
+            </button>
+        </div>
+    </form>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+}

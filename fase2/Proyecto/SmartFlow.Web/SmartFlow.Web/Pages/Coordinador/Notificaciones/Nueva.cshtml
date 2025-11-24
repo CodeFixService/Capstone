@@ -1,0 +1,58 @@
+﻿@page
+@model SmartFlow.Web.Pages.Coordinador.Notificaciones.NuevaModel
+@{
+    ViewData["Title"] = "Enviar notificación - Coordinador";
+}
+
+<h2>Enviar notificación</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-8 col-lg-6">
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Destinatario</label>
+                <select class="form-select" asp-for="UsuarioId">
+                    <option value="">-- Selecciona usuario --</option>
+                    @foreach (var u in Model.Usuarios)
+                    {
+                        <option value="@u.Id">@u.Nombre (@u.Correo)</option>
+                    }
+                </select>
+                <div class="form-text">
+                    O marca “enviar a todos los alumnos de tu carrera”.
+                </div>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" asp-for="EnviarATodos" id="chkTodos">
+                <label class="form-check-label" for="chkTodos">Enviar a todos los alumnos de mi carrera</label>
+            </div>
+
+            <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" id="EnviarCorreo" asp-for="EnviarCorreo" />
+                <label class="form-check-label" for="EnviarCorreo">
+                    Enviar aviso por correo electrónico
+                </label>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Título</label>
+                <input class="form-control" asp-for="Titulo" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Mensaje</label>
+                <textarea class="form-control" asp-for="Mensaje" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">Enviar</button>
+            <a asp-page="/Coordinador/Notificaciones/Index" class="btn btn-outline-secondary ms-2">Cancelar</a>
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.MensajeSistema))
+        {
+            <div class="alert alert-info mt-3">@Model.MensajeSistema</div>
+        }
+    </div>
+</div>

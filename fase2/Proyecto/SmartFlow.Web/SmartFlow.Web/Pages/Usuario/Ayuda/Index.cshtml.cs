@@ -48,25 +48,42 @@ namespace SmartFlow.Web.Pages.Usuario.Ayuda
             if (usuarioId == null) return RedirectToPage("/Login/Login");
             if (string.IsNullOrWhiteSpace(texto)) return RedirectToPage();
 
+            //  Obtener datos del usuario
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario == null) return RedirectToPage();
+
+            //  Buscar coordinador de la misma carrera
+            var coordinador = _context.Usuarios
+                .FirstOrDefault(u => u.Rol == "Coordinador" && u.CarreraId == usuario.CarreraId);
+
+            //  Buscar admin asociado a esa carrera (opcional)
+            var admin = _context.Usuarios
+                .FirstOrDefault(u => u.Rol == "Admin" && u.CarreraId == usuario.CarreraId);
+
+            //  Crear mensaje
             _context.ChatMensajes.Add(new ChatMensaje
             {
                 UsuarioId = usuarioId.Value,
+                CarreraId = usuario.CarreraId,
+                CoordinadorId = coordinador?.Id,
+                AdminId = admin?.Id,
                 EmisorRol = "Usuario",
+                DestinatarioRol = "Coordinador",
                 Texto = texto.Trim(),
                 Fecha = DateTime.Now,
                 LeidoPorUsuario = true,
+                LeidoPorCoordinador = false,
                 LeidoPorAdmin = false
             });
 
-            // 🔔 Notificar a todos los admins
-            var admins = _context.Usuarios.Where(u => u.Rol == "Admin").Select(a => a.Id).ToList();
-            foreach (var idAdmin in admins)
+            //  Crear notificación para el coordinador
+            if (coordinador != null)
             {
                 _context.Notificaciones.Add(new Notificacion
                 {
-                    UsuarioId = idAdmin,
-                    Titulo = "Nuevo mensaje de soporte",
-                    Mensaje = "Un usuario envió un mensaje en Ayuda.",
+                    UsuarioId = coordinador.Id,
+                    Titulo = "Nuevo mensaje de un estudiante",
+                    Mensaje = $"{usuario.Nombre} te ha enviado un mensaje de ayuda.",
                     Tipo = "Alerta",
                     Leida = false,
                     FechaCreacion = DateTime.Now
@@ -75,9 +92,10 @@ namespace SmartFlow.Web.Pages.Usuario.Ayuda
 
             _context.SaveChanges();
 
-            MensajeSistema = "✅ Mensaje enviado.";
-            return RedirectToPage(); // recarga para ver el hilo actualizado
+            MensajeSistema = " Mensaje enviado.";
+            return RedirectToPage(); // recarga el hilo actualizado
         }
+
         public IActionResult OnGetMensajesParciales()
         {
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
@@ -89,16 +107,16 @@ namespace SmartFlow.Web.Pages.Usuario.Ayuda
                 .OrderBy(c => c.Fecha)
                 .ToList();
 
-            // devolvemos solo el HTML de los mensajes
             var html = string.Join("", mensajes.Select(m =>
                 $"<div class='mb-2'>" +
                 $"<small class='text-muted'>{m.Fecha:g}</small><br/>" +
-                $"<span class='badge {(m.EmisorRol == "Usuario" ? "bg-primary" : "bg-dark")}'>{m.EmisorRol}</span>" +
+                $"<span class='badge {(m.EmisorRol == "Usuario" ? "bg-primary" : m.EmisorRol == "Coordinador" ? "bg-success" : "bg-dark")}'>{m.EmisorRol}</span>" +
                 $"<span class='ms-2'>{m.Texto}</span></div>"
             ));
 
             return Content(html, "text/html");
         }
+
 
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 
-namespace SmartFlow.Web.Pages.Admin.Ayuda
+namespace SmartFlow.Web.Pages.Coordinador.Ayuda
 {
     public class IndexModel : PageModel
     {
@@ -26,17 +26,17 @@ namespace SmartFlow.Web.Pages.Admin.Ayuda
         public void OnGet()
         {
             var rol = HttpContext.Session.GetString("Rol");
-            var adminId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
 
-            if (adminId == null || rol != "Admin")
+            if (usuarioId == null || rol != "Coordinador")
             {
                 Response.Redirect("/Login/Login");
                 return;
             }
 
-            // 🔹 Obtener la carrera del administrador actual
+            // 🔹 Obtener la carrera del coordinador
             var carreraId = _context.Usuarios
-                .Where(u => u.Id == adminId)
+                .Where(u => u.Id == usuarioId)
                 .Select(u => u.CarreraId)
                 .FirstOrDefault();
 
@@ -46,9 +46,9 @@ namespace SmartFlow.Web.Pages.Admin.Ayuda
                 return;
             }
 
-            // 🔹 Mostrar coordinadores y estudiantes (usuarios) de su carrera
+            // 🔹 Mostrar estudiantes y admins de su carrera
             Conversaciones = _context.Usuarios
-                .Where(u => u.CarreraId == carreraId && (u.Rol == "Coordinador" ))
+                .Where(u => u.CarreraId == carreraId && (u.Rol == "Usuario" || u.Rol == "Admin"))
                 .Select(u => new Item
                 {
                     UsuarioId = u.Id,
@@ -64,11 +64,15 @@ namespace SmartFlow.Web.Pages.Admin.Ayuda
                         .OrderByDescending(c => c.Fecha)
                         .Select(c => c.Fecha)
                         .FirstOrDefault(),
-                    // 🔹 Contador correcto de mensajes no leídos
+                    // 🔹 Contador de mensajes no leídos optimizado
                     NoLeidos = _context.ChatMensajes.Count(c =>
                         c.UsuarioId == u.Id &&
-                        !c.LeidoPorAdmin &&
-                        (c.EmisorRol == "Coordinador" || c.EmisorRol == "Usuario"))
+                        (
+                            // Mensajes nuevos de estudiantes hacia el coordinador
+                            (u.Rol == "Usuario" && !c.LeidoPorCoordinador && c.EmisorRol == "Usuario") ||
+                            // Mensajes nuevos de admin hacia el coordinador
+                            (u.Rol == "Admin" && !c.LeidoPorCoordinador && c.EmisorRol == "Admin")
+                        ))
                 })
                 .OrderByDescending(x => x.FechaUltimo)
                 .ToList();

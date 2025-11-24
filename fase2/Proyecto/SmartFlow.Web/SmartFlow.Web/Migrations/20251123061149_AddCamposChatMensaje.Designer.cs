@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartFlow.Web.Data;
 
@@ -11,9 +12,11 @@ using SmartFlow.Web.Data;
 namespace SmartFlow.Web.Migrations
 {
     [DbContext(typeof(SmartFlowContext))]
-    partial class SmartFlowContextModelSnapshot : ModelSnapshot
+    [Migration("20251123061149_AddCamposChatMensaje")]
+    partial class AddCamposChatMensaje
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

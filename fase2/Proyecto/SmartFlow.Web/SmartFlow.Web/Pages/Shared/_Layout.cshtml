@@ -57,7 +57,7 @@
                                         <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Reservas</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">notificación</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Notificación</a></li>
                                         <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Bitacora/Index">Registro</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Ayuda/Index">Chat</a></li>
@@ -84,7 +84,7 @@
 
                                         <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item" asp-page="/Usuario/Perfil/Editar">Editar Perfil</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Usuario/Ayuda/Index">Ayuda</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Usuario/Ayuda/Index">Chat</a></li>
                                     </ul>
                                 </li>
                             }                            
@@ -98,11 +98,13 @@
                                     </a>
 
                                     <ul class="dropdown-menu" aria-labelledby="CoordinadorDropdown">
-                                        <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Reservas</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Coordinador/Calendario/Index">Calendario</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Coordinador/Solicitudes/Index">Solicitudes</a></li>
                                         <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Notificación</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Reportes/Index">Reportes</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Coordinador/Notificaciones/Nueva">Notificaciones</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Coordinador/Reportes/Index">Reportes</a></li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item" asp-page="/Coordinador/Ayuda/Index">Chat</a></li>
                                     </ul>
                                 </li>
                             }
@@ -178,6 +180,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script>
+
         function actualizarSecciones() {
             const secciones = document.querySelectorAll("[data-dynamic='true']");
             if (secciones.length === 0) return; // Evita errores si no hay secciones
@@ -213,6 +216,20 @@
             }
         }
     </script>
+    <script>
+        function marcarLeidaYRedirigir(id, destino) {
+            if (!id || id === "undefined") {
+                console.error("⚠️ ID de notificación no válido");
+                return;
+            }
+
+            fetch(destino + "?handler=MarcarLeida&id=" + id)
+                .then(res => res.json())
+                .then(() => window.location.href = destino)
+                .catch(err => console.error("Error al marcar notificación:", err));
+        }
+    </script>
+
     @{
         var rolS = Context.Session.GetString("Rol");
         var esUsuario = rolS == "Usuario";

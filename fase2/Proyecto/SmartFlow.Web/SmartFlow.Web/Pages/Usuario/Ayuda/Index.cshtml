@@ -39,19 +39,32 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const chatDiv = document.getElementById("chatMensajes");
+                let ultimoMensaje = "";
 
-                // Función para recargar los mensajes
-                function refrescarChat() {
-                    fetch('/Usuario/Ayuda/Index?handler=MensajesParciales')
-                        .then(r => r.text())
-                        .then(html => {
+                // 🔁 Actualización inteligente del chat
+                async function refrescarChat() {
+                    try {
+                        const res = await fetch('/Usuario/Ayuda/Index?handler=MensajesParciales');
+                        if (!res.ok) throw new Error("Error al obtener mensajes");
+                        const html = await res.text();
+
+                        // Verificar si hay cambios reales (evita redibujar si es igual)
+                        if (html.trim() !== ultimoMensaje.trim()) {
+                            const estabaAbajo = chatDiv.scrollTop + chatDiv.clientHeight >= chatDiv.scrollHeight - 50;
                             chatDiv.innerHTML = html;
-                            chatDiv.scrollTop = chatDiv.scrollHeight; // auto-scroll
-                        });
+                            if (estabaAbajo) chatDiv.scrollTop = chatDiv.scrollHeight;
+                            ultimoMensaje = html;
+                        }
+                    } catch (err) {
+                        console.warn("Error al actualizar chat:", err.message);
+                    }
                 }
 
-                // Recarga cada 5 segundos
-                setInterval(refrescarChat, 5000);
+                // ⏱️ Actualizar cada 3 segundos
+                setInterval(refrescarChat, 3000);
+
+                // ⬇️ Scroll automático inicial
+                chatDiv.scrollTop = chatDiv.scrollHeight;
             });
         </script>
 }

@@ -107,9 +107,7 @@ namespace SmartFlow.Web.Pages.Usuario.Notificaciones
         {
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
             if (usuarioId == null)
-            {
                 return Content("<div class='alert alert-danger'>Sesión expirada. Inicia sesión nuevamente.</div>", "text/html");
-            }
 
             var notificaciones = _context.Notificaciones
                 .Where(n => n.UsuarioId == usuarioId)
@@ -121,9 +119,15 @@ namespace SmartFlow.Web.Pages.Usuario.Notificaciones
 
             foreach (var n in notificaciones)
             {
+                var mensaje = string.IsNullOrEmpty(n.Mensaje)
+                    ? ""
+                    : (n.Mensaje.Length > 80
+                        ? $"{n.Mensaje.Substring(0, 80).Replace("\"", "\\\"")}... <button class='btn btn-link p-0 text-primary' onclick=\"mostrarMensajeCompleto('{n.Mensaje.Replace("'", "\\'")}')\">Ver más</button>"
+                        : n.Mensaje);
+
                 html += $@"
         <div class='list-group-item mb-2 rounded-3 shadow-sm border-0 p-3 {(n.Leida ? "bg-light" : "bg-white")}'
-             onclick=""marcarLeidaYRedirigir({n.Id})"">
+             onclick=""marcarLeidaYRedirigir({n.Id}, '/Usuario/Notificaciones')"">
             <div class='d-flex justify-content-between align-items-center'>
                 <div>
                     <strong>{n.Titulo}</strong><br />
@@ -131,22 +135,15 @@ namespace SmartFlow.Web.Pages.Usuario.Notificaciones
                 </div>
             </div>
             <div class='mt-2 text-secondary'>
-                {(string.IsNullOrEmpty(n.Mensaje) ? "" : n.Mensaje.Length > 80 ? n.Mensaje.Substring(0, 80) + "..." : n.Mensaje)}
+                {mensaje}
             </div>
         </div>";
             }
 
             if (!notificaciones.Any())
-            {
                 html = "<div class='alert alert-info text-center mt-3'>No tienes notificaciones por ahora.</div>";
-            }
 
             return Content(html, "text/html");
         }
-
-
-
-
-
     }
 }

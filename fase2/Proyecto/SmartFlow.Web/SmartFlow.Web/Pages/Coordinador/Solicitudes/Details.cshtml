@@ -1,0 +1,70 @@
+﻿@page "{id:int}"
+@model SmartFlow.Web.Pages.Coordinador.Solicitudes.DetailsModel
+@{
+    ViewData["Title"] = "Detalle de Solicitud";
+}
+
+<h2 class="mb-3">Detalle de la Solicitud</h2>
+
+@if (Model.Solicitud == null)
+{
+    <div class="alert alert-warning">No se encontró la solicitud solicitada.</div>
+}
+else
+{
+    <div class="card shadow-sm rounded-4 border-0">
+        <div class="card-header bg-primary text-white fw-semibold">
+            Solicitud #@Model.Solicitud.Id
+        </div>
+
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Asunto:</dt>
+                <dd class="col-sm-9">@Model.Solicitud.Asunto</dd>
+
+                <dt class="col-sm-3">Descripción:</dt>
+                <dd class="col-sm-9">@Model.Solicitud.Descripcion</dd>
+
+                <dt class="col-sm-3">Usuario:</dt>
+                <dd class="col-sm-9">@Model.Solicitud.Usuario?.Nombre</dd>
+
+                <dt class="col-sm-3">Carrera:</dt>
+                <dd class="col-sm-9">@Model.Solicitud.Usuario?.Carrera?.Nombre</dd>
+
+                <dt class="col-sm-3">Servicio:</dt>
+                <dd class="col-sm-9">@Model.Solicitud.Servicio?.Nombre</dd>
+
+                <dt class="col-sm-3">Estado:</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Solicitud.Estado == "Aprobada")
+                    {
+                        <span class="badge bg-success">Aprobada</span>
+                    }
+                    else if (Model.Solicitud.Estado == "Rechazada")
+                    {
+                        <span class="badge bg-danger">Rechazada</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Pendiente</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Fecha de Creación:</dt>
+                <dd class="col-sm-9">@Model.Solicitud.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">Motivo / Comentario:</dt>
+                <dd class="col-sm-9">@Model.Solicitud.Motivo</dd>
+            </dl>
+        </div>
+
+        <div class="card-footer text-end">
+            <a asp-page="./Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+            <a asp-page="./Edit" asp-route-id="@Model.Solicitud.Id" class="btn btn-warning text-white">
+                <i class="bi bi-pencil-square"></i> Editar
+            </a>
+        </div>
+    </div>
+}

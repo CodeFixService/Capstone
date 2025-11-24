@@ -48,6 +48,21 @@ namespace SmartFlow.Web.Pages.Usuario.Solicitudes
                 // Si no hay sesión activa, redirige al login
                 return RedirectToPage("/Login/Index");
             }
+            //  Notificar también al coordinador
+            var coordinadores = _context.Usuarios.Where(u => u.Rol == "Coordinador").Select(c => c.Id).ToList();
+            foreach (var idCoord in coordinadores)
+            {
+                _context.Notificaciones.Add(new Notificacion
+                {
+                    UsuarioId = idCoord,
+                    Titulo = "Nueva solicitud registrada",
+                    Mensaje = $"El usuario {HttpContext.Session.GetString("UsuarioNombre")} ha creado una nueva solicitud.",
+                    Tipo = "Info",
+                    Leida = false,
+                    FechaCreacion = DateTime.Now
+                });
+            }
+            await _context.SaveChangesAsync();
 
             Solicitud.UsuarioId = usuarioId.Value;
             Solicitud.FechaCreacion = DateTime.Now;
@@ -57,7 +72,7 @@ namespace SmartFlow.Web.Pages.Usuario.Solicitudes
             await _context.SaveChangesAsync();
             // ?? Crear notificación para todos los administradores
             var admins = _context.Usuarios
-                .Where(u => u.Rol == "Admin")
+                .Where(u => u.Rol == "Admin" )
                 .ToList();
 
             foreach (var admin in admins)

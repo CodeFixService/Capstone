@@ -21,73 +21,90 @@ namespace SmartFlow.Web.Pages.Admin.Ayuda
         public IActionResult OnGet(int usuarioId)
         {
             var rol = HttpContext.Session.GetString("Rol");
-            if (rol != "Admin" && rol != "Director" && rol != "Coordinador")
+            var adminId = HttpContext.Session.GetInt32("UsuarioId");
+
+            if (adminId == null || (rol != "Admin" && rol != "Coordinador"))
                 return RedirectToPage("/Login/Login");
 
-
             UsuarioId = usuarioId;
-            var u = _context.Usuarios.FirstOrDefault(x => x.Id == usuarioId);
-            if (u == null) return RedirectToPage("/Admin/Ayuda/Index");
 
-            NombreUsuario = u.Nombre;
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario == null)
+                return RedirectToPage("/Admin/Ayuda/Index");
 
-            // Marcar como leídos para admin
-            var noLeidosAdmin = _context.ChatMensajes
-                .Where(c => c.UsuarioId == usuarioId && !c.LeidoPorAdmin)
-                .ToList();
-            if (noLeidosAdmin.Any())
-            {
-                foreach (var c in noLeidosAdmin) c.LeidoPorAdmin = true;
-                _context.SaveChanges();
-            }
+            NombreUsuario = usuario.Nombre;
 
+            // 🔹 Cargar todos los mensajes del mismo hilo (usuario base)
             Mensajes = _context.ChatMensajes
                 .Where(c => c.UsuarioId == usuarioId)
                 .OrderBy(c => c.Fecha)
                 .ToList();
+
+            // 🔹 Marcar como leídos los mensajes del otro rol
+            var rolActual = rol;
+            foreach (var c in Mensajes)
+            {
+                if (rolActual == "Admin" && !c.LeidoPorAdmin && c.EmisorRol != "Admin")
+                    c.LeidoPorAdmin = true;
+                if (rolActual == "Coordinador" && !c.LeidoPorCoordinador && c.EmisorRol != "Coordinador")
+                    c.LeidoPorCoordinador = true;
+            }
+            _context.SaveChanges();
 
             return Page();
         }
 
         public IActionResult OnPost(int usuarioId, string texto)
         {
-            if (HttpContext.Session.GetString("Rol") != "Admin")
-                return RedirectToPage("/Login/Login");
+            var rol = HttpContext.Session.GetString("Rol");
+            var userId = HttpContext.Session.GetInt32("UsuarioId");
+            if (userId == null) return RedirectToPage("/Login/Login");
 
-            var u = _context.Usuarios.FirstOrDefault(x => x.Id == usuarioId);
-            if (u == null) return RedirectToPage("/Admin/Ayuda/Index");
+            if (string.IsNullOrWhiteSpace(texto))
+                return RedirectToPage(new { usuarioId });
 
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario == null) return RedirectToPage("/Admin/Ayuda/Index");
+
+            // 🔹 Registrar el mensaje con el rol actual (Admin o Coordinador)
             _context.ChatMensajes.Add(new ChatMensaje
             {
                 UsuarioId = usuarioId,
-                EmisorRol = "Admin",
+                EmisorRol = rol,
                 Texto = texto.Trim(),
                 Fecha = DateTime.Now,
-                LeidoPorUsuario = false,
-                LeidoPorAdmin = true
+                LeidoPorAdmin = rol == "Admin",
+                LeidoPorCoordinador = rol == "Coordinador",
+                LeidoPorUsuario = false
             });
 
-            // 🔔 Notificar al usuario
-            _context.Notificaciones.Add(new Notificacion
+            // 🔹 Notificación para el otro rol (Admin ↔ Coordinador)
+            var destinatarios = _context.Usuarios
+                .Where(u => u.Rol == (rol == "Admin" ? "Coordinador" : "Admin"))
+                .Select(u => u.Id)
+                .ToList();
+
+            foreach (var id in destinatarios)
             {
-                UsuarioId = usuarioId,
-                Titulo = "Nueva respuesta de soporte",
-                Mensaje = "El Administrador respondió tu mensaje de Ayuda.",
-                Tipo = "Info",
-                Leida = false,
-                FechaCreacion = DateTime.Now
-            });
+                _context.Notificaciones.Add(new Notificacion
+                {
+                    UsuarioId = id,
+                    Titulo = $"Nuevo mensaje de {rol}",
+                    Mensaje = $"{rol} envió un mensaje relacionado con {usuario.Nombre}.",
+                    Tipo = "Chat",
+                    Leida = false,
+                    FechaCreacion = DateTime.Now
+                });
+            }
 
             _context.SaveChanges();
 
-            MensajeSistema = "✅ Respuesta enviada.";
+            MensajeSistema = "✅ Mensaje enviado correctamente.";
             return RedirectToPage(new { usuarioId });
         }
+
         public IActionResult OnGetMensajesParciales(int usuarioId)
         {
-            if (HttpContext.Session.GetString("Rol") != "Admin")
-                return new EmptyResult();
-
             var mensajes = _context.ChatMensajes
                 .Where(c => c.UsuarioId == usuarioId)
                 .OrderBy(c => c.Fecha)
@@ -96,12 +113,11 @@ namespace SmartFlow.Web.Pages.Admin.Ayuda
             var html = string.Join("", mensajes.Select(m =>
                 $"<div class='mb-2'>" +
                 $"<small class='text-muted'>{m.Fecha:g}</small><br/>" +
-                $"<span class='badge {(m.EmisorRol == "Usuario" ? "bg-primary" : "bg-dark")}'>{m.EmisorRol}</span>" +
+                $"<span class='badge {(m.EmisorRol == "Admin" ? "bg-dark" : m.EmisorRol == "Coordinador" ? "bg-success" : "bg-primary")}'>{m.EmisorRol}</span>" +
                 $"<span class='ms-2'>{m.Texto}</span></div>"
             ));
 
             return Content(html, "text/html");
         }
-
     }
 }

@@ -1,0 +1,192 @@
+﻿@page
+@using Newtonsoft.Json
+@model SmartFlow.Web.Pages.Coordinador.Reportes.IndexModel
+@{
+    ViewData["Title"] = "Reportes del Coordinador";
+}
+
+<h2 class="mb-4 text-center fw-semibold">📊 Panel de Reportes del Coordinador</h2>
+
+<form method="get" class="row g-3 mb-4 shadow-sm p-3 rounded-4 bg-light">
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Desde:</label>
+        <input type="date" name="fechaInicio" value="@Request.Query["fechaInicio"]" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Hasta:</label>
+        <input type="date" name="fechaFin" value="@Request.Query["fechaFin"]" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Estado:</label>
+        <select name="estado" class="form-select">
+            <option value="">Todos</option>
+            <option value="Aprobada">Aprobada</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Rechazada">Rechazada</option>
+        </select>
+    </div>
+
+    <div class="col-12 text-end">
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="bi bi-funnel"></i> Filtrar
+        </button>
+        <a asp-page-handler="ExportarExcel" class="btn btn-success px-4">
+            <i class="bi bi-file-earmark-excel"></i> Excel
+        </a>
+        <a asp-page-handler="ExportarPdf" class="btn btn-danger px-4">
+            <i class="bi bi-file-earmark-pdf"></i> PDF
+        </a>
+    </div>
+</form>
+
+<hr />
+
+<!-- 🔹 Tarjetas resumen -->
+<div class="row text-center mb-4 g-3">
+    <div class="col-md-3 col-6">
+        <div class="card bg-primary text-white shadow-sm">
+            <div class="card-body">
+                <i class="bi bi-people" style="font-size:2rem;"></i>
+                <h6>Usuarios</h6>
+                <h3>@Model.TotalUsuarios</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card bg-success text-white shadow-sm">
+            <div class="card-body">
+                <i class="bi bi-calendar-check" style="font-size:2rem;"></i>
+                <h6>Reservas</h6>
+                <h3>@Model.TotalReservas</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card bg-warning text-dark shadow-sm">
+            <div class="card-body">
+                <i class="bi bi-hourglass-split" style="font-size:2rem;"></i>
+                <h6>Pendientes</h6>
+                <h3>@Model.ReservasPendientes</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card bg-info text-dark shadow-sm">
+            <div class="card-body">
+                <i class="bi bi-journal-text" style="font-size:2rem;"></i>
+                <h6>Solicitudes</h6>
+                <h3>@Model.TotalSolicitudes</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4 text-center">
+    <div class="col-md-6">
+        <div class="card bg-success text-white shadow-sm">
+            <div class="card-body text-center">
+                <h6>Porcentaje Aprobadas</h6>
+                <h3>@Model.PorcentajeAprobadas %</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card bg-danger text-white shadow-sm">
+            <div class="card-body text-center">
+                <h6>Porcentaje Rechazadas</h6>
+                <h3>@Model.PorcentajeRechazadas %</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<!-- 🔹 Gráficos -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header fw-semibold text-center bg-light">Reservas por estado</div>
+            <div class="card-body">
+                <canvas id="chartReservas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header fw-semibold text-center bg-light">Usuarios de mi carrera</div>
+            <div class="card-body">
+                <canvas id="chartUsuarios"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 mb-4">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header fw-semibold text-center bg-light">Evolución mensual de reservas</div>
+        <div class="card-body">
+            <canvas id="chartMensual"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const reservasData = @Html.Raw(JsonConvert.SerializeObject(Model.ReservasPorEstado ?? new List<SmartFlow.Web.Pages.Coordinador.Reportes.IndexModel.ReservasEstadoDTO>()));
+        const usuariosData = @Html.Raw(JsonConvert.SerializeObject(Model.UsuariosPorCarrera ?? new List<SmartFlow.Web.Pages.Coordinador.Reportes.IndexModel.UsuariosCarreraDTO>()));
+        const mensualData = @Html.Raw(JsonConvert.SerializeObject(Model.ReservasMensuales ?? new List<SmartFlow.Web.Pages.Coordinador.Reportes.IndexModel.ReservasMensualesDTO>()));
+
+        // 📊 Gráfico de Reservas
+        new Chart(document.getElementById('chartReservas'), {
+            type: 'pie',
+            data: {
+                labels: reservasData.map(r => r.Estado),
+                datasets: [{
+                    label: 'Reservas',
+                    data: reservasData.map(r => r.Cantidad),
+                    backgroundColor: ['#0d6efd', '#ffc107', '#dc3545']
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom' } } }
+        });
+
+        // 📈 Gráfico de Usuarios por Carrera
+        new Chart(document.getElementById('chartUsuarios'), {
+            type: 'bar',
+            data: {
+                labels: usuariosData.map(u => u.Carrera),
+                datasets: [{
+                    label: 'Usuarios',
+                    data: usuariosData.map(u => u.Cantidad),
+                    backgroundColor: '#00b4d8'
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // 📉 Gráfico de evolución mensual
+        new Chart(document.getElementById('chartMensual'), {
+            type: 'line',
+            data: {
+                labels: mensualData.map(m => m.Mes),
+                datasets: [
+                    { label: 'Aprobadas', data: mensualData.map(m => m.Aprobadas), borderColor: '#198754', backgroundColor: '#19875433', fill: true },
+                    { label: 'Rechazadas', data: mensualData.map(m => m.Rechazadas), borderColor: '#dc3545', backgroundColor: '#dc354533', fill: true },
+                    { label: 'Pendientes', data: mensualData.map(m => m.Pendientes), borderColor: '#ffc107', backgroundColor: '#ffc10733', fill: true }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
+}

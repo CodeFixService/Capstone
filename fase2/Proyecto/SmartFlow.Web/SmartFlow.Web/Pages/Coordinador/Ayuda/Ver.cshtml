@@ -1,0 +1,72 @@
+﻿@page
+@model SmartFlow.Web.Pages.Coordinador.Ayuda.VerModel
+@{
+    ViewData["Title"] = "Chat con Usuario/Admin";
+}
+
+<h2 class="mb-3 text-center fw-semibold">💬 Conversación con @Model.NombreUsuario</h2>
+
+<div class="card shadow-lg border-0 rounded-4 mt-4">
+    <div class="card-body bg-light p-3" style="min-height: 420px;">
+        <div id="chatMensajes" class="border rounded-4 bg-white p-3" style="height: 420px; overflow-y: auto;">
+            @if (Model.Mensajes.Any())
+            {
+                foreach (var m in Model.Mensajes)
+                {
+                    <div class="mb-2">
+                        <small class="text-muted">@m.Fecha:g</small><br />
+                        <span class="badge @(m.EmisorRol == "Coordinador" ? "bg-success" : (m.EmisorRol == "Admin" ? "bg-dark" : "bg-secondary"))">@m.EmisorRol</span>
+                        <span class="ms-2">@m.Texto</span>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-muted">Sin mensajes aún. Escribe el primero 👇</div>
+            }
+        </div>
+    </div>
+
+    <div class="card-footer bg-white border-top d-flex gap-2">
+        <form method="post" class="d-flex flex-grow-1 gap-2">
+            <input type="hidden" name="UsuarioId" value="@Model.UsuarioId" />
+            <input type="text" name="texto" class="form-control" placeholder="Escribe un mensaje..." required />
+            <button type="submit" class="btn btn-success px-4 fw-semibold">
+                <i class="bi bi-send"></i> Enviar
+            </button>
+        </form>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.MensajeSistema))
+{
+    <div class="alert alert-info mt-3 text-center">@Model.MensajeSistema</div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const chatDiv = document.getElementById("chatMensajes");
+
+            // 🔁 Recarga periódica del chat
+            function refrescarChat() {
+                fetch(`/Coordinador/Ayuda/Ver?handler=MensajesParciales&UsuarioId=@Model.UsuarioId`)
+                    .then(r => r.text())
+                    .then(html => {
+                        chatDiv.innerHTML = html;
+                        chatDiv.scrollTop = chatDiv.scrollHeight; // Auto scroll
+                    })
+                    .catch(err => console.error("Error actualizando chat:", err));
+            }
+
+            // 🔄 Recargar cada 5 s
+            setInterval(refrescarChat, 5000);
+
+            // 🔽 Bajar al final del chat al cargar
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+        });
+    </script>
+}

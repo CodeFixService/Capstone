@@ -1,0 +1,129 @@
+﻿@page
+@model SmartFlow.Web.Pages.Coordinador.Calendario.IndexModel
+@{
+    ViewData["Title"] = "Calendario de Reservas - Coordinador";
+}
+
+<div class="container-fluid py-4" style="max-width: 95%; margin: auto;">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header text-center text-white fw-semibold"
+             style="background: linear-gradient(90deg, #198754, #00b894); font-size: 1.4rem;">
+            @ViewData["Title"]
+        </div>
+
+        <div class="card-body bg-white" style="padding: 2%; min-height: 75vh;">
+            <div id="calendar"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de detalle -->
+<div class="modal fade" id="detalleReserva" tabindex="-1" aria-labelledby="detalleReservaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg border-0">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title fw-semibold" id="detalleReservaLabel">Detalle de Reserva</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body" id="detalleReservaBody"></div>
+
+            <div class="px-3 pb-3">
+                <label for="comentarioCoord" class="form-label fw-semibold">Comentario del Coordinador (opcional)</label>
+                <textarea id="comentarioCoord" class="form-control rounded-3" rows="3"
+                          placeholder="Escribe un comentario o nota..."></textarea>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between">
+                <div class="btn-group">
+                    <button type="button" id="btnAprobar" class="btn btn-success px-3"><i class="bi bi-check-circle"></i> Aprobar</button>
+                    <button type="button" id="btnRechazar" class="btn btn-danger px-3"><i class="bi bi-x-circle"></i> Rechazar</button>
+                    <button type="button" id="btnPendiente" class="btn btn-warning text-dark px-3"><i class="bi bi-hourglass-split"></i> Pendiente</button>
+                </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let eventoSeleccionadoId = null;
+            const calendarEl = document.getElementById('calendar');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+               locale: 'es', // idioma español
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    list: 'Lista'
+                },
+                allDayText: 'Todo el día',
+                noEventsText: 'No hay eventos para mostrar',
+                weekText: 'Sem',
+                eventLimitText: 'más',
+                dayHeaderFormat: { weekday: 'long' },
+                height: 'auto',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: '/Coordinador/Calendario?handler=Eventos',
+                eventClick: function (info) {
+                    eventoSeleccionadoId = info.event.id;
+
+                    document.getElementById('detalleReservaBody').innerHTML = `
+                        <p><strong>Usuario:</strong> ${info.event.extendedProps.usuario}</p>
+                        <p><strong>Servicio:</strong> ${info.event.extendedProps.servicio}</p>
+                        <p><strong>Inicio:</strong> ${new Date(info.event.start).toLocaleString()}</p>
+                        <p><strong>Fin:</strong> ${new Date(info.event.end).toLocaleString()}</p>
+                        <p><strong>Estado actual:</strong> <span class="badge bg-${
+                            info.event.extendedProps.estado === 'Aprobada' ? 'success' :
+                            info.event.extendedProps.estado === 'Rechazada' ? 'danger' : 'warning text-dark'
+                        }">${info.event.extendedProps.estado}</span></p>
+                    `;
+                    document.getElementById('comentarioCoord').value = "";
+                    new bootstrap.Modal(document.getElementById('detalleReserva')).show();
+                }
+            });
+
+            calendar.render();
+
+            async function actualizarEstado(id, estado) {
+                const comentario = document.getElementById('comentarioCoord').value;
+                const formData = new FormData();
+                formData.append('id', id);
+                formData.append('estado', estado);
+                formData.append('comentarioCoord', comentario);
+
+                const resp = await fetch('/Coordinador/Calendario?handler=ActualizarEstado', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await resp.json();
+                if (data.success) {
+                    const alerta = document.createElement('div');
+                    alerta.className = `alert alert-success text-center fw-semibold shadow-sm rounded-4 position-fixed top-0 start-50 translate-middle-x mt-3`;
+                    alerta.style.zIndex = '9999';
+                    alerta.innerHTML = `✅ Reserva ${estado.toLowerCase()} correctamente.`;
+                    document.body.appendChild(alerta);
+                    setTimeout(() => alerta.remove(), 3000);
+                    bootstrap.Modal.getInstance(document.getElementById('detalleReserva')).hide();
+                    calendar.refetchEvents();
+                } else {
+                    alert(data.message || 'Error al actualizar la reserva.');
+                }
+            }
+
+            document.getElementById('btnAprobar').addEventListener('click', () => actualizarEstado(eventoSeleccionadoId, 'Aprobada'));
+            document.getElementById('btnRechazar').addEventListener('click', () => actualizarEstado(eventoSeleccionadoId, 'Rechazada'));
+            document.getElementById('btnPendiente').addEventListener('click', () => actualizarEstado(eventoSeleccionadoId, 'Pendiente'));
+        });
+    </script>
+}
