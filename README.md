@@ -32,16 +32,16 @@ Desarrollar un sistema web que permita gestionar reservas, servicios y usuarios 
 ## 📂 Estructura del Repositorio
 - `/fase1` → Documentación del proyecto (Acta, ERS, Casos de Uso, Mockups, Minutas, etc.)  
 - `/fase2` → Código fuente de la aplicación   
-- `/fase3` → -  
+- `/fase3` → -  Documentación cierre
 
 ## 🚀 Estado del Proyecto
 - [x] Acta de Constitución  
 - [x] Especificación de Requerimientos (ERS)  
 - [x] Casos de Uso (Alto nivel y extendidos)  
 - [x] Mockups  
-- [ ] Desarrollo Backend  
-- [ ] Desarrollo Frontend  
-- [ ] Pruebas de integración  
+- [x] Desarrollo Backend  
+- [x] Desarrollo Frontend  
+- [x] Pruebas de integración  
 - [ ] Entrega final  
 
 ## 📅 Cronograma
