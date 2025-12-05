@@ -48,13 +48,18 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script>
+        // DECLARAR EL CALENDARIO GLOBAL
+        let calendar;
+
         document.addEventListener('DOMContentLoaded', function () {
+
             let eventoSeleccionadoId = null;
             const calendarEl = document.getElementById('calendar');
 
-            const calendar = new FullCalendar.Calendar(calendarEl, {
+            // ASIGNA LA INSTANCIA A LA VARIABLE GLOBAL
+            calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-               locale: 'es', // idioma español
+                locale: 'es',
                 buttonText: {
                     today: 'Hoy',
                     month: 'Mes',
@@ -62,10 +67,6 @@
                     day: 'Día',
                     list: 'Lista'
                 },
-                allDayText: 'Todo el día',
-                noEventsText: 'No hay eventos para mostrar',
-                weekText: 'Sem',
-                eventLimitText: 'más',
                 dayHeaderFormat: { weekday: 'long' },
                 height: 'auto',
                 headerToolbar: {
@@ -74,6 +75,7 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 events: '/Coordinador/Calendario?handler=Eventos',
+
                 eventClick: function (info) {
                     eventoSeleccionadoId = info.event.id;
 
@@ -82,11 +84,23 @@
                         <p><strong>Servicio:</strong> ${info.event.extendedProps.servicio}</p>
                         <p><strong>Inicio:</strong> ${new Date(info.event.start).toLocaleString()}</p>
                         <p><strong>Fin:</strong> ${new Date(info.event.end).toLocaleString()}</p>
-                        <p><strong>Estado actual:</strong> <span class="badge bg-${
-                            info.event.extendedProps.estado === 'Aprobada' ? 'success' :
-                            info.event.extendedProps.estado === 'Rechazada' ? 'danger' : 'warning text-dark'
-                        }">${info.event.extendedProps.estado}</span></p>
+                        <p><strong>Estado actual:</strong>
+                            <span class="badge bg-${
+                                info.event.extendedProps.estado === 'Aprobada' ? 'success' :
+                                info.event.extendedProps.estado === 'Rechazada' ? 'danger' : 'warning text-dark'
+                            }">${info.event.extendedProps.estado}</span>
+                        </p>
+                                <p><strong>Comentario del Estudiante:</strong>
+            ${info.event.extendedProps.comentarioUsuario ?? "Sin comentario"}
+        </p>
+
+        <p><strong>Comentario):</strong>
+            ${info.event.extendedProps.comentarioAdmin ?? "Sin comentarios previos"}
+        </p>
+
                     `;
+
+
                     document.getElementById('comentarioCoord').value = "";
                     new bootstrap.Modal(document.getElementById('detalleReserva')).show();
                 }
@@ -94,6 +108,10 @@
 
             calendar.render();
 
+
+            // --------------------
+            // FUNCIÓN QUE ACTUALIZA EL ESTADO
+            // --------------------
             async function actualizarEstado(id, estado) {
                 const comentario = document.getElementById('comentarioCoord').value;
                 const formData = new FormData();
@@ -107,17 +125,10 @@
                 });
 
                 const data = await resp.json();
+
                 if (data.success) {
-                    const alerta = document.createElement('div');
-                    alerta.className = `alert alert-success text-center fw-semibold shadow-sm rounded-4 position-fixed top-0 start-50 translate-middle-x mt-3`;
-                    alerta.style.zIndex = '9999';
-                    alerta.innerHTML = `✅ Reserva ${estado.toLowerCase()} correctamente.`;
-                    document.body.appendChild(alerta);
-                    setTimeout(() => alerta.remove(), 3000);
                     bootstrap.Modal.getInstance(document.getElementById('detalleReserva')).hide();
-                    calendar.refetchEvents();
-                } else {
-                    alert(data.message || 'Error al actualizar la reserva.');
+                    calendar.refetchEvents(); // <-- ESTO SÍ FUNCIONA AHORA
                 }
             }
 
@@ -125,5 +136,48 @@
             document.getElementById('btnRechazar').addEventListener('click', () => actualizarEstado(eventoSeleccionadoId, 'Rechazada'));
             document.getElementById('btnPendiente').addEventListener('click', () => actualizarEstado(eventoSeleccionadoId, 'Pendiente'));
         });
+
+
+     
+ 
+        async function refrescarEstados() {
+
+            if (!calendar) return; // <-- evitar error “calendar undefined”
+
+            try {
+                const resp = await fetch(window.location.pathname + "?handler=Estados");
+                const result = await resp.json();
+
+                if (!result?.data) return;
+
+                result.data.forEach(item => {
+
+                    const event = calendar.getEventById(item.id);
+
+                    if (event) {
+
+                        let color = "#ffc107";
+                        if (item.estado === "Aprobada") color = "#198754";
+                        if (item.estado === "Rechazada") color = "#dc3545";
+
+                        // TITULO NUEVO
+                        event.setProp("title", item.titulo);
+
+                        // COLOR NUEVO
+                        event.setProp("backgroundColor", color);
+                        event.setProp("borderColor", color);
+                    }
+                });
+
+                // NUEVAS RESERVAS APARECEN AQUÍ
+                calendar.refetchEvents();
+
+            } catch (err) {
+                console.log("Error refresco automático:", err);
+            }
+        }
+
+        setInterval(refrescarEstados, 10000);
     </script>
+
 }

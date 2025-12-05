@@ -47,12 +47,12 @@
             <th class="text-center">Acciones</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tablaSolicitudes">
         @if (Model.ListaSolicitudes != null && Model.ListaSolicitudes.Count > 0)
         {
             foreach (var solicitud in Model.ListaSolicitudes)
             {
-                <tr>
+                <tr data-id="@solicitud.Id">
                     <td>@solicitud.Id</td>
                     <td>@solicitud.Asunto</td>
                     <td>@solicitud.Usuario?.Nombre</td>
@@ -95,4 +95,39 @@
 
 @section Scripts {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+        function refrescarEstados() {
+            fetch(window.location.pathname + "?handler=Estados")
+                .then(r => r.json())
+                .then(result => {
+
+                    result.data.forEach(item => {
+
+                        // buscar la fila por data-id
+                        const fila = document.querySelector(`tr[data-id="${item.id}"]`);
+                        if (!fila) return;
+
+                        // buscar la columna estado (5ta columna)
+                        const colEstado = fila.children[4];
+
+                        // reemplazar contenido según estado
+                        if (item.estado === "Aprobada")
+                            colEstado.innerHTML = "<span class='badge bg-success'>Aprobada</span>";
+                        else if (item.estado === "Rechazada")
+                            colEstado.innerHTML = "<span class='badge bg-danger'>Rechazada</span>";
+                        else
+                            colEstado.innerHTML = "<span class='badge bg-warning text-dark'>Pendiente</span>";
+                    });
+
+                })
+                .catch(err => console.log("Error autoupdate:", err));
+        }
+
+        // refresca solo ESTADO cada 10 segundos
+        setInterval(refrescarEstados, 10000);
+    </script>
+
+
+
+
 }

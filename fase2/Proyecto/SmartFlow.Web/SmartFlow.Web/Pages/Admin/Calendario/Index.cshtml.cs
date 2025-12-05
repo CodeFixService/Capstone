@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SmartFlow.Web.Data;
 using SmartFlow.Web.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,28 +15,84 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
     {
         private readonly SmartFlowContext _context;
 
-        public List<string> Servicios { get; set; } = new();
+        public List<Servicio> Servicios { get; set; } = new();
 
         public IndexModel(SmartFlowContext context) => _context = context;
 
         public IActionResult OnGet()
         {
+            Servicios = _context.Servicios
+            .OrderBy(s => s.Nombre)
+            .ToList();
+
             var rol = HttpContext.Session.GetString("Rol");
-            if (rol != "Admin" && rol != "Director" && rol != "Coordinador") return RedirectToPage("/Login/Login");
+            if (rol != "Admin"  && rol != "Coordinador") return RedirectToPage("/Login/Login");
             return Page();
         }
 
-        // 🔹 Cargar eventos del calendario global (Admin)
-        public JsonResult OnGetEventos(int? servicioId)
+        public JsonResult OnGetEventos(string estado, string servicioId)
         {
+            // 🟢 1. Obtener el usuario actual desde la sesión
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            if (usuarioId == null)
+            {
+                // Si no hay sesión, no devolvemos nada
+                return new JsonResult(Enumerable.Empty<object>());
+            }
+
+            var usuarioActual = _context.Usuarios
+                .Include(u => u.Carrera)
+                .FirstOrDefault(u => u.Id == usuarioId.Value);
+
+            if (usuarioActual == null)
+            {
+                return new JsonResult(Enumerable.Empty<object>());
+            }
+
+            // 🟢 2. Construir la consulta base
             var query = _context.Reservas
                 .Include(r => r.Servicio)
                 .Include(r => r.Usuario)
+                    .ThenInclude(u => u.Carrera)
                 .AsQueryable();
 
-            if (servicioId.HasValue)
-                query = query.Where(r => r.ServicioId == servicioId.Value);
+           
+            if (!string.IsNullOrEmpty(estado))
+            {
+                query = query.Where(r => r.Estado == estado);
+            }
 
+        
+            if (!string.IsNullOrEmpty(servicioId))
+            {
+                if (int.TryParse(servicioId, out int sid))
+                {
+                    query = query.Where(r => r.ServicioId == sid);
+                }
+            }
+
+            // 🟢 4. Filtro por rol / carrera
+
+            // Admin
+            if (usuarioActual.Rol == "Admin")
+            {
+                if (usuarioActual.CarreraId != null)
+                {
+                    // Admin de carrera → solo reservas de estudiantes de su carrera
+                    query = query.Where(r => r.Usuario.CarreraId == usuarioActual.CarreraId);
+                }
+                // Admin general (CarreraId == null) → NO filtramos, ve todo
+            }
+            // Coordinador o Director → solo su carrera
+            else if (usuarioActual.Rol == "Coordinador" || usuarioActual.Rol == "Director")
+            {
+                if (usuarioActual.CarreraId != null)
+                {
+                    query = query.Where(r => r.Usuario.CarreraId == usuarioActual.CarreraId);
+                }
+            }
+
+            // 🟢 5. Armar los eventos para el calendario
             var eventos = query
                 .Select(r => new
                 {
@@ -49,12 +106,14 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                     usuario = r.Usuario.Nombre,
                     servicio = r.Servicio.Nombre,
                     estado = r.Estado,
-                    detalle = $"Estudiante: {r.Usuario.Nombre}\nServicio: {r.Servicio.Nombre}\nInicio: {r.FechaInicio:g}\nFin: {r.FechaFin:g}\nEstado: {r.Estado}"
+                    comentarioUsuario = r.ComentarioUsuario,
+                    comentarioAdmin = r.ComentarioAdmin,
                 })
                 .ToList();
 
             return new JsonResult(eventos);
         }
+
 
         // 🔹 Actualizar estado de una reserva
         [IgnoreAntiforgeryToken]
@@ -75,6 +134,24 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                 reserva.ComentarioAdmin = string.IsNullOrWhiteSpace(comentarioAdmin) ? null : comentarioAdmin;
                 _context.SaveChanges();
 
+                // ===============================
+                // 🔹 Obtener estudiante
+                // ===============================
+                var estudiante = reserva.Usuario;
+
+                // ===============================
+                // 🔹 Obtener actores según carrera
+                // ===============================
+                var coordinador = _context.Usuarios
+                    .FirstOrDefault(u => u.Rol == "Coordinador" && u.CarreraId == estudiante.CarreraId);
+
+                var adminCarrera = _context.Usuarios
+                    .FirstOrDefault(u => u.Rol == "Admin" && u.CarreraId == estudiante.CarreraId);
+
+                var adminGeneral = _context.Usuarios
+                    .FirstOrDefault(u => u.Rol == "Admin" && u.CarreraId == null);
+
+
                 //  Crear notificación al usuario
                 string mensaje = $"La reserva para {reserva.Servicio.Nombre} el {reserva.FechaInicio:g} fue {estado.ToLower()}.";
                 if (!string.IsNullOrWhiteSpace(comentarioAdmin))
@@ -89,6 +166,54 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                     Leida = false,
                     FechaCreacion = DateTime.Now
                 });
+                // ===============================
+                // 🔹 Coordinador
+                // ===============================
+                if (coordinador != null)
+                {
+                    _context.Notificaciones.Add(new Notificacion
+                    {
+                        UsuarioId = coordinador.Id,
+                        Titulo = $"Reserva #{reserva.Id} actualizada",
+                        Mensaje = $"La reserva de {estudiante.Nombre} para {reserva.Servicio.Nombre} el {reserva.FechaInicio:g} fue {estado.ToLower()}.",
+                        Tipo = "Reserva",
+                        FechaCreacion = DateTime.Now,
+                        Leida = false
+                    });
+                }
+
+                // ===============================
+                // 🔹 Admin de carrera
+                // ===============================
+                if (adminCarrera != null)
+                {
+                    _context.Notificaciones.Add(new Notificacion
+                    {
+                        UsuarioId = adminCarrera.Id,
+                        Titulo = $"Reserva en tu carrera",
+                        Mensaje = $"La reserva #{reserva.Id} de {estudiante.Nombre} fue {estado.ToLower()}.",
+                        Tipo = "Reserva",
+                        FechaCreacion = DateTime.Now,
+                        Leida = false
+                    });
+                }
+
+                // ===============================
+                // 🔹 Admin general
+                // ===============================
+                if (adminGeneral != null)
+                {
+                    _context.Notificaciones.Add(new Notificacion
+                    {
+                        UsuarioId = adminGeneral.Id,
+                        Titulo = $"Actualización de reserva #{reserva.Id}",
+                        Mensaje = $"{estudiante.Nombre} tiene una reserva {estado.ToLower()} en {reserva.Servicio.Nombre}.",
+                        Tipo = "Reserva",
+                        FechaCreacion = DateTime.Now,
+                        Leida = false
+                    });
+                }
+
 
                 _context.SaveChanges();
 

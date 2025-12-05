@@ -26,6 +26,33 @@ namespace SmartFlow.Web.Pages.Coordinador.Calendario
 
             return Page();
         }
+        public async Task<JsonResult> OnGetEstadosAsync()
+        {
+            var coordId = HttpContext.Session.GetInt32("UsuarioId");
+            if (coordId == null)
+                return new JsonResult(new { data = Array.Empty<object>() });
+
+            var carreraCoord = await _context.Usuarios
+                .Where(u => u.Id == coordId)
+                .Select(u => u.CarreraId)
+                .FirstOrDefaultAsync();
+
+            if (carreraCoord == null)
+                return new JsonResult(new { data = Array.Empty<object>() });
+
+            var lista = await _context.Reservas
+                .Where(r => r.Usuario.CarreraId == carreraCoord)
+                .Select(r => new
+                {
+                    id = r.Id,
+                    estado = r.Estado,
+                    titulo = $"{r.Usuario.Nombre} - {r.Servicio.Nombre} ({r.Estado})"
+                })
+                .ToListAsync();
+
+            return new JsonResult(new { data = lista });
+        }
+
 
         public JsonResult OnGetEventos()
         {
@@ -60,7 +87,10 @@ namespace SmartFlow.Web.Pages.Coordinador.Calendario
                             : "#ffc107",
                     usuario = r.Usuario.Nombre,
                     servicio = r.Servicio.Nombre,
-                    estado = r.Estado
+                    estado = r.Estado,
+                    comentarioUsuario = r.ComentarioUsuario,
+                    comentarioAdmin = r.ComentarioAdmin
+
                 })
                 .ToList();
 

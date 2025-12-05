@@ -10,6 +10,31 @@
              style="background: linear-gradient(90deg, #007bff, #00b4d8); font-size: 1.4rem;">
             @ViewData["Title"]
         </div>
+        <div class="row mb-3">
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Filtrar por Estado</label>
+                <select id="filtroEstado" class="form-select">
+                    <option value="">Todas</option>
+                    <option value="Aprobada">Aprobada</option>
+                    <option value="Rechazada">Rechazada</option>
+                    <option value="Pendiente">Pendiente</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Filtrar por Servicio</label>
+                <select id="filtroServicio" class="form-select">
+                    <option value="">Todos</option>
+                    @foreach (var s in Model.Servicios)
+                    {
+                        <option value="@s.Id">@s.Nombre</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+
 
         <div class="card-body bg-white" style="padding: 2%; min-height: 75vh;">
             <div id="calendar"></div>
@@ -60,12 +85,21 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        var calendar; // 🔵 variable global
+    </script>
 
-            let eventoSeleccionadoId = null;
+    <script>
+                document.getElementById("filtroEstado").addEventListener("change", function () {
+                if (calendar) calendar.refetchEvents();
+                });
 
-            const calendarEl = document.getElementById('calendar');
-            const calendar = new FullCalendar.Calendar(calendarEl, {
+                document.getElementById("filtroServicio").addEventListener("change", function () {
+                 if (calendar) calendar.refetchEvents();
+                });
+
+            document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',
                 locale: 'es', // idioma español
                 buttonText: {
@@ -86,8 +120,22 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: '/Admin/Calendario?handler=Eventos',
-                eventClick: function (info) {
+                    events: function (fetchInfo, successCallback, failureCallback) {
+
+                        const estado = document.getElementById("filtroEstado").value;
+                        const servicio = document.getElementById("filtroServicio").value;
+
+                        let url = "?handler=Eventos";
+
+                        if (estado) url += "&estado=" + estado;
+                        if (servicio) url += "&servicioId=" + servicio;
+
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(data => successCallback(data))
+                            .catch(error => failureCallback(error));
+                    },
+                        eventClick: function (info) {
                     eventoSeleccionadoId = info.event.id;
 
                     document.getElementById('detalleReservaBody').innerHTML = `
@@ -99,6 +147,14 @@
                             info.event.extendedProps.estado === 'Aprobada' ? 'success' :
                             info.event.extendedProps.estado === 'Rechazada' ? 'danger' : 'warning text-dark'
                         }">${info.event.extendedProps.estado}</span></p>
+                                <p><strong>Comentario del Estudiante:</strong>
+            ${info.event.extendedProps.comentarioUsuario ?? "Sin comentario"}
+        </p>
+
+        <p><strong>Comentario:</strong>
+            ${info.event.extendedProps.comentarioAdmin ?? "Sin comentarios previos"}
+        </p>
+
                     `;
 
                     document.getElementById('comentarioAdmin').value = "";
@@ -146,4 +202,13 @@
             document.getElementById('btnPendiente').addEventListener('click', () => actualizarEstado(eventoSeleccionadoId, 'Pendiente'));
         });
     </script>
+    <script>
+        setInterval(() => {
+            if (calendar) {
+                calendar.refetchEvents(); //  SOLO ACTUALIZA EL ESTADO, NO rompe nada
+            }
+        }, 10000);
+    </script>
+
+
 }

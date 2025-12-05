@@ -27,7 +27,7 @@ namespace SmartFlow.Web.Pages.Usuario.Calendario
             return Page();
         }
 
-        // 🟢 Cargar lista de servicios (combo del modal)
+        // Cargar lista de servicios (combo del modal)
         public async Task<JsonResult> OnGetServicios()
         {
             try
@@ -77,26 +77,75 @@ namespace SmartFlow.Web.Pages.Usuario.Calendario
                 FechaFin = request.FechaFin,
                 Estado = "Pendiente",
                 ComentarioUsuario = string.IsNullOrWhiteSpace(request.Comentario) ? null : request.Comentario,
+                ComentarioAdmin = "",
                 FechaCreacion = DateTime.Now
             };
 
             _context.Reservas.Add(nueva);
             _context.SaveChanges();
 
-            // 🔹 Notificar a administradores
-            var admins = _context.Usuarios.Where(u => u.Rol == "Admin").ToList();
-            foreach (var admin in admins)
+            //  Notificar 
+            //  Obtener estudiante con su carrera
+            var estudiante = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId.Value);
+
+            //  Obtener coordinador de su carrera
+            var coordinador = _context.Usuarios
+                .FirstOrDefault(u => u.Rol == "Coordinador" && u.CarreraId == estudiante.CarreraId);
+
+            //  Obtener admin de su carrera
+            var adminCarrera = _context.Usuarios
+                .FirstOrDefault(u => u.Rol == "Admin" && u.CarreraId == estudiante.CarreraId);
+
+            //  Obtener admin general (CarreraId == null)
+            var adminGeneral = _context.Usuarios
+                .FirstOrDefault(u => u.Rol == "Admin" && u.CarreraId == null);
+
+
+
+            //  Notificar Coordinador
+            if (coordinador != null)
             {
                 _context.Notificaciones.Add(new Notificacion
                 {
-                    UsuarioId = admin.Id,
+                    UsuarioId = coordinador.Id,
                     Titulo = "Nueva reserva creada",
-                    Mensaje = $"Un usuario reservó el servicio '{servicio.Nombre}' para el {request.FechaInicio:g}.",
+                    Mensaje = $"{estudiante.Nombre} reservó el servicio '{servicio.Nombre}' para el {request.FechaInicio:g}.",
                     Tipo = "Reserva",
                     Leida = false,
                     FechaCreacion = DateTime.Now
                 });
             }
+
+            // 🔹 Notificar Admin de la carrera
+            if (adminCarrera != null)
+            {
+                _context.Notificaciones.Add(new Notificacion
+                {
+                    UsuarioId = adminCarrera.Id,
+                    Titulo = "Nueva reserva en tu carrera",
+                    Mensaje = $"{estudiante.Nombre} reservó el servicio '{servicio.Nombre}'.",
+                    Tipo = "Reserva",
+                    Leida = false,
+                    FechaCreacion = DateTime.Now
+                });
+            }
+
+            // 🔹 Notificar Admin general (si existe)
+            if (adminGeneral != null)
+            {
+                _context.Notificaciones.Add(new Notificacion
+                {
+                    UsuarioId = adminGeneral.Id,
+                    Titulo = "Nueva reserva registrada",
+                    Mensaje = $"{estudiante.Nombre} creó una reserva.",
+                    Tipo = "Reserva",
+                    Leida = false,
+                    FechaCreacion = DateTime.Now
+                });
+            }
+
+            _context.SaveChanges();
+
 
             _context.SaveChanges();
             return new JsonResult(new { success = true });
@@ -123,27 +172,36 @@ namespace SmartFlow.Web.Pages.Usuario.Calendario
                 .Include(r => r.Servicio)
                 .ToList();
 
-            // 🔹 Armar lista de eventos con colores según propietario
-            var eventos = reservas.Select(r => new
-            {
-                id = r.Id,
-                title = r.UsuarioId == usuarioId
-                    ? $"{r.Servicio?.Nombre} ({r.Estado})"
-                    : "Ocupado",
-                start = r.FechaInicio.ToString("yyyy-MM-ddTHH:mm:ss"),
-                end = r.FechaFin.ToString("yyyy-MM-ddTHH:mm:ss"),
-                color = r.UsuarioId == usuarioId
-                    ? (r.Estado == "Aprobada" ? "#198754" :
-                       r.Estado == "Rechazada" ? "#dc3545" : "#ffc107")
-                    : "#b0b0b0", // gris para otros usuarios
-                textColor = "#000000",
-                overlap = true,
-                rendering = r.UsuarioId == usuarioId ? "auto" : "background",
-                estado = r.Estado
-            });
+            // Mostrar solo las reservas del usuario
+            // NO mostrar "Ocupado"
+            // No bloquear nada del calendario
+            var eventos = reservas
+                .Where(r => r.UsuarioId == usuarioId)  // ⬅ SOLO LAS DEL USUARIO
+                .Select(r => new
+                {
+                    id = r.Id,
+                    title = $"{r.Servicio?.Nombre} ({r.Estado})",
+                    start = r.FechaInicio.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    end = r.FechaFin.ToString("yyyy-MM-ddTHH:mm:ss"),
+
+                    // 🎨 Colores por estado
+                    color = r.Estado == "Aprobada" ? "#198754"
+                         : r.Estado == "Rechazada" ? "#dc3545"
+                         : "#ffc107",
+
+                    textColor = "#000000",
+                    rendering = "auto",  // ⬅ IMPORTANTE PARA QUE NO ROMPA LA SELECCIÓN
+
+                    estado = r.Estado,
+                    comentarioAdmin = r.ComentarioAdmin,
+                    comentarioUsuario = r.ComentarioUsuario
+                })
+                .ToList();
 
             return new JsonResult(eventos);
         }
+
+
     }
 
     // 🔹 Modelo auxiliar para recibir datos del frontend

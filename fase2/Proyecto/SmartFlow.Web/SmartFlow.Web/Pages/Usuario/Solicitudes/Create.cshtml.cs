@@ -41,28 +41,75 @@ namespace SmartFlow.Web.Pages.Usuario.Solicitudes
                 return Page();
             }
 
-            // ?? Tomamos el ID del usuario actual desde la sesión
+            // ==============================
+            //  Obtener usuario actual
+            // ==============================
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
-            if (usuarioId == null)
-            {
-                // Si no hay sesión activa, redirige al login
-                return RedirectToPage("/Login/Index");
-            }
-            //  Notificar también al coordinador
-            var coordinadores = _context.Usuarios.Where(u => u.Rol == "Coordinador").Select(c => c.Id).ToList();
-            foreach (var idCoord in coordinadores)
+            var estudiante = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+
+            // ==============================
+            //  Obtener personas involucradas
+            // ==============================
+
+            // Coordinador de la misma carrera
+            var coordinador = _context.Usuarios
+                .FirstOrDefault(u => u.Rol == "Coordinador" && u.CarreraId == estudiante.CarreraId);
+
+            // Admin de la misma carrera
+            var adminCarrera = _context.Usuarios
+                .FirstOrDefault(u => u.Rol == "Admin" && u.CarreraId == estudiante.CarreraId);
+
+            // Admin general (sin carrera asociada)
+            var adminGeneral = _context.Usuarios
+                .FirstOrDefault(u => u.Rol == "Admin" && u.CarreraId == null);
+
+            // ==============================
+            //  Notificar al Coordinador
+            // ==============================
+            if (coordinador != null)
             {
                 _context.Notificaciones.Add(new Notificacion
                 {
-                    UsuarioId = idCoord,
+                    UsuarioId = coordinador.Id,
                     Titulo = "Nueva solicitud registrada",
-                    Mensaje = $"El usuario {HttpContext.Session.GetString("UsuarioNombre")} ha creado una nueva solicitud.",
-                    Tipo = "Info",
-                    Leida = false,
+                    Mensaje = $"{estudiante.Nombre} creó una solicitud: '{Solicitud.Asunto}'",
+                    Tipo = "Solicitud",
                     FechaCreacion = DateTime.Now
                 });
             }
+
+            // ==============================
+            //  Notificar Admin de la carrera
+            // ==============================
+            if (adminCarrera != null)
+            {
+                _context.Notificaciones.Add(new Notificacion
+                {
+                    UsuarioId = adminCarrera.Id,
+                    Titulo = "Solicitud en tu carrera",
+                    Mensaje = $"{estudiante.Nombre} creó una solicitud.",
+                    Tipo = "Solicitud",
+                    FechaCreacion = DateTime.Now
+                });
+            }
+
+            // ==============================
+            //  Notificar Admin general
+            // ==============================
+            if (adminGeneral != null)
+            {
+                _context.Notificaciones.Add(new Notificacion
+                {
+                    UsuarioId = adminGeneral.Id,
+                    Titulo = "Nueva solicitud registrada",
+                    Mensaje = $"{estudiante.Nombre} creó una solicitud.",
+                    Tipo = "Solicitud",
+                    FechaCreacion = DateTime.Now
+                });
+            }
+
             await _context.SaveChangesAsync();
+
 
             Solicitud.UsuarioId = usuarioId.Value;
             Solicitud.FechaCreacion = DateTime.Now;
@@ -70,27 +117,7 @@ namespace SmartFlow.Web.Pages.Usuario.Solicitudes
 
             _context.Solicitudes.Add(Solicitud);
             await _context.SaveChangesAsync();
-            // ?? Crear notificación para todos los administradores
-            var admins = _context.Usuarios
-                .Where(u => u.Rol == "Admin" )
-                .ToList();
-
-            foreach (var admin in admins)
-            {
-                var notificacion = new Notificacion
-                {
-                    UsuarioId = admin.Id,
-                    Titulo = $"Nueva solicitud de {HttpContext.Session.GetString("UsuarioNombre")}",
-                    Mensaje = $"El usuario {HttpContext.Session.GetString("UsuarioNombre")} ha enviado una nueva solicitud: '{Solicitud.Asunto}'",
-                    Tipo = "Solicitud",
-                    FechaCreacion = DateTime.Now
-                };
-                _context.Notificaciones.Add(notificacion);
-            }
-
-            await _context.SaveChangesAsync();
-
-
+           
             // Redirige al listado del usuario
             return RedirectToPage("/Usuario/Solicitudes/Index");
         }

@@ -18,8 +18,10 @@ namespace SmartFlow.Web.Pages.Admin.Usuarios
 
         public SmartFlow.Web.Models.Usuario Usuario { get; set; }
 
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+
             if (id == null)
                 return NotFound();
 

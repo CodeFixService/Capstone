@@ -35,16 +35,18 @@
             <th class="text-center">Acciones</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tablaSolicitudes">
         @if (Model.ListaSolicitudes != null && Model.ListaSolicitudes.Count > 0)
         {
             foreach (var solicitud in Model.ListaSolicitudes)
             {
-                <tr>
+                <tr data-id="@solicitud.Id">
                     <td>@solicitud.Id</td>
                     <td>@solicitud.Asunto</td>
                     <td>@solicitud.Usuario?.Nombre</td>
                     <td>@solicitud.Servicio?.Nombre</td>
+
+                    <!-- ⚠ Esta es la COLUMNA 4 (index 4) que el script actualiza -->
                     <td>
                         @if (solicitud.Estado == "Aprobada")
                         {
@@ -59,12 +61,14 @@
                             <span class="badge bg-warning text-dark">Pendiente</span>
                         }
                     </td>
+
                     <td>@solicitud.FechaCreacion.ToString("dd/MM/yyyy")</td>
+
                     <td class="text-center">
-                        <a asp-page="Details" asp-route-id="@solicitud.Id" class="btn btn-sm btn-outline-info me-1" title="Detalles">
+                        <a asp-page="Details" asp-route-id="@solicitud.Id" class="btn btn-sm btn-outline-info me-1">
                             <i class="bi bi-eye"></i>
                         </a>
-                        <a asp-page="Edit" asp-route-id="@solicitud.Id" class="btn btn-sm btn-outline-warning me-1" title="Editar Estado">
+                        <a asp-page="Edit" asp-route-id="@solicitud.Id" class="btn btn-sm btn-outline-warning me-1">
                             <i class="bi bi-check2-square"></i>
                         </a>
                     </td>
@@ -82,4 +86,44 @@
 
 @section Scripts {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+            async function refrescarEstados() {
+
+        if (!calendar) return; // evitar error si no está inicializado
+
+        try {
+            const resp = await fetch(window.location.pathname + "?handler=Eventos");
+            const eventosNuevos = await resp.json();
+
+            // REFRESCAR ESTADOS Y COLORES
+            eventosNuevos.forEach(item => {
+
+                const event = calendar.getEventById(item.id);
+
+                if (event) {
+
+                    let color = "#ffc107"; // Pendiente
+                    if (item.estado === "Aprobada") color = "#198754";
+                    if (item.estado === "Rechazada") color = "#dc3545";
+
+                    event.setProp("title", item.title);
+                    event.setProp("backgroundColor", color);
+                    event.setProp("borderColor", color);
+                }
+            });
+
+            //  AGREGAR NUEVAS RESERVAS AL CALENDARIO
+            calendar.refetchEvents();
+
+        } catch (err) {
+            console.log("Error refrescando calendario del usuario:", err);
+        }
+
+        // Llamar una vez al cargar
+        document.addEventListener("DOMContentLoaded", refrescarEstados);
+
+        // Y luego cada 10 segundos
+        setInterval(refrescarEstados, 10000);
+    </script>
+
 }

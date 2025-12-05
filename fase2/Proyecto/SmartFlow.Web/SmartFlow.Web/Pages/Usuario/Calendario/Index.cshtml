@@ -25,11 +25,11 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Hora de inicio</label>
-                        <input type="time" id="horaInicio" class="form-control" />
+                        <select id="horaInicio" class="form-select"></select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Hora de término</label>
-                        <input type="time" id="horaFin" class="form-control" />
+                        <select id="horaFin" class="form-select" disabled></select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Servicio</label>
@@ -40,8 +40,6 @@
                         <textarea id="comentario" class="form-control" rows="2"
                                   placeholder="Escribe un comentario opcional..."></textarea>
                     </div>
-                    <input type="hidden" id="fechaInicioHidden" />
-                    <input type="hidden" id="fechaFinHidden" />
                 </form>
             </div>
             <div class="modal-footer">
@@ -68,33 +66,255 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
+
+    <!-- FULLCALENDAR + LOCALE ESPAÑOL -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/locales/es.global.min.js"></script>
+
     <script>
+
+        let calendar;
+        let fechaInicioSeleccionada = null;
+                function cargarHoras() {
+
+            const inicio = document.getElementById('horaInicio');
+            const fin = document.getElementById('horaFin');
+
+            inicio.innerHTML = "";
+            fin.innerHTML = "";
+
+            // Crear intervalos cada 30 minutos desde 09:00 hasta 19:30
+            for (let h = 9; h <= 19; h++) {
+                ["00", "30"].forEach(m => {
+
+                    const hora = `${String(h).padStart(2, "0")}:${m}`;
+
+                    // Crear opción solo para horaInicio
+                    inicio.innerHTML += `<option value="${hora}">${hora}</option>`;
+                });
+            }
+
+            // Cuando se elige horaInicio, calcular +30 minutos
+            inicio.addEventListener("change", () => {
+
+                const [hStr, mStr] = inicio.value.split(":");
+                const h = parseInt(hStr);
+                const m = parseInt(mStr);
+
+                const fecha = new Date();
+                fecha.setHours(h);
+                fecha.setMinutes(m + 30);
+
+                const hh = String(fecha.getHours()).padStart(2, "0");
+                const mm = String(fecha.getMinutes()).padStart(2, "0");
+
+                fin.innerHTML = `<option value="${hh}:${mm}">${hh}:${mm}</option>`;
+            });
+        }
+
+        // 🔹 Necesaria para verificar disponibilidad
+        function formatLocalDate(d) {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const h = String(d.getHours()).padStart(2, '0');
+            const min = String(d.getMinutes()).padStart(2, '0');
+            return `${y}-${m}-${day}T${h}:${min}:00`;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
 
             const calendarEl = document.getElementById('calendar');
             const modal = new bootstrap.Modal(document.getElementById('modalReserva'));
             const btnGuardar = document.getElementById('btnGuardarReserva');
 
-            // 🔹 Sumar 30 minutos automáticamente al cambiar hora de inicio
-            document.getElementById('horaInicio').addEventListener('change', function () {
-                const horaInicio = this.value;
-                if (!horaInicio) return;
+            calendar = new FullCalendar.Calendar(calendarEl, {
+               initialView: 'dayGridMonth',
+                locale: 'es',
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    list: 'Lista'
+                },
+                dayHeaderFormat: { weekday: 'long' },
+                height: 'auto',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
 
-                const [h, m] = horaInicio.split(':').map(Number);
-                const fecha = new Date();
-                fecha.setHours(h, m + 30, 0);
-                const finH = String(fecha.getHours()).padStart(2, '0');
-                const finM = String(fecha.getMinutes()).padStart(2, '0');
-                document.getElementById('horaFin').value = `${finH}:${finM}`;
+                // 💥 BLOQUEAR DIAS PASADOS
+                validRange: {
+                    start: new Date().toISOString().split('T')[0]
+                },
+
+                // ⏰ HORARIO VISIBLE 09:00 - 20:00
+                slotMinTime: "09:00:00",
+                slotMaxTime: "20:00:00",
+
+                selectable: true,
+
+                events: '/Usuario/Calendario/Index?handler=Eventos',
+
+                // 🟢 SELECCIONAR HORARIO PARA RESERVA
+                        select: function(info) {
+
+            fechaInicioSeleccionada = info.startStr;
+
+            const fecha = new Date(info.start);
+
+            document.getElementById('fechaSeleccionada').value =
+                fecha.toLocaleDateString('es-CL');
+
+            // Cargar lista de horas 09:00–19:30
+            cargarHoras();
+
+            // Forzar el cálculo de hora fin
+            document.getElementById("horaInicio").dispatchEvent(new Event("change"));
+
+            // Cargar servicios
+            fetch('/Usuario/Calendario/Index?handler=Servicios')
+                .then(res => res.json())
+                .then(data => {
+                    const select = document.getElementById('servicio');
+                    select.innerHTML = "";
+                    data.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s.id;
+                        opt.textContent = s.nombre;
+                        select.appendChild(opt);
+                    });
+
+                    modal.show();
+                });
+        },
+
+
+                eventClick: function (info) {
+
+                    const ev = info.event;
+
+                    let comentario = ev.extendedProps.comentarioAdmin ?? "Sin comentarios";
+
+                    mostrarMensaje(
+                        "Detalle de Reserva",
+                        `
+                        <b>Servicio:</b> ${ev.title}<br>
+                        <b>Inicio:</b> ${ev.start.toLocaleString()}<br>
+                        <b>Fin:</b> ${ev.end.toLocaleString()}<br>
+                        <b>Estado:</b> ${ev.extendedProps.estado}<br>
+                        <b>Comentario:</b> ${comentario}
+                        `,
+                        "info"
+                    );
+                }
             });
 
-            let fechaInicioSeleccionada = null;
-            let fechaFinSeleccionada = null;
+            calendar.render();
 
-            // 🔹 Función para mostrar mensajes RMX bonitos
+
+            // 🔥 SUMAR 30 MIN CUANDO USUARIO CAMBIE LA HORA MANUALMENTE
+            document.getElementById('horaInicio').addEventListener('change', function () {
+
+                const hora = this.value;
+                if (!hora) return;
+
+                const [h, m] = hora.split(':').map(Number);
+                const fecha = new Date();
+                fecha.setHours(h);
+                fecha.setMinutes(m + 30);
+
+                const hFin = String(fecha.getHours()).padStart(2, '0');
+                const mFin = String(fecha.getMinutes()).padStart(2, '0');
+
+                document.getElementById('horaFin').value = `${hFin}:${mFin}`;
+            });
+
+
+            // 🔹 GUARDAR RESERVA
+            btnGuardar.addEventListener('click', function () {
+
+                const servicioId = parseInt(document.getElementById('servicio').value);
+                const comentario = document.getElementById('comentario').value;
+
+                const horaInicio = document.getElementById('horaInicio').value;
+                const horaFin = document.getElementById('horaFin').value;
+
+                const baseDate = new Date(fechaInicioSeleccionada);
+                const fechaBaseISO = baseDate.toISOString().split("T")[0];
+
+                const fechaInicio = new Date(`${fechaBaseISO}T${horaInicio}:00`);
+                const fechaFin = new Date(`${fechaBaseISO}T${horaFin}:00`);
+
+                // VALIDACIONES
+                if (!servicioId)
+                    return mostrarMensaje("Falta servicio", "Debes seleccionar un servicio.", "warning");
+
+                if (!horaInicio)
+                    return mostrarMensaje("Falta hora de inicio", "Debes seleccionar un horario válido.", "warning");
+
+                if (!horaFin)
+                    return mostrarMensaje("Falta hora de término", "Debes seleccionar un horario válido.", "warning");
+
+
+                // Primero verificar disponibilidad
+                fetch('/Usuario/Calendario/Index?handler=VerificarDisponibilidad', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fechaInicio: formatLocalDate(fechaInicio),
+                        fechaFin: formatLocalDate(fechaFin)
+                    })
+                })
+                    .then(r => r.json())
+                    .then(v => {
+
+                        if (!v.disponible) {
+                            mostrarMensaje("⛔ Ocupado", "Este horario ya está reservado.", "warning");
+                            return;
+                        }
+
+                        // Crear reserva
+                        fetch('/Usuario/Calendario/Index?handler=Crear', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                servicioId: servicioId,
+                                fechaInicio: formatLocalDate(fechaInicio),
+                                fechaFin: formatLocalDate(fechaFin),
+                                comentario: comentario
+                            })
+                        })
+                            .then(r => r.json())
+                            .then(data => {
+                                if (data.success) {
+                                    modal.hide();
+                                    mostrarMensaje("✔ Reserva creada", "La reserva fue registrada.", "success");
+                                    calendar.refetchEvents();
+                                }
+                            });
+                    });
+            });
+
+
+            // 🔄 AUTO-ACTUALIZAR EVENTOS
+            setInterval(() => {
+                try {
+                    calendar.refetchEvents();
+                } catch (e) {
+                    console.log("Error refrescando", e);
+                }
+            }, 10000);
+
+
+            // 🔹 Mostrar modal de mensaje
             function mostrarMensaje(titulo, cuerpo, tipo = "info") {
+
                 const header = document.getElementById('mensajeHeader');
                 const tituloElem = document.getElementById('mensajeTitulo');
                 const cuerpoElem = document.getElementById('mensajeCuerpo');
@@ -108,166 +328,11 @@
                 header.style.background = `linear-gradient(90deg, ${color}, #00b4d8)`;
                 tituloElem.textContent = titulo;
                 cuerpoElem.innerHTML = `<p>${cuerpo}</p>`;
+
                 modalMsg.show();
             }
 
-            // 🔹 Función auxiliar para formatear fecha local (sin UTC)
-            function formatLocalDate(d) {
-                const y = d.getFullYear();
-                const m = String(d.getMonth() + 1).padStart(2, '0');
-                const day = String(d.getDate()).padStart(2, '0');
-                const h = String(d.getHours()).padStart(2, '0');
-                const min = String(d.getMinutes()).padStart(2, '0');
-                const s = String(d.getSeconds()).padStart(2, '0');
-                return `${y}-${m}-${day}T${h}:${min}:${s}`;
-            }
-
-            // 🔹 Inicializar FullCalendar
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                locale: 'es', // idioma español
-                buttonText: {
-                    today: 'Hoy',
-                    month: 'Mes',
-                    week: 'Semana',
-                    day: 'Día',
-                    list: 'Lista'
-                },
-                allDayText: 'Todo el día',
-                noEventsText: 'No hay eventos para mostrar',
-                weekText: 'Sem',
-                eventLimitText: 'más',
-                dayHeaderFormat: { weekday: 'long' },
-                selectable: true,
-                allDaySlot: false,
-                height: 'auto',
-                expandRows: true,
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                events: '/Usuario/Calendario/Index?handler=Eventos',
-
-                // 🔹 Bloquear sábados, domingos y fechas pasadas
-                validRange: {
-                    start: new Date().toISOString().split('T')[0]
-                },
-                businessHours: {
-                    daysOfWeek: [1, 2, 3, 4, 5], // lunes a viernes
-                    startTime: '09:00',
-                    endTime: '18:00'
-                },
-
-                // 🔹 Selección de nueva reserva
-                select: function (info) {
-                    fechaInicioSeleccionada = info.startStr;
-                    fechaFinSeleccionada = info.endStr;
-
-                    const fecha = new Date(info.start);
-                    document.getElementById('fechaSeleccionada').value = fecha.toLocaleDateString('es-CL');
-                    document.getElementById('horaInicio').value = info.start.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
-                    document.getElementById('horaFin').value = info.end.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
-
-                    // Cargar servicios desde backend
-                    fetch('/Usuario/Calendario/Index?handler=Servicios')
-                        .then(res => res.json())
-                        .then(data => {
-                            const select = document.getElementById('servicio');
-                            select.innerHTML = "";
-                            data.forEach(s => {
-                                const opt = document.createElement('option');
-                                opt.value = s.id;
-                                opt.textContent = s.nombre;
-                                select.appendChild(opt);
-                            });
-                            select.selectedIndex = 0;
-                            modal.show();
-                        })
-                        .catch(() => mostrarMensaje("Error", "No se pudieron cargar los servicios.", "error"));
-                },
-
-                // 🔹 Click en evento existente
-                eventClick: function (info) {
-                    const ev = info.event;
-                    if (ev.title === 'Ocupado') {
-                        mostrarMensaje("Ocupado", "⛔ Este horario ya está reservado por otro usuario.", "warning");
-                    } else {
-                        mostrarMensaje("Detalle de Reserva",
-                            `Servicio: ${ev.title}<br>
-                             Inicio: ${ev.start.toLocaleString()}<br>
-                             Fin: ${ev.end.toLocaleString()}<br>
-                             Estado: ${ev.extendedProps.estado || 'Pendiente'}`, "info");
-                    }
-                }
-            });
-
-            calendar.render();
-
-            // 🔹 Guardar reserva con validación de horario ocupado
-            btnGuardar.addEventListener('click', function () {
-                const servicioId = parseInt(document.getElementById('servicio').value);
-                const comentario = document.getElementById('comentario').value;
-                const horaInicio = document.getElementById('horaInicio').value;
-                const horaFin = document.getElementById('horaFin').value;
-
-                if (!servicioId || !horaInicio || !horaFin) {
-                    mostrarMensaje("⚠️ Atención", "Debes seleccionar servicio y horas válidas.", "warning");
-                    return;
-                }
-
-                const baseDate = new Date(fechaInicioSeleccionada);
-                const fechaBaseISO = baseDate.toISOString().split("T")[0];
-
-                const fechaInicio = new Date(`${fechaBaseISO}T${horaInicio}:00`);
-                const fechaFin = new Date(`${fechaBaseISO}T${horaFin}:00`);
-
-                if (isNaN(fechaInicio.getTime()) || isNaN(fechaFin.getTime())) {
-                    mostrarMensaje("Error", "Formato de hora inválido. Revisa los campos de hora.", "error");
-                    return;
-                }
-
-                // ✅ PRIMERO: verificar disponibilidad antes de crear
-                fetch('/Usuario/Calendario/Index?handler=VerificarDisponibilidad', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        fechaInicio: formatLocalDate(fechaInicio),
-                        fechaFin: formatLocalDate(fechaFin)
-                    })
-                })
-                .then(res => res.json())
-                .then(verificacion => {
-                    if (!verificacion.disponible) {
-                        mostrarMensaje("⛔ Horario ocupado", "Este horario ya está reservado por otro usuario. Elige otro horario.", "warning");
-                        return;
-                    }
-
-                    // ✅ Si está disponible, crear la reserva
-                    fetch('/Usuario/Calendario/Index?handler=Crear', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            servicioId: servicioId,
-                            fechaInicio: formatLocalDate(fechaInicio),
-                            fechaFin: formatLocalDate(fechaFin),
-                            comentario: comentario
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            modal.hide();
-                            mostrarMensaje("✅ Reserva creada", "Tu reserva se ha registrado correctamente.", "success");
-                            calendar.refetchEvents();
-                        } else {
-                            mostrarMensaje("⚠️ Atención", data.message, "warning");
-                        }
-                    })
-                    .catch(err => mostrarMensaje("Error", "Error al crear reserva: " + err, "error"));
-                })
-                .catch(err => mostrarMensaje("Error", "Error al verificar disponibilidad: " + err, "error"));
-            });
         });
+
     </script>
 }
-

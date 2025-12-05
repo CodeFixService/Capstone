@@ -48,7 +48,7 @@ namespace SmartFlow.Web.Pages.Coordinador.Ayuda
 
             // 🔹 Mostrar estudiantes y admins de su carrera
             Conversaciones = _context.Usuarios
-                .Where(u => u.CarreraId == carreraId && (u.Rol == "Usuario" || u.Rol == "Admin"))
+                .Where(u => u.CarreraId == carreraId && (u.Rol == "Usuario"))
                 .Select(u => new Item
                 {
                     UsuarioId = u.Id,
@@ -69,9 +69,8 @@ namespace SmartFlow.Web.Pages.Coordinador.Ayuda
                         c.UsuarioId == u.Id &&
                         (
                             // Mensajes nuevos de estudiantes hacia el coordinador
-                            (u.Rol == "Usuario" && !c.LeidoPorCoordinador && c.EmisorRol == "Usuario") ||
+                            (u.Rol == "Usuario" && !c.LeidoPorCoordinador && c.EmisorRol == "Usuario")
                             // Mensajes nuevos de admin hacia el coordinador
-                            (u.Rol == "Admin" && !c.LeidoPorCoordinador && c.EmisorRol == "Admin")
                         ))
                 })
                 .OrderByDescending(x => x.FechaUltimo)

@@ -54,8 +54,39 @@ namespace SmartFlow.Web.Pages.Coordinador.Solicitudes
             if (!string.IsNullOrEmpty(EstadoFiltro))
                 query = query.Where(s => s.Estado == EstadoFiltro);
 
-            ListaSolicitudes = await query.ToListAsync();
+            ListaSolicitudes = await query
+                .OrderByDescending(s => s.FechaCreacion)
+
+                .ToListAsync();
             return Page();
+        }
+        public async Task<JsonResult> OnGetEstadosAsync()
+        {
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            if (usuarioId == null)
+                return new JsonResult(new { data = new object[0] });
+
+            var usuarioActual = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Id == usuarioId.Value);
+
+            var query = _context.Solicitudes
+                .AsQueryable();
+
+            // filtros de rol igual que en OnGetAsync
+            if (usuarioActual.Rol == "Admin" && usuarioActual.CarreraId != null)
+                query = query.Where(s => s.Usuario.CarreraId == usuarioActual.CarreraId);
+
+            if (usuarioActual.Rol == "Coordinador")
+                query = query.Where(s => s.Usuario.CarreraId == usuarioActual.CarreraId);
+
+            var lista = await query
+                .Select(s => new {
+                    id = s.Id,
+                    estado = s.Estado
+                })
+                .ToListAsync();
+
+            return new JsonResult(new { data = lista });
         }
     }
 }

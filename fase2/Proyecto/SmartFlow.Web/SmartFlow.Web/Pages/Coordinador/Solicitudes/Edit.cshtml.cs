@@ -88,7 +88,7 @@ namespace SmartFlow.Web.Pages.Coordinador.Solicitudes
 
             await _context.SaveChangesAsync();
 
-            // 🔔 Crear notificación al usuario
+            //  Crear notificación al usuario
             string mensaje = $"Tu solicitud \"{solicitudDb.Asunto}\" fue {solicitudDb.Estado.ToLower()}.";
             if (!string.IsNullOrWhiteSpace(solicitudDb.Motivo))
                 mensaje += $"\nComentario del coordinador: {solicitudDb.Motivo}";
@@ -120,5 +120,7 @@ namespace SmartFlow.Web.Pages.Coordinador.Solicitudes
             TempData["Mensaje"] = " Solicitud actualizada correctamente.";
             return RedirectToPage("./Index");
         }
+        
+
     }
 }

@@ -37,16 +37,50 @@ namespace SmartFlow.Web.Pages.Admin.Notificaciones
         public IActionResult OnGet()
         {
             var rol = HttpContext.Session.GetString("Rol");
-            if (rol != "Admin" && rol != "Director" && rol != "Coordinador") return RedirectToPage("/Login/Login");
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuarioActual = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
 
-            Usuarios = _context.Usuarios.OrderBy(u => u.Nombre).ToList();
+            if (rol != "Admin")
+                return RedirectToPage("/Login/Login");
+
+            //  ADMIN GENERAL (sin carrera) → ve todos
+            if (rol == "Admin" && usuarioActual.CarreraId == null)
+            {
+                Usuarios = _context.Usuarios
+                    .OrderBy(u => u.Nombre)
+                    .ToList();
+            }
+            else if (rol == "Admin") //  ADMIN DE CARRERA
+            {
+                Usuarios = _context.Usuarios
+                    .Where(u => u.CarreraId == usuarioActual.CarreraId)
+                    .OrderBy(u => u.Nombre)
+                    .ToList();
+            }
+            else if (rol == "Coordinador") //  COORDINADOR
+            {
+                Usuarios = _context.Usuarios
+                    .Where(u =>
+                        u.CarreraId == usuarioActual.CarreraId &&
+                        (u.Rol == "Admin" || u.Rol == "Usuario") // estudiante/admin
+                    )
+                    .OrderBy(u => u.Nombre)
+                    .ToList();
+            }
+
+
             return Page();
         }
 
+
         public IActionResult OnPost()
         {
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var usuarioActual = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+
             var rol = HttpContext.Session.GetString("Rol");
-            if (rol != "Admin" && rol != "Director" && rol != "Coordinador") return RedirectToPage("/Login/Login");
+            if (rol != "Admin" && rol != "Director" && rol != "Coordinador")
+                return RedirectToPage("/Login/Login");
 
             if (string.IsNullOrWhiteSpace(Titulo) || string.IsNullOrWhiteSpace(Mensaje))
             {
@@ -57,10 +91,46 @@ namespace SmartFlow.Web.Pages.Admin.Notificaciones
 
             var ahora = DateTime.Now;
 
+            
+            //  1) DETERMINAR LISTA DE USUARIOS SEGÚN ROL Y CARRERA
+            
+
+            List<SmartFlow.Web.Models.Usuario> listaUsuariosNotificar;
+
+            //  ADMIN GENERAL → todos
+            if (rol == "Admin" && usuarioActual.CarreraId == null)
+            {
+                listaUsuariosNotificar = _context.Usuarios.ToList();
+            }
+            //  ADMIN DE CARRERA → solo su carrera
+            else if (rol == "Admin")
+            {
+                listaUsuariosNotificar = _context.Usuarios
+                    .Where(u => u.CarreraId == usuarioActual.CarreraId)
+                    .ToList();
+            }
+            //  COORDINADOR → Admin + Estudiantes de la misma carrera
+            else if (rol == "Coordinador")
+            {
+                listaUsuariosNotificar = _context.Usuarios
+                    .Where(u =>
+                        u.CarreraId == usuarioActual.CarreraId &&
+                        (u.Rol == "Admin" || u.Rol == "Usuario")
+                    ).ToList();
+            }
+            //  DIRECTOR → todos
+            else
+            {
+                listaUsuariosNotificar = _context.Usuarios.ToList();
+            }
+
+            
+            //  2) ENVÍO A TODOS (pero respetando lo anterior)
+            
+
             if (EnviarATodos)
             {
-                var usuarios = _context.Usuarios.ToList();
-                foreach (var u in usuarios)
+                foreach (var u in listaUsuariosNotificar)
                 {
                     _context.Notificaciones.Add(new Notificacion
                     {
@@ -88,6 +158,10 @@ namespace SmartFlow.Web.Pages.Admin.Notificaciones
             }
             else
             {
+                
+                // 🔵 3) ENVÍO INDIVIDUAL (también respetando carrera/rol)
+                
+
                 if (UsuarioId is null || UsuarioId <= 0)
                 {
                     MensajeSistema = " Seleccione un usuario o marque 'Enviar a todos'.";
@@ -95,44 +169,44 @@ namespace SmartFlow.Web.Pages.Admin.Notificaciones
                     return Page();
                 }
 
-                var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == UsuarioId);
-                if (usuario != null)
-                {
-                    _context.Notificaciones.Add(new Notificacion
-                    {
-                        UsuarioId = usuario.Id,
-                        Titulo = Titulo,
-                        Mensaje = Mensaje,
-                        Tipo = "Info",
-                        Leida = false,
-                        FechaCreacion = ahora
-                    });
+                var usuarioDestino = listaUsuariosNotificar.FirstOrDefault(u => u.Id == UsuarioId);
 
-                    if (EnviarCorreo && !string.IsNullOrEmpty(usuario.Correo))
+                if (usuarioDestino == null)
+                {
+                    MensajeSistema = " No tiene permiso para enviar a ese usuario.";
+                    OnGet();
+                    return Page();
+                }
+
+                _context.Notificaciones.Add(new Notificacion
+                {
+                    UsuarioId = usuarioDestino.Id,
+                    Titulo = Titulo,
+                    Mensaje = Mensaje,
+                    Tipo = "Info",
+                    Leida = false,
+                    FechaCreacion = ahora
+                });
+
+                if (EnviarCorreo && !string.IsNullOrEmpty(usuarioDestino.Correo))
+                {
+                    try
                     {
-                        try
-                        {
-                            _emailHelper.EnviarCorreo(usuario.Correo, Titulo, Mensaje);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error al enviar correo a {usuario.Correo}: {ex.Message}");
-                        }
+                        _emailHelper.EnviarCorreo(usuarioDestino.Correo, Titulo, Mensaje);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al enviar correo a {usuarioDestino.Correo}: {ex.Message}");
                     }
                 }
             }
 
             _context.SaveChanges();
 
-            // 🔹 Reset del formulario
-            Usuarios = _context.Usuarios.OrderBy(u => u.Nombre).ToList();
-            UsuarioId = null;
-            EnviarATodos = false;
-            Titulo = "";
-            Mensaje = "";
-            MensajeSistema = "✅ Notificación enviada correctamente.";
-
+            MensajeSistema = " Notificación enviada correctamente.";
+            OnGet();
             return Page();
         }
+
     }
 }
