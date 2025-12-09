@@ -22,34 +22,38 @@
         var isLogged = !string.IsNullOrEmpty(rol);
     }
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
             <div class="container">
-                <a class="navbar-brand" asp-page="/Index">SmartFlow</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+                <!-- LOGO -->
+                <a class="navbar-brand fw-bold" asp-page="/Index">SmartFlow</a>
+
+                <!-- BOTÓN RESPONSIVE -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <!-- ===== MENÚ IZQUIERDO ===== -->
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+
+                    <!-- MENÚ IZQUIERDO -->
+                    <ul class="navbar-nav me-auto">
 
                         @if (isLogged)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Index">Inicio</a>
+                                <a class="nav-link" asp-page="/Index">Inicio</a>
                             </li>
 
-                            <!-- ==== ADMIN ==== -->
+                            <!-- ADMIN -->
                             @if (rol == "Admin")
                             {
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="adminDropdown" role="button"
-                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                         Administración
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                        
+                                    <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" asp-page="/Admin/Calendario/Index">Calendario</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Solicitudes/Index">Solicitudes</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Notificaciones/Nueva">Notificación</a></li>
@@ -58,46 +62,40 @@
                                         <li><a class="dropdown-item" asp-page="/Admin/Roles/Index">Roles</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Carreras/Index">Carreras</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Servicios/Index">Servicios</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>                                        
+                                        <li><a class="dropdown-item" asp-page="/Admin/Aranceles/Index">Aranceles</a></li>
                                         <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Bitacora/Index">Registro</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Reportes/Index">Reportes</a></li>
                                         <li><a class="dropdown-item" asp-page="/Admin/Index">Dashboard</a></li>
-
-
                                     </ul>
                                 </li>
                             }
 
-                            <!-- ==== USUARIO ==== -->
+                            <!-- USUARIO -->
                             @if (rol == "Usuario")
                             {
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="usuarioDropdown" role="button"
-                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                         Mi Cuenta
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="usuarioDropdown">
-
+                                    <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" asp-page="/Usuario/Calendario/Index">Calendario</a></li>
                                         <li><a class="dropdown-item" asp-page="/Usuario/Solicitudes/Index">Solicitudes</a></li>
-
                                         <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item" asp-page="/Usuario/Perfil/Editar">Editar Perfil</a></li>
                                         <li><a class="dropdown-item" asp-page="/Usuario/Ayuda/Index">Chat</a></li>
                                     </ul>
                                 </li>
-                            }                            
-                            <!-- ==== Coordinador ==== -->
+                            }
+
+                            <!-- COORDINADOR -->
                             @if (rol == "Coordinador")
                             {
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="CoordinadorDropdown" role="button"
-                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                         Gestión Académica
                                     </a>
-
-                                    <ul class="dropdown-menu" aria-labelledby="CoordinadorDropdown">
+                                    <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" asp-page="/Coordinador/Calendario/Index">Calendario</a></li>
                                         <li><a class="dropdown-item" asp-page="/Coordinador/Solicitudes/Index">Solicitudes</a></li>
                                         <li><hr class="dropdown-divider" /></li>
@@ -113,55 +111,53 @@
                         @if (!isLogged)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Login/Login">Iniciar sesión</a>
+                                <a class="nav-link" asp-page="/Login/Login">Iniciar Sesión</a>
                             </li>
                         }
+
                     </ul>
 
-                    <!-- ===== MENÚ DERECHO ===== -->
-                    <ul class="navbar-nav align-items-center">
+                    <!-- MENÚ DERECHO (NOTIFICACIONES Y USUARIO) -->
+                    <ul class="navbar-nav ms-auto align-items-center">
 
-                        @*  Icono de notificaciones (solo si hay sesión) *@
-                        @if (rol == "Admin")
+                        <!-- CAMPANA -->
+                        @if (rol == "Admin" || rol == "Usuario" || rol == "Coordinador")
                         {
-                            <partial name="_NotificacionesPartial" />
-                        }
-                        else if (rol == "Usuario")
-                        {
-                            <partial name="_NotificacionesPartial" />
-                        }
-                        else if (rol == "Coordinador")
-                        {
-                            <partial name="_NotificacionesPartial" />
+                            <li class="nav-item me-2">
+                                <partial name="_NotificacionesPartial" />
+                            </li>
                         }
 
-
-                        @*  Saludo + Logout *@
+                        <!-- SALUDO -->
                         @if (isLogged)
                         {
-                            <li class="nav-item">
-                                <span class="navbar-text me-3 text-dark">
+                            <li class="nav-item d-flex align-items-center me-3">
+                                <span class="text-dark small">
                                     Hola, <strong>@(string.IsNullOrEmpty(nombre) ? "Usuario" : nombre)</strong> (@rol)
                                 </span>
                             </li>
+
+                            <!-- LOGOUT -->
                             <li class="nav-item">
                                 <a class="nav-link text-danger" asp-page="/Login/Logout">
-                                    <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                    <i class="bi bi-box-arrow-right"></i>
                                 </a>
                             </li>
-                            <li class="nav-item ms-3">
+
+                            <!-- BOTÓN REFRESCAR -->
+                            <li class="nav-item ms-2">
                                 <button id="btnActualizar" class="btn btn-outline-primary btn-sm fw-bold">
-                                    <i class="bi bi-arrow-clockwise"></i> Actualizar
+                                    <i class="bi bi-arrow-clockwise"></i>
                                 </button>
                             </li>
-
-
                         }
                     </ul>
+
                 </div>
             </div>
         </nav>
     </header>
+
 
     <div class="container">
         <main role="main" class="pb-3">

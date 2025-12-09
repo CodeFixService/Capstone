@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -20,3 +20,36 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Ajusta spacing en móviles */
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+
+    .navbar-nav .nav-link {
+        padding-left: 10px;
+    }
+
+    .navbar-nav .dropdown-menu {
+        font-size: 0.9rem;
+    }
+
+    .navbar-text {
+        font-size: 0.8rem;
+    }
+
+    #btnActualizar {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Botón flotante de chat: evitar choque con menú inferior */
+@media (max-width: 576px) {
+    a.btn.btn-primary.rounded-circle {
+        bottom: 70px !important;
+        right: 20px !important;
+    }
+}
+...

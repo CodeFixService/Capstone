@@ -53,7 +53,7 @@ namespace SmartFlow.Web.Pages.Admin.Notificaciones
             else if (rol == "Admin") //  ADMIN DE CARRERA
             {
                 Usuarios = _context.Usuarios
-                    .Where(u => u.CarreraId == usuarioActual.CarreraId)
+        .Where(u => u.CarreraId == usuarioActual.CarreraId || u.CarreraId == null) // 👈 incluye super admin
                     .OrderBy(u => u.Nombre)
                     .ToList();
             }

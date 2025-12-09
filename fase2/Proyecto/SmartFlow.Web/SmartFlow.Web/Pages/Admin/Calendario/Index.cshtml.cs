@@ -49,7 +49,7 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                 return new JsonResult(Enumerable.Empty<object>());
             }
 
-            // 🟢 2. Construir la consulta base
+            //  Construir la consulta base
             var query = _context.Reservas
                 .Include(r => r.Servicio)
                 .Include(r => r.Usuario)
@@ -71,7 +71,7 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                 }
             }
 
-            // 🟢 4. Filtro por rol / carrera
+            // Filtro por rol / carrera
 
             // Admin
             if (usuarioActual.Rol == "Admin")
@@ -92,7 +92,7 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                 }
             }
 
-            // 🟢 5. Armar los eventos para el calendario
+            //  Armar los eventos para el calendario
             var eventos = query
                 .Select(r => new
                 {
@@ -115,7 +115,7 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
         }
 
 
-        // 🔹 Actualizar estado de una reserva
+        //  Actualizar estado de una reserva
         [IgnoreAntiforgeryToken]
         public JsonResult OnPostActualizarEstado([FromForm] int id, [FromForm] string estado, [FromForm] string? comentarioAdmin)
         {
@@ -134,14 +134,11 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                 reserva.ComentarioAdmin = string.IsNullOrWhiteSpace(comentarioAdmin) ? null : comentarioAdmin;
                 _context.SaveChanges();
 
-                // ===============================
-                // 🔹 Obtener estudiante
-                // ===============================
+                // Obtener estudiante
+               
                 var estudiante = reserva.Usuario;
 
-                // ===============================
-                // 🔹 Obtener actores según carrera
-                // ===============================
+                // Obtener actores según carrera
                 var coordinador = _context.Usuarios
                     .FirstOrDefault(u => u.Rol == "Coordinador" && u.CarreraId == estudiante.CarreraId);
 
@@ -166,9 +163,7 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                     Leida = false,
                     FechaCreacion = DateTime.Now
                 });
-                // ===============================
-                // 🔹 Coordinador
-                // ===============================
+                //  Coordinador
                 if (coordinador != null)
                 {
                     _context.Notificaciones.Add(new Notificacion
@@ -182,9 +177,7 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                     });
                 }
 
-                // ===============================
-                // 🔹 Admin de carrera
-                // ===============================
+                //  Admin de carrera
                 if (adminCarrera != null)
                 {
                     _context.Notificaciones.Add(new Notificacion
@@ -198,9 +191,7 @@ namespace SmartFlow.Web.Pages.Admin.Calendario
                     });
                 }
 
-                // ===============================
-                // 🔹 Admin general
-                // ===============================
+                //  Admin general
                 if (adminGeneral != null)
                 {
                     _context.Notificaciones.Add(new Notificacion

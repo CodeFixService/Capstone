@@ -42,10 +42,20 @@ namespace SmartFlow.Web.Pages.Coordinador.Notificaciones
                 .Select(u => u.CarreraId)
                 .FirstOrDefault();
 
-            Usuarios = _context.Usuarios
-                .Where(u => u.CarreraId == carreraCoord && u.Rol == "Usuario")
+                Usuarios = _context.Usuarios
+                .Where(u =>
+                    // Estudiantes de la carrera
+                    (u.CarreraId == carreraCoord && u.Rol == "Usuario") ||
+
+                    // Director de Carrera (Admin con misma carrera)
+                    (u.Rol == "Admin" && u.CarreraId == carreraCoord) ||
+
+                    // SuperAdmin (Admin sin carrera asignada)
+                    (u.Rol == "Admin" && u.CarreraId == null)
+                )
                 .OrderBy(u => u.Nombre)
                 .ToList();
+
 
             return Page();
         }
@@ -72,11 +82,21 @@ namespace SmartFlow.Web.Pages.Coordinador.Notificaciones
 
             if (EnviarATodos)
             {
-                var usuariosCarrera = _context.Usuarios
-                    .Where(u => u.CarreraId == carreraCoord && u.Rol == "Usuario")
-                    .ToList();
+                Usuarios = _context.Usuarios.Where(u =>
+        // Estudiantes de la carrera
+        (u.CarreraId == carreraCoord && u.Rol == "Usuario") ||
 
-                foreach (var u in usuariosCarrera)
+        // Director de Carrera (Admin con misma carrera)
+        (u.Rol == "Admin" && u.CarreraId == carreraCoord) ||
+
+        // SuperAdmin (Admin sin carrera asignada)
+        (u.Rol == "Admin" && u.CarreraId == null)
+    )
+    .OrderBy(u => u.Nombre)
+    .ToList();
+
+
+                foreach (var u in Usuarios)
                 {
                     _context.Notificaciones.Add(new Notificacion
                     {
